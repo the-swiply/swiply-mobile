@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E162C6B2B80E1010069E0AC /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3E162C6A2B80E1010069E0AC /* ComposableArchitecture */; };
 		3E171AA62B7EB36200D4E016 /* SwiplyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E171AA52B7EB36200D4E016 /* SwiplyApp.swift */; };
 		3E171AA82B7EB36200D4E016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E171AA72B7EB36200D4E016 /* ContentView.swift */; };
 		3E171AAA2B7EB36500D4E016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E171AA92B7EB36500D4E016 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E162C6B2B80E1010069E0AC /* ComposableArchitecture in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +99,7 @@
 			name = Swiply;
 			packageProductDependencies = (
 				3E171AB72B7EB47500D4E016 /* Networking */,
+				3E162C6A2B80E1010069E0AC /* ComposableArchitecture */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -126,6 +129,9 @@
 				Base,
 			);
 			mainGroup = 3E171A992B7EB36200D4E016;
+			packageReferences = (
+				3E162C692B80E1010069E0AC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = 3E171AA32B7EB36200D4E016 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -360,7 +366,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		3E162C692B80E1010069E0AC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
+			requirement = {
+				branch = "observation-beta";
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		3E162C6A2B80E1010069E0AC /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E162C692B80E1010069E0AC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
 		3E171AB72B7EB47500D4E016 /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
