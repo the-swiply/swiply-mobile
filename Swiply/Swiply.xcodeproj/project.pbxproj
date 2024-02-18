@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E162C6B2B80E1010069E0AC /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3E162C6A2B80E1010069E0AC /* ComposableArchitecture */; };
 		3E171AA62B7EB36200D4E016 /* SwiplyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E171AA52B7EB36200D4E016 /* SwiplyApp.swift */; };
 		3E171AA82B7EB36200D4E016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E171AA72B7EB36200D4E016 /* ContentView.swift */; };
 		3E171AAA2B7EB36500D4E016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E171AA92B7EB36500D4E016 /* Assets.xcassets */; };
 		3E171AAD2B7EB36500D4E016 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */; };
 		3E171AB82B7EB47500D4E016 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 3E171AB72B7EB47500D4E016 /* Networking */; };
+		3E6CDC742B81565E00E4C890 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */; };
+		3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3E6CDC752B815F4100E4C890 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		3E171AA92B7EB36500D4E016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E171AB52B7EB45700D4E016 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
+		3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		3EB9BF482B811DBD000C502A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -30,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E162C6B2B80E1010069E0AC /* ComposableArchitecture in Frameworks */,
+				3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,6 +61,7 @@
 		3E171AA42B7EB36200D4E016 /* Swiply */ = {
 			isa = PBXGroup;
 			children = (
+				3E6CDC702B81563B00E4C890 /* SplashScreen */,
 				3EB9BF482B811DBD000C502A /* Info.plist */,
 				3E171AA52B7EB36200D4E016 /* SwiplyApp.swift */,
 				3E171AA72B7EB36200D4E016 /* ContentView.swift */,
@@ -83,6 +86,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3E6CDC702B81563B00E4C890 /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -101,7 +112,7 @@
 			name = Swiply;
 			packageProductDependencies = (
 				3E171AB72B7EB47500D4E016 /* Networking */,
-				3E162C6A2B80E1010069E0AC /* ComposableArchitecture */,
+				3E6CDC752B815F4100E4C890 /* ComposableArchitecture */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -162,6 +173,7 @@
 			files = (
 				3E171AA82B7EB36200D4E016 /* ContentView.swift in Sources */,
 				3E171AA62B7EB36200D4E016 /* SwiplyApp.swift in Sources */,
+				3E6CDC742B81565E00E4C890 /* SplashScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,21 +387,21 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
 			requirement = {
-				branch = "observation-beta";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3E162C6A2B80E1010069E0AC /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3E162C692B80E1010069E0AC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
-		};
 		3E171AB72B7EB47500D4E016 /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
+		};
+		3E6CDC752B815F4100E4C890 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E162C692B80E1010069E0AC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

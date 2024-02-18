@@ -14,7 +14,7 @@ let package = Package(
             name: "Networking",
             targets: ["Networking"]),
     ],
-    dependencies: [.package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", branch: "observation-beta")],
+    dependencies: [.package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.8.0")],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
