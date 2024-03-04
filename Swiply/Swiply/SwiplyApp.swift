@@ -1,4 +1,5 @@
 import SwiftUI
+import Authorization
 
 @main
 struct SwiplyApp: App {
