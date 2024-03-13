@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct SYButton: View {
-    
+public struct SYButton: View {
+
     // MARK: - Private Properties
 
     private let title: String
@@ -16,7 +16,7 @@ struct SYButton: View {
     
     // MARK: - View
     
-    var body: some View {
+    public var body: some View {
         Button {
             action()
         } label : {

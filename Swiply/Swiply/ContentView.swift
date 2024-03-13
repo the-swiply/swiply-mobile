@@ -53,7 +53,7 @@ struct ContentView: View {
 
     var body: some View {
 //        let _ = Self._printChanges()
-        OTPTextField(isDestructive: $isDestructive, isFullfilled: $isFullfilled, text: $text)
+        SYOTPTextField(isDestructive: $isDestructive, isFullfilled: $isFullfilled, text: $text)
 
         if isFullfilled {
             SYStrokeButton(title: text, action: { })

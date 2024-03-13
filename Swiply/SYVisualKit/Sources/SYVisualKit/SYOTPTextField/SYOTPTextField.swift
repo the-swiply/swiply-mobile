@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-public struct OTPTextField: View {
+public struct SYOTPTextField: View {
 
     // MARK: - Private Types
 
@@ -123,12 +123,12 @@ public struct OTPTextField: View {
                     .focused($focusCellState, equals: .four)
             }
 
-            if isDestructive {
-                Text("Неверный код. Попробуйте снова.")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.red)
-            }
+            Text("Неверный код. Попробуйте снова.")
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(.red)
+                .opacity(isDestructive ? 1 : 0)
+
         }
         .onAppear {
             focusCellState = .one
@@ -154,7 +154,11 @@ struct Preview: PreviewProvider {
     @State var text = "0000"
 
     static var previews: some View {
-        OTPTextField(isDestructive: .constant(true), isFullfilled: .constant(true), text: .constant("2222"))
+        SYOTPTextField(
+            isDestructive: .constant(true),
+            isFullfilled: .constant(true),
+            text: .constant("2222")
+        )
     }
 
 }
