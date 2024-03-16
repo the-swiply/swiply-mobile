@@ -1,14 +1,14 @@
 import Foundation
 
 public protocol HTTPClient {
-
-    func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    
+    static func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
 
 }
 
 public extension HTTPClient {
 
-    func sendRequest<T: Decodable>(
+    static func sendRequest<T: Decodable>(
         endpoint: Endpoint
     ) async -> Result<T, RequestError> {
         var urlComponents = URLComponents()
@@ -30,7 +30,7 @@ public extension HTTPClient {
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
-            
+
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.noResponse)
             }
@@ -57,7 +57,7 @@ public extension HTTPClient {
             default:
                 return .failure(.unexpectedStatusCode)
             }
-        } 
+        }
         catch {
             return .failure(.unknown)
         }
