@@ -33,3 +33,9 @@ public struct SYStrokeButton: View {
     }
     
 }
+
+#Preview {
+    SYStrokeButton(title: "Продолжить") {
+        
+    }
+}

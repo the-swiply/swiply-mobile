@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
+import FormCreation
 
 @Reducer
 struct Root {
@@ -8,6 +9,7 @@ struct Root {
     @Reducer(state: .equatable)
     enum Destination {
         case authorization(AuthorizationRoot)
+        case formCreation(FormCreationRoot)
     }
 
     @ObservableState
@@ -25,7 +27,7 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate:
-                state.destination = .authorization(.init())
+                state.destination = .formCreation(.init())
                 return .none
 
             case .didChangeScenePhase:

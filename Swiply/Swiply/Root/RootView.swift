@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Authorization
+import FormCreation
 
 struct RootView: View {
 
@@ -12,6 +13,10 @@ struct RootView: View {
         }
         IfLetStore(store.scope(state: \.destination?.authorization, action: \.destination.authorization)) { store in
             AuthorizationRootView(store: store)
+        }
+        
+        IfLetStore(store.scope(state: \.destination?.formCreation, action: \.destination.formCreation)) { store in
+            FormCreationRootView(store: store)
         }
     }
 
