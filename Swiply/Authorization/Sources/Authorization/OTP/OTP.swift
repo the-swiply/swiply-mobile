@@ -52,7 +52,7 @@ public struct OTP {
                 return .run { [state] send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.authService.verifyCode("", "")
+                            let response = await self.authService.login("", "")
                         }
                         group.addTask {
                             await send(.toggleTimer(isOn: false))

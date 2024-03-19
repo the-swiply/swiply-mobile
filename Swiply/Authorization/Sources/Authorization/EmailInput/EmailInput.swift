@@ -46,18 +46,19 @@ public struct EmailInput {
             switch action {
             case .continueButtonTapped:
                 state.isContinueButtonDisabled = true
+                dataManager.setEmail(state.text)
 
                 return .run { [state] send in
-//                    let result = await sendCode(state.text)
-                    await send(.delegate(.receiveSuccessFromServer))
-//                    switch result {
-//                    case .success:
-//                        dataManager.setEmail(state.text)
-//                        await send(.delegate(.receiveSuccessFromServer))
-//
-//                    case .failure:
-//                        await send(.receiveFailureFromServer)
-//                    }
+                    let result = await sendCode(state.text)
+
+                    switch result {
+                    case .success:
+                        dataManager.setEmail(state.text)
+                        await send(.delegate(.receiveSuccessFromServer))
+
+                    case .failure:
+                        await send(.receiveFailureFromServer)
+                    }
                 }
 
             case .receiveFailureFromServer:
@@ -65,6 +66,7 @@ public struct EmailInput {
 
             case .textChanged(let text):
                 state.isContinueButtonDisabled = text.isEmpty
+                state.text = text
                 return .none
 
             case .delegate:

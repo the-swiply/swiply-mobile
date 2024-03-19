@@ -6,6 +6,7 @@ public enum RequestError: Error {
     case noResponse
     case unexpectedResponse
     case unauthorized
+    case forbidden
     case unexpectedStatusCode
     case unknown
 

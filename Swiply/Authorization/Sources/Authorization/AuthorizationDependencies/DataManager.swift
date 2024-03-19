@@ -13,7 +13,7 @@ struct AuthorizarionData {
 protocol DataManager {
 
     func getEmail() -> String
-    func setEmail(_ email: String) -> Void
+    func setEmail(_ email: String)
 
 }
 
@@ -38,7 +38,7 @@ class LiveDataManager: DataManager {
         authorizarionData.email
     }
 
-    func setEmail(_ email: String) -> Void {
+    func setEmail(_ email: String) {
         authorizarionData.email = email
     }
 

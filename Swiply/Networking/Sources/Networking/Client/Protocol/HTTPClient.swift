@@ -3,6 +3,10 @@ import Foundation
 public protocol HTTPClient {
     
     static func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    static func sendRequestWithMiddleware<T: Decodable>(
+        endpoint: Endpoint,
+        middleware: Middleware
+    ) async -> Result<T, RequestError>
 
 }
 
@@ -54,6 +58,9 @@ public extension HTTPClient {
             case 401:
                 return .failure(.unauthorized)
 
+            case 403:
+                return .failure(.forbidden)
+
             default:
                 return .failure(.unexpectedStatusCode)
             }
@@ -61,6 +68,17 @@ public extension HTTPClient {
         catch {
             return .failure(.unknown)
         }
+    }
+
+}
+
+public extension HTTPClient {
+
+    static func sendRequestWithMiddleware<T: Decodable>(
+        endpoint: Endpoint,
+        middleware: Middleware
+    ) async -> Result<T, RequestError> {
+        await middleware.processRequest(endpoint: endpoint)
     }
 
 }

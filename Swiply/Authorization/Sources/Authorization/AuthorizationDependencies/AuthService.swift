@@ -7,7 +7,7 @@ import Networking
 struct AuthService: HTTPClient {
 
     var sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { _ in .success(EmptyResponse()) }
-    var verifyCode: (_ email: String, _ code: String) async -> 
+    var login: (_ email: String, _ code: String) async ->
         (Result<EmptyResponse, RequestError>) = { _, _ in .success(EmptyResponse()) }
 
 }
@@ -18,16 +18,16 @@ extension AuthService: DependencyKey {
 
     static var liveValue: AuthService {
         let sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { email in
-            await sendRequest(endpoint: AuthEndpoint.sendEmail(email: email))
+            await sendRequest(endpoint: AuthEndpoint.sendCode(email: email))
         }
 
-        let verifyCode: (_ email: String, _ code: String) async -> (Result<EmptyResponse, RequestError>) = { email, code in
-            await sendRequest(endpoint: AuthEndpoint.verifyCode(email: email, code: code))
+        let login: (_ email: String, _ code: String) async -> (Result<EmptyResponse, RequestError>) = { email, code in
+            await sendRequest(endpoint: AuthEndpoint.login(email: email, code: code))
         }
 
         return AuthService(
             sendCode: sendCode,
-            verifyCode: verifyCode
+            login: login
         )
     }
 
@@ -48,15 +48,15 @@ extension DependencyValues {
 
 enum AuthEndpoint: Endpoint {
 
-    case sendEmail(email: String)
-    case verifyCode(email: String, code: String)
+    case sendCode(email: String)
+    case login(email: String, code: String)
 
     var path: String { 
         switch self {
-        case .sendEmail:
+        case .sendCode:
             "/v1/send-authorization-code"
 
-        case .verifyCode:
+        case .login:
             "/v1/send-authorization-code"
         }
 
@@ -68,12 +68,20 @@ enum AuthEndpoint: Endpoint {
 
     var body: [String : String]? {
         switch self {
-        case let .sendEmail(email):
+        case let .sendCode(email):
             ["email": email]
 
-        case let .verifyCode(email, code):
+        case let .login(email, code):
             ["email": email, "code": code]
         }
     }
+
+    #if DEBUG
+
+    var host: String {
+        return "localhost:18081"
+    }
+
+    #endif
 
 }
