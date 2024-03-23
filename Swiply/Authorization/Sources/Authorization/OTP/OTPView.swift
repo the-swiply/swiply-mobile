@@ -6,37 +6,46 @@ struct OTPView: View {
 
     @Bindable var store: StoreOf<OTP>
 
-    @State private var text: String = ""
-    @State private var isDestructive: Bool = false
-    @State private var isFullfilled: Bool = false
-
     // MARK: - View
 
     var body: some View {
         VStack(spacing: 30) {
             SYOTPTextField(
-                isDestructive: $isDestructive,
-                isFullfilled: $isFullfilled,
-                text: $text
+                isDestructive: $store.isIncorrectCodeEntered.sending(\.binding),
+                isFullfilled: $store.isFullfilled.sending(\.binding),
+                text: $store.code.sending(\.textChanged)
             )
 
-            SYStrokeButton(title: "Отправить код заново") {
-                
+            switch store.isRetryButtonDisabled {
+            case .enabled:
+                SYStrokeButton(title: "Отправить код заново") {
+                    store.send(.retryButtonTapped)
+                }
+                .tint(.black)
+
+            case let .disabled(remainingTime):
+                SYStrokeButton(title: "Отправить код заново: \(remainingTime)") {
+                    store.send(.retryButtonTapped)
+                }
+                .tint(.black)
+                .disabled(true)
             }
-            .tint(.black)
 
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
             }
         }
         .padding(.horizontal, 24)
+        .task {
+            store.send(.toggleTimer(isOn: false))
+        }
     }
 
 }
 
 #Preview {
     OTPView(
-        store: Store(initialState: OTP.State(remainingTime: nil)) {
+        store: Store(initialState: OTP.State()) {
             OTP()
         }
     )

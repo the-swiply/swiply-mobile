@@ -37,8 +37,8 @@ public struct AuthorizationRoot {
         }
         Reduce { state, action in
             switch action {
-            case .path(.element(_, .emailInput(.continueButtonTapped))):
-                state.path.append(.otp(OTP.State(remainingTime: nil)))
+            case .path(.element(_, .emailInput(.delegate(.receiveSuccessFromServer)))):
+                state.path.append(.otp(OTP.State()))
                 return .none
 
             case .path:

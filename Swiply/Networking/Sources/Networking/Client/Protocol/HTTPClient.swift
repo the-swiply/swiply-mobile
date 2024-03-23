@@ -1,14 +1,18 @@
 import Foundation
 
 public protocol HTTPClient {
-
-    func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    
+    static func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    static func sendRequestWithMiddleware<T: Decodable>(
+        endpoint: Endpoint,
+        middleware: Middleware
+    ) async -> Result<T, RequestError>
 
 }
 
 public extension HTTPClient {
 
-    func sendRequest<T: Decodable>(
+    static func sendRequest<T: Decodable>(
         endpoint: Endpoint
     ) async -> Result<T, RequestError> {
         var urlComponents = URLComponents()
@@ -30,7 +34,7 @@ public extension HTTPClient {
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
-            
+
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.noResponse)
             }
@@ -54,13 +58,27 @@ public extension HTTPClient {
             case 401:
                 return .failure(.unauthorized)
 
+            case 403:
+                return .failure(.forbidden)
+
             default:
                 return .failure(.unexpectedStatusCode)
             }
-        } 
+        }
         catch {
             return .failure(.unknown)
         }
+    }
+
+}
+
+public extension HTTPClient {
+
+    static func sendRequestWithMiddleware<T: Decodable>(
+        endpoint: Endpoint,
+        middleware: Middleware
+    ) async -> Result<T, RequestError> {
+        await middleware.processRequest(endpoint: endpoint)
     }
 
 }
