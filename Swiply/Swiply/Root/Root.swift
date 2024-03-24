@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
+import FormCreation
 import Networking
 import MainScreen
 
@@ -10,6 +11,7 @@ struct Root {
     @Reducer(state: .equatable)
     enum Destination {
         case authorization(AuthorizationRoot)
+        case formCreation(FormCreationRoot)
         case main(MainRoot)
     }
 

@@ -28,21 +28,31 @@ import SYVisualKit
 //    }
 //}
 
-//struct ContentView: View {
-//    var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()
-//        .task {
-//            let result = await AuthService().sendCode()
-//            print(result)
-//        }
-//    }
-//}
+enum AuthEndpoint: Endpoint {
+
+    case sendEmail
+
+    var path: String { "/v1/send-authorization-code" }
+
+    var method: HTTPMethod { .post }
+
+    var header: [String : String]? {
+        [:]
+    }
+
+    var body: [String : String]? { ["email": "xfiniks@gmail.com"]}
+
+}
+
+protocol AuthServiceable {
+    func sendCode() async -> Result<EmptyResponse, RequestError>
+}
+
+struct AuthService: HTTPClient, AuthServiceable {
+    func sendCode() async -> Result<EmptyResponse, RequestError> {
+        return await AuthService.sendRequest(endpoint: AuthEndpoint.sendEmail)
+    }
+}
 
 struct ContentView: View {
 
