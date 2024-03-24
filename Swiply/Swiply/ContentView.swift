@@ -24,7 +24,7 @@ protocol AuthServiceable {
 
 struct AuthService: HTTPClient, AuthServiceable {
     func sendCode() async -> Result<EmptyResponse, RequestError> {
-        return await sendRequest(endpoint: AuthEndpoint.sendEmail)
+        return await AuthService.sendRequest(endpoint: AuthEndpoint.sendEmail)
     }
 }
 

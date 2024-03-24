@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
+import FormCreation
 import Networking
 
 @Reducer
@@ -9,6 +10,7 @@ struct Root {
     @Reducer(state: .equatable)
     enum Destination {
         case authorization(AuthorizationRoot)
+        case formCreation(FormCreationRoot)
     }
 
     @ObservableState
@@ -36,7 +38,7 @@ struct Root {
                 }
 
             case .appDelegate:
-                state.destination = .authorization(.init())
+                state.destination = .formCreation(.init())
                 return .none
 
             case .requestAuthorization:
