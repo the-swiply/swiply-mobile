@@ -19,6 +19,7 @@
 		3E8B3E712B89029700E77CC9 /* SYVisualKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E8B3E702B89029700E77CC9 /* SYVisualKit */; };
 		3EDBE76F2B9E0F1800DDC677 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBE76E2B9E0F1800DDC677 /* AppDelegate.swift */; };
 		3EDBE7722B9E163200DDC677 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBE7712B9E163200DDC677 /* RootView.swift */; };
+		3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3EE80C5B2BAA19F60018ED2F /* MainScreen */; };
 		3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF79C942BA788C000D4D3BE /* SYKeychain */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,8 @@
 		3EB9BF482B811DBD000C502A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3EDBE76E2B9E0F1800DDC677 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EDBE7712B9E163200DDC677 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		3EE80C5A2BAA0FC40018ED2F /* MainScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainScreen; sourceTree = "<group>"; };
+		3EE80EAC2BAF6CF60018ED2F /* Recommendations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Recommendations; sourceTree = "<group>"; };
 		3EF79C122BA7561E00D4D3BE /* SYKeychain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYKeychain; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +50,7 @@
 				3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */,
 				3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */,
 				3E6CDEC82B85392E00E4C890 /* Authorization in Frameworks */,
+				3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 				3E8B3E712B89029700E77CC9 /* SYVisualKit in Frameworks */,
 			);
@@ -58,6 +62,8 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3EE80EAC2BAF6CF60018ED2F /* Recommendations */,
+				3EE80C5A2BAA0FC40018ED2F /* MainScreen */,
 				3EF79C122BA7561E00D4D3BE /* SYKeychain */,
 				3E8B3E6F2B88FEE400E77CC9 /* SYVisualKit */,
 				3E171AB52B7EB45700D4E016 /* Networking */,
@@ -161,6 +167,7 @@
 				3E6CDEC72B85392E00E4C890 /* Authorization */,
 				3E8B3E702B89029700E77CC9 /* SYVisualKit */,
 				3EF79C942BA788C000D4D3BE /* SYKeychain */,
+				3EE80C5B2BAA19F60018ED2F /* MainScreen */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -459,6 +466,10 @@
 		3E8B3E702B89029700E77CC9 /* SYVisualKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SYVisualKit;
+		};
+		3EE80C5B2BAA19F60018ED2F /* MainScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MainScreen;
 		};
 		3EF79C942BA788C000D4D3BE /* SYKeychain */ = {
 			isa = XCSwiftPackageProductDependency;
