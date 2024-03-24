@@ -3,6 +3,7 @@ import SwiftUI
 import Authorization
 import FormCreation
 import Networking
+import MainScreen
 
 @Reducer
 struct Root {
@@ -11,6 +12,7 @@ struct Root {
     enum Destination {
         case authorization(AuthorizationRoot)
         case formCreation(FormCreationRoot)
+        case main(MainRoot)
     }
 
     @ObservableState
@@ -31,6 +33,8 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
+                state.destination = .main(.init())
+                
                 return .run { [forbiddenErrorNotifier] send in
                     forbiddenErrorNotifier.add { [send] in
                         await send(.requestAuthorization)
@@ -38,7 +42,6 @@ struct Root {
                 }
 
             case .appDelegate:
-                state.destination = .formCreation(.init())
                 return .none
 
             case .requestAuthorization:
