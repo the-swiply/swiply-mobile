@@ -5,7 +5,13 @@ public struct SYChip: View {
     var text: String
     @State private var isSelected = false
     var action: (String) -> Void
-    
+
+    public init(text: String, isSelected: Bool = false, action: @escaping (String) -> Void) {
+        self.text = text
+        self.isSelected = isSelected
+        self.action = action
+    }
+
     public var body: some View {
         Button(action: {
             isSelected.toggle()

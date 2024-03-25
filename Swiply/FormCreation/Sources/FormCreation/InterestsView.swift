@@ -41,24 +41,33 @@ public struct InterestsReducer: Reducer {
 struct InterestsView: View {
     
     var store: StoreOf<InterestsReducer>
-    
+
+    private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"  ,"Teaтp"  ,"it" ,"суши" ,"книги"  ,"йога" ,"фотография" ,"стендап" ,"ландшафтный дизайн" , "тату", "иностранные языки" ,"танцы" ,"восточные танцы" ,"спорт","пошив одежды", "медитации", "бег" ,"здоровый образ жизни", "пицца"]
+
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(
                 title: "Интересы",
                 desription: "Добавь в профиль свои интересы, так ты сможешь найти людей с общими интересами"
             )
-            SYChipsContent(action: { str in
-                store.send(.interestButtonTapped(str))
-            })
+            .padding(.bottom, 30)
+
+            SYFlowView(
+                content: interests.map { interest in
+                    SYChip(text: interest) { text in
+                        store.send(.interestButtonTapped(text))
+                    }
+                }
+            )
+            .padding(.bottom, 35)
+
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
             }
             .disabled(store.isButtonDisabled)
             .padding(.top, 5)
+
             Spacer()
-           
-        
         }
         .padding(.horizontal, 24)
     }
