@@ -38,13 +38,11 @@ public struct CardView: View {
                         }
                         .padding(.bottom, 12)
 
-                        SYFlowContainerView(
+                        SYFlowView(
                             content: info.map {
                                 SYBlurChip(text: $0.1, image: $0.0)
-                            },
-                            size: $flowSize
+                            }
                         )
-                        .frame(maxHeight: flowSize.height)
 
                         HStack {
                             Button {
