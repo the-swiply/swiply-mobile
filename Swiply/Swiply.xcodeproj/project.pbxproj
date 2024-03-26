@@ -32,6 +32,7 @@
 		3E171AA92B7EB36500D4E016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E171AB52B7EB45700D4E016 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
+		3E27EB9A2BB34E89007BB9CB /* Likes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Likes; sourceTree = "<group>"; };
 		3E6CDC6F2B81525800E4C890 /* Authorization */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Authorization; sourceTree = "<group>"; };
 		3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		3E6CDC782B82506B00E4C890 /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3E27EB9A2BB34E89007BB9CB /* Likes */,
 				3EE80EAC2BAF6CF60018ED2F /* Recommendations */,
 				3EE80C5A2BAA0FC40018ED2F /* MainScreen */,
 				5E339C0D2BA34C7800B65E39 /* FormCreation */,
