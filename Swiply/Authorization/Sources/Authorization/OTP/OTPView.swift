@@ -36,6 +36,8 @@ struct OTPView: View {
             }
         }
         .padding(.horizontal, 24)
+        .navigationTitle("Мой Код")
+        .navigationBarTitleDisplayMode(.large)
         .task {
             store.send(.toggleTimer(isOn: false))
         }

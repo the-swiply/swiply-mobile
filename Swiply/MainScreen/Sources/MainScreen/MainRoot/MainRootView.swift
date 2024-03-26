@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Networking
+import Recommendations
 
 public struct MainRootView: View {
 
@@ -27,7 +28,7 @@ public struct MainRootView: View {
 //                    Text("Лайки")
                 }.tag(MainRoot.Tab.likes)
 
-            Text("Tab Content 1")
+            RecommendationsView()
                 .tabItem {
                     Image(.recommendationsTab)
 //                    Text("Swiply")
