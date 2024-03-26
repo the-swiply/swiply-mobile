@@ -20,11 +20,10 @@ struct SYFlowContainerView<ContentView: View>: View {
                 ZStack(alignment: .topLeading) {
                     ForEach(content.indices, id: \.self) { index in
                         content[index]
-                            .padding(.all, 4)
                             .alignmentGuide(.leading) { dimension in
                                 if (abs(width - dimension.width) > geo.size.width) {
                                     width = 0
-                                    height -= dimension.height
+                                    height -= dimension.height + 8
                                 }
 
                                 let result = width
@@ -33,7 +32,7 @@ struct SYFlowContainerView<ContentView: View>: View {
                                     width = 0
                                 }
                                 else {
-                                    width -= dimension.width
+                                    width -= dimension.width + 8
                                 }
 
                                 return result

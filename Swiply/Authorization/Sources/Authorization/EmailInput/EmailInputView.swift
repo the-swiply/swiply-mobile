@@ -17,13 +17,15 @@ struct EmailInputView: View {
             )
             
             SYButton(title: "Продолжить") {
-                store.send(.continueButtonTapped)
+                store.send(.delegate(.receiveSuccessFromServer))
             }
-            .padding(.horizontal, 24)
             .disabled(store.isContinueButtonDisabled)
         }
+        .padding(.horizontal, 24)
+        .navigationTitle("Мой Email")
+        .navigationBarTitleDisplayMode(.large)
     }
-    
+
 }
 
 #Preview {

@@ -12,6 +12,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        UIView.appearance().tintColor = .systemPink
+
         store.send(.appDelegate(.didFinishLaunching))
         return true
     }
