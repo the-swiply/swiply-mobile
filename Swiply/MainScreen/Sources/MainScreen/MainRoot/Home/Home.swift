@@ -28,7 +28,7 @@ public struct Home {
                 return .none
 
             case .skipWelcome:
-                state.destination = .emailConformation(.init(path: .init([.emailInput(EmailInput.State())])))
+                state.destination = .randomCoffee(RandomCoffeeFeature.State())
                 return .none
             }
         }

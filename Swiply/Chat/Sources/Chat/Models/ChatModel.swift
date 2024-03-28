@@ -56,32 +56,36 @@ public extension ChatModel {
         ChatModel(
             person: Person.daria,
             messages: [
-                Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
-                Message("Тоже, пойдём гулять?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Завтра", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Беру билеты в Москву))", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("или взять тебе в Корею лучше?)", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received),
-                Message("Вау..", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-                Message("Лучше ты приезжай", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-                Message("Хорошо)", date: Date(timeIntervalSinceNow: -75000 * 3), type: .received),
+                Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
+                Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+                Message("Тоже, погода хорошая не хочешь прогуляться?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
+                Message("Давай", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+                Message("А у тебя есть домашние животные?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
+                Message("Да, буквально сегодня привезла щенка домой)", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received),
+                Message("Вау", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
+                Message("Это классно", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
+                Message("Бери его с собой на прогулку)", date: Date(timeIntervalSinceNow: -75000 * 3), type: .sent),
+                Message("Договорились", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received),
+                Message("Куда пойдём?", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received),
+                Message("Давай в Парк Горького?", date: Date(timeIntervalSinceNow: -73000 * 3), type: .sent),
+                Message("Хорошо", date: Date(timeIntervalSinceNow: -73000 * 3), type: .received),
             ],
             unreadMessage: true
         ),
         ChatModel(
             person: Person.ann,
             messages: [
-                Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
-                Message("Тоже, пойдём гулять?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Завтра", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("Беру билеты в Москву))", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-                Message("или взять тебе в Корею лучше?)", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received),
-                Message("Вау..", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-                Message("Лучше ты приезжай", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-                Message("Буду ждать тебя", date: Date(timeIntervalSinceNow: -75000 * 3), type: .received),
+                Message("Привет, я тоже хочу в путешествие! Куда отправимся?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+                Message("Привет)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent)//,
+//                Message("Тоже, пойдём гулять?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+//                Message("Завтра", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+//                Message("Беру билеты в Москву))", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
+//                Message("или взять тебе в Корею лучше?)", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received),
+//                Message("Вау..", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
+//                Message("Лучше ты приезжай", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
+//                Message("Буду ждать тебя", date: Date(timeIntervalSinceNow: -75000 * 3), type: .received),
             ],
-            unreadMessage: true
+            unreadMessage: false
         )
     ]
 }
