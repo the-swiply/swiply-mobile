@@ -3,6 +3,8 @@ import ComposableArchitecture
 import Networking
 import Recommendations
 import Likes
+import Profile
+import Chat
 
 public struct MainRootView: View {
 
@@ -35,13 +37,13 @@ public struct MainRootView: View {
 //                    Text("Swiply")
                 }.tag(MainRoot.Tab.recommendations)
 
-            Text("Tab Content 2")
+            ChatRootView(store: store.scope(state: \.chat, action: \.chat))
                 .tabItem {
                     Image(.chatTab)
 //                    Text("Чат")
                 }.tag(MainRoot.Tab.chat)
 
-            Text("Tab Content 1")
+            ProfileRootView(store: store.scope(state: \.profile, action: \.profile))
                 .tabItem {
                     Image(.profileTab)
 //                    Text("Профиль")

@@ -11,6 +11,7 @@ public struct EditFeature: Reducer {
         var image: UIImage?
         var isPresented: Bool = false
         var imageIndex: Int = 0
+        var isInterest = false
     }
     
     public enum Action: BindableAction, Equatable  {
@@ -19,28 +20,44 @@ public struct EditFeature: Reducer {
         case onCancelTap
         case show(Int)
         case changeInterests
+        case saveChanges(Person)
+        case addInterest(String)
     }
+    
+    @Dependency(\.dismiss) var dismiss
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {
+            case .saveChanges:
+                return .run { _ in
+                    await self.dismiss()
+                }
             case let .show(index):
                 state.isPresented = true
                 state.imageIndex = index
                 return .none
-                
             case .onSaveTap:
-                return .none
+                let info = state.info
+                return .run { send in
+                    await send(.saveChanges(info))
+                }
             case .onCancelTap:
-                return .none
-            case let .binding(newState):
+                return .run { _ in
+                    await self.dismiss()
+                }
+            case .binding:
                 if let image = state.image {
                     state.info.images.append(image)
                     state.image = nil
                 }
                 return .none
-            case let .changeInterests:
+            case .changeInterests:
+                state.isInterest = true
+                return .none
+            case let .addInterest(value):
+                state.info.interests.append(value)
                 return .none
             }
         }
@@ -83,8 +100,15 @@ struct EditView: View {
                             label: {
                                 Text("Изменить интересы")
                                     .foregroundStyle(.pink)
+                                    
                             }
                         )
+                        .sheet(isPresented: $store.isInterest) {
+                            ChangeInterestsView(
+                                chosenInterests: store.info.interests) { str in
+                                    store.send(.addInterest(str))
+                                }
+                        }
                     }
                     
                     Section(header: Text("Фотографии")) {
@@ -131,6 +155,7 @@ struct EditView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

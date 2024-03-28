@@ -1,10 +1,12 @@
 import SwiftUI
 import ComposableArchitecture
+import UserService
 
 public struct ProfileFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        var user = Person.jungkook
         public init() {}
     }
     
@@ -12,6 +14,7 @@ public struct ProfileFeature: Reducer {
         case onSettingsTap
         case onEditTap
         case onSubscriptionTap
+        case showEdit(Person)
     }
     
     public var body: some ReducerOf<Self> {
@@ -20,8 +23,13 @@ public struct ProfileFeature: Reducer {
             case .onSettingsTap:
                 return .none
             case .onEditTap:
-                return .none
+                let user = state.user
+                return .run { send in
+                    await send(.showEdit(user))
+                }
             case .onSubscriptionTap:
+                return .none
+            case .showEdit:
                 return .none
             }
         }
@@ -47,7 +55,7 @@ struct Profile: View {
             }
             
             ZStack(alignment: .topTrailing) {
-                Image(.jungkook)
+                Image(uiImage: store.user.images.first!!)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 155, height: 155)
@@ -73,16 +81,16 @@ struct Profile: View {
                 }
                 .offset(y: 9)
             }
-            .padding(.top, 38)
+            .padding(.top, 35)
             
-            Text("Jungkook, 26")
+            Text( "\(store.user.name), \(store.user.age)")
                 .font(Font.system(size: 28, design: .default))
                 .fontWeight(.semibold)
-                .padding(.top, 25)
+                .padding(.top, 20)
             
             
             Image(.subscription)
-                .padding(.top, 32)
+                .padding(.top, 20)
                 .onTapGesture {
                     store.send(.onSubscriptionTap)
                 }

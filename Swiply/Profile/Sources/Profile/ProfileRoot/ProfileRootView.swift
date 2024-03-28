@@ -17,6 +17,8 @@ public struct ProfileRootView: View {
             switch store.case {
             case let .edit(store):
                 EditView(store: store)
+            case let .settings(store):
+                SettingsView(store: store)
             }
         }
     }

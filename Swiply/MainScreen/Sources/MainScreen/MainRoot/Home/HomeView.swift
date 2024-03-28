@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Authorization
+import RandomCoffee
 
 struct HomeView: View {
 
@@ -87,6 +88,10 @@ struct HomeView: View {
         }
         IfLetStore(store.scope(state: \.destination?.emailConformation, action: \.destination.emailConformation)) { store in
             AuthorizationRootView(store: store)
+        }
+        
+        IfLetStore(store.scope(state: \.destination?.randomCoffee, action: \.destination.randomCoffee)) { store in
+            RandomCoffeeView(store: store)
         }
     }
 

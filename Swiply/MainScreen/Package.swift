@@ -20,7 +20,10 @@ let package = Package(
         .package(path: "../Networking"),
         .package(path: "../Recommendations"),
         .package(path: "../Likes"),
-        .package(path: "../Authorization")
+        .package(path: "../Authorization"),
+        .package(path: "../RandomCoffee"),
+        .package(path: "../Chat"),
+        .package(path: "../Profile")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,7 +36,10 @@ let package = Package(
                 "Networking",
                 "Recommendations",
                 "Likes",
-                "Authorization"
+                "Authorization",
+                "RandomCoffee",
+                "Chat",
+                "Profile"
             ],
             resources: [.process("Resources/Assets.xcassets")]
         ),

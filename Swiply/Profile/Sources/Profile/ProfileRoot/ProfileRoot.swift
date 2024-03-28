@@ -8,6 +8,7 @@ public struct ProfileRoot {
     @Reducer(state: .equatable)
     public enum Path {
         case edit(EditFeature)
+        case settings(SettingsFeature)
     }
     
     @ObservableState
@@ -35,13 +36,23 @@ public struct ProfileRoot {
         }
         Reduce { state, action in
             switch action {
-            case .path:
-                return .none
             case let .profile(action):
-                if action == .onEditTap {
-                    state.path.append(.edit(EditFeature.State()))
+                switch action {
+                case let .showEdit(user):
+                    state.path.append(.edit(EditFeature.State(info: user)))
+                case .onSettingsTap:
+                    state.path.append(.settings(SettingsFeature.State()))
+                default:
+                    break
                 }
                 return .none
+            case .path(.element(_, let .edit(.saveChanges(person)))):
+                state.profile.user = person
+                return .none
+                
+            case .path:
+                return .none
+                
             }
 //            switch action {
 //            case let .chats(action):
