@@ -15,6 +15,7 @@ public struct MainRoot {
     @ObservableState
     public struct State: Equatable {
         var selectedTab: Tab
+        var features = Home.State()
 
         public init(selectedTab: Tab = Tab.recommendations) {
             self.selectedTab = selectedTab
@@ -23,6 +24,7 @@ public struct MainRoot {
 
     public enum Action {
         case tabSelected(Tab)
+        case features(Home.Action)
     }
 
     public init() {}
@@ -33,7 +35,13 @@ public struct MainRoot {
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 return .none
+
+            case .features:
+                return .none
             }
+        }
+        Scope(state: \.features, action: \.features) {
+            Home()
         }
     }
 

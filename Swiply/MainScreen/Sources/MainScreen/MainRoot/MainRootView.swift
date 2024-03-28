@@ -17,7 +17,7 @@ public struct MainRootView: View {
     public var body: some View {
         TabView(selection: $store.selectedTab.sending(\.tabSelected),
                 content:  {
-            Text("Tab Content 1")
+            HomeView(store: store.scope(state: \.features, action: \.features))
                 .tabItem {
                     Image(.homeTab)
 //                    Text("Активности")
