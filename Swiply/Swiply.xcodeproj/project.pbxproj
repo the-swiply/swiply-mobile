@@ -23,6 +23,7 @@
 		3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3EE80C5B2BAA19F60018ED2F /* MainScreen */; };
 		3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF79C942BA788C000D4D3BE /* SYKeychain */; };
 		5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */ = {isa = PBXBuildFile; productRef = 5E1FC8432BA3509B0077946F /* FormCreation */; };
+		5E4860952BB232F8006F10F5 /* Chat in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4860942BB232F8006F10F5 /* Chat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3EE80EAC2BAF6CF60018ED2F /* Recommendations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Recommendations; sourceTree = "<group>"; };
 		3EF79C122BA7561E00D4D3BE /* SYKeychain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYKeychain; sourceTree = "<group>"; };
 		5E339C0D2BA34C7800B65E39 /* FormCreation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FormCreation; sourceTree = "<group>"; };
+		5E4860932BB232B0006F10F5 /* Chat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Chat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 				5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */,
 				3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */,
 				3E6CDEC82B85392E00E4C890 /* Authorization in Frameworks */,
+				5E4860952BB232F8006F10F5 /* Chat in Frameworks */,
 				3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 				3E8B3E712B89029700E77CC9 /* SYVisualKit in Frameworks */,
@@ -69,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				3E27EB9A2BB34E89007BB9CB /* Likes */,
+				5E4860932BB232B0006F10F5 /* Chat */,
 				3EE80EAC2BAF6CF60018ED2F /* Recommendations */,
 				3EE80C5A2BAA0FC40018ED2F /* MainScreen */,
 				5E339C0D2BA34C7800B65E39 /* FormCreation */,
@@ -178,6 +182,7 @@
 				3EF79C942BA788C000D4D3BE /* SYKeychain */,
 				3EE80C5B2BAA19F60018ED2F /* MainScreen */,
 				3E11045F2BB2234A001C6DC8 /* Recommendations */,
+				5E4860942BB232F8006F10F5 /* Chat */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -488,6 +493,14 @@
 		3EF79C942BA788C000D4D3BE /* SYKeychain */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SYKeychain;
+		};
+		5E1FC8432BA3509B0077946F /* FormCreation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FormCreation;
+		};
+		5E4860942BB232F8006F10F5 /* Chat */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Chat;
 		};
 		5E1FC8432BA3509B0077946F /* FormCreation */ = {
 			isa = XCSwiftPackageProductDependency;

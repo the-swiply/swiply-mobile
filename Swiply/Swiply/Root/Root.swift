@@ -4,6 +4,7 @@ import Authorization
 import FormCreation
 import Networking
 import MainScreen
+import Chat
 
 @Reducer
 struct Root {
@@ -13,6 +14,7 @@ struct Root {
         case authorization(AuthorizationRoot)
         case formCreation(FormCreationRoot)
         case main(MainRoot)
+        case chat(ChatRoot)
     }
 
     @ObservableState

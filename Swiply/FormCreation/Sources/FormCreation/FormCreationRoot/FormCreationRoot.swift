@@ -12,7 +12,6 @@ public struct FormCreationRoot {
         case interestsInput(InterestsReducer)
         case cityInput(InfoInputReducer)
         case biographyView(InfoInputReducer)
-    
     }
 
     @ObservableState
