@@ -19,7 +19,8 @@ let package = Package(
         .package(path: "../SYVisualKit"),
         .package(path: "../Networking"),
         .package(path: "../Recommendations"),
-        .package(path: "../Likes")
+        .package(path: "../Likes"),
+        .package(path: "../Authorization")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -31,7 +32,8 @@ let package = Package(
                 "SYVisualKit",
                 "Networking",
                 "Recommendations",
-                "Likes"
+                "Likes",
+                "Authorization"
             ],
             resources: [.process("Resources/Assets.xcassets")]
         ),

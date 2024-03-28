@@ -11,23 +11,24 @@ public struct LikesView: View {
 
     }
 
-    private var data: [LikesCardData] { [
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl2), name: "Соня", age: "24"),
-        .init(image: Image(.girl3), name: "Мария", age: "23"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl2), name: "Соня", age: "24"),
-        .init(image: Image(.girl3), name: "Мария", age: "23"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl2), name: "Соня", age: "24"),
-        .init(image: Image(.girl3), name: "Мария", age: "23"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl2), name: "Соня", age: "24"),
-        .init(image: Image(.girl3), name: "Мария", age: "23"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22"),
-        .init(image: Image(.girl1), name: "Вероника", age: "22")
-    ]
+    private var data: [LikesCardData] {
+        [
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl2), name: "Соня", age: "24"),
+            .init(image: Image(.girl3), name: "Мария", age: "23"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl2), name: "Соня", age: "24"),
+            .init(image: Image(.girl3), name: "Мария", age: "23"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl2), name: "Соня", age: "24"),
+            .init(image: Image(.girl3), name: "Мария", age: "23"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl2), name: "Соня", age: "24"),
+            .init(image: Image(.girl3), name: "Мария", age: "23"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22"),
+            .init(image: Image(.girl1), name: "Вероника", age: "22")
+        ]
     }
 
     public init() { }
@@ -38,6 +39,7 @@ public struct LikesView: View {
                 Spacer()
 
                 Image(.logo)
+                    .padding(.top, 10)
 
                 Spacer()
             }
@@ -57,6 +59,7 @@ public struct LikesView: View {
                     row(firstCard: data[data.count - 1])
                 }
             }
+            .padding(.horizontal, 24)
         }
         .scrollIndicators(.hidden)
     }
@@ -70,14 +73,14 @@ public struct LikesView: View {
                     name: firstCard.name,
                     age: firstCard.age
                 )
-                .frame(width: 180, height: 220)
+                .frame(width: 156, height: 200)
 
                 LikesCardView(
                     image: secondCard.image,
                     name: secondCard.name,
                     age: secondCard.age
                 )
-                .frame(width: 180, height: 220)
+                .frame(width: 156, height: 200)
             }
         }
         else {
@@ -87,14 +90,14 @@ public struct LikesView: View {
                     name: firstCard.name,
                     age: firstCard.age
                 )
-                .frame(width: 180, height: 220)
+                .frame(width: 156, height: 200)
 
                 LikesCardView(
                     image: firstCard.image,
                     name: firstCard.name,
                     age: firstCard.age
                 )
-                .frame(width: 180, height: 220)
+                .frame(width: 156, height: 200)
                 .opacity(0)
             }
         }
