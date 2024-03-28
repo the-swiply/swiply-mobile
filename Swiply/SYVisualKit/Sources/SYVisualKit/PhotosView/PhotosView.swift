@@ -39,7 +39,7 @@ public struct PhotosView: View {
 
                             RoundedRectangle(cornerRadius: 1.5)
                                 .foregroundStyle(index == currentIndex ? .white : .gray.opacity(0.3))
-                                .frame(width: width, height: 3)
+                                .frame(width: round(width), height: 3)
                         }
                     }
 
