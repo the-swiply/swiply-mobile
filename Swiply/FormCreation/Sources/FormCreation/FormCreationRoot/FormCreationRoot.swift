@@ -12,6 +12,7 @@ public struct FormCreationRoot {
         case interestsInput(InterestsReducer)
         case cityInput(InfoInputReducer)
         case biographyView(InfoInputReducer)
+        case imageView(ImageFeature)
     }
 
     @ObservableState
@@ -64,6 +65,9 @@ public struct FormCreationRoot {
                 state.path.append(.biographyView(InfoInputReducer.State()))
                 return .none
                 
+            case .path(.element(_, .biographyView(.continueButtonTapped))):
+                state.path.append(.imageView(ImageFeature.State()))
+                return .none
             case .path:
                 return .none
             }

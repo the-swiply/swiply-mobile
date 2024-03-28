@@ -50,6 +50,8 @@ public struct FormCreationRootView: View {
                     description: "Напиши о себе, биография будет отображаться в твоём профиле",
                     store: store
                 )
+            case let .imageView(store):
+                ImageView(store: store)
             }
         }
     }
