@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Helpers
 
-extension Image {
+public extension Image {
 
     func centerCropped() -> some View {
         GeometryReader { geo in

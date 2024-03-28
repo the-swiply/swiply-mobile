@@ -3,11 +3,16 @@ import SwiftUI
 struct SYFlowContainerView<ContentView: View>: View {
 
     private let content: [ContentView]
-
+    private let padding: CGFloat
+    
     @Binding var size: CGSize
-
-    init(content: [ContentView], size: Binding<CGSize>) {
+    
+    init(content: [ContentView],
+         padding: CGFloat,
+         size: Binding<CGSize>) {
+        
         self.content = content
+        self.padding = padding
         self._size = size
     }
 
@@ -23,7 +28,7 @@ struct SYFlowContainerView<ContentView: View>: View {
                             .alignmentGuide(.leading) { dimension in
                                 if (abs(width - dimension.width) > geo.size.width) {
                                     width = 0
-                                    height -= dimension.height + 8
+                                    height -= dimension.height + padding
                                 }
 
                                 let result = width
@@ -32,7 +37,7 @@ struct SYFlowContainerView<ContentView: View>: View {
                                     width = 0
                                 }
                                 else {
-                                    width -= dimension.width + 8
+                                    width -= dimension.width + padding
                                 }
 
                                 return result

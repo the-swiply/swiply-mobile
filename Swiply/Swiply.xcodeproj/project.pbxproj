@@ -13,6 +13,7 @@
 		3E171AAA2B7EB36500D4E016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E171AA92B7EB36500D4E016 /* Assets.xcassets */; };
 		3E171AAD2B7EB36500D4E016 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */; };
 		3E171AB82B7EB47500D4E016 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 3E171AB72B7EB47500D4E016 /* Networking */; };
+		3E27EB9C2BB35941007BB9CB /* Likes in Frameworks */ = {isa = PBXBuildFile; productRef = 3E27EB9B2BB35941007BB9CB /* Likes */; };
 		3E6CDC742B81565E00E4C890 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */; };
 		3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3E6CDC752B815F4100E4C890 /* ComposableArchitecture */; };
 		3E6CDC792B82506B00E4C890 /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CDC782B82506B00E4C890 /* Root.swift */; };
@@ -34,6 +35,7 @@
 		3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E171AB52B7EB45700D4E016 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		3E27EB9A2BB34E89007BB9CB /* Likes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Likes; sourceTree = "<group>"; };
+		3E27EB9D2BB386F5007BB9CB /* CardInformation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CardInformation; sourceTree = "<group>"; };
 		3E6CDC6F2B81525800E4C890 /* Authorization */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Authorization; sourceTree = "<group>"; };
 		3E6CDC732B81565E00E4C890 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		3E6CDC782B82506B00E4C890 /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 				3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */,
 				5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */,
 				3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */,
+				3E27EB9C2BB35941007BB9CB /* Likes in Frameworks */,
 				3E6CDEC82B85392E00E4C890 /* Authorization in Frameworks */,
 				5E4860952BB232F8006F10F5 /* Chat in Frameworks */,
 				3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */,
@@ -71,6 +74,7 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3E27EB9D2BB386F5007BB9CB /* CardInformation */,
 				3E27EB9A2BB34E89007BB9CB /* Likes */,
 				5E4860932BB232B0006F10F5 /* Chat */,
 				3EE80EAC2BAF6CF60018ED2F /* Recommendations */,
@@ -183,6 +187,7 @@
 				3EE80C5B2BAA19F60018ED2F /* MainScreen */,
 				3E11045F2BB2234A001C6DC8 /* Recommendations */,
 				5E4860942BB232F8006F10F5 /* Chat */,
+				3E27EB9B2BB35941007BB9CB /* Likes */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -472,6 +477,10 @@
 		3E171AB72B7EB47500D4E016 /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Networking;
+		};
+		3E27EB9B2BB35941007BB9CB /* Likes */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Likes;
 		};
 		3E6CDC752B815F4100E4C890 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

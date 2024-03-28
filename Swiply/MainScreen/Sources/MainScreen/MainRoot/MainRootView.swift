@@ -2,6 +2,7 @@ import SwiftUI
 import ComposableArchitecture
 import Networking
 import Recommendations
+import Likes
 
 public struct MainRootView: View {
 
@@ -22,7 +23,7 @@ public struct MainRootView: View {
 //                    Text("Активности")
                 }.tag(MainRoot.Tab.features)
 
-            Text("Tab Content 2")
+            LikesView()
                 .tabItem {
                     Image(.likesTab)
 //                    Text("Лайки")
