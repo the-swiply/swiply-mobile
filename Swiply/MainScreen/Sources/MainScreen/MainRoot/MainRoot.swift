@@ -1,5 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
+import Profile
+import Chat
 
 @Reducer
 public struct MainRoot {
@@ -16,6 +18,8 @@ public struct MainRoot {
     public struct State: Equatable {
         var selectedTab: Tab
         var features = Home.State()
+        var profile = ProfileRoot.State()
+        var chat = ChatRoot.State()
 
         public init(selectedTab: Tab = Tab.recommendations) {
             self.selectedTab = selectedTab
@@ -25,6 +29,8 @@ public struct MainRoot {
     public enum Action {
         case tabSelected(Tab)
         case features(Home.Action)
+        case profile(ProfileRoot.Action)
+        case chat(ChatRoot.Action)
     }
 
     public init() {}
@@ -38,10 +44,22 @@ public struct MainRoot {
 
             case .features:
                 return .none
+            case .profile:
+                return .none
+            case .chat:
+                return .none
             }
         }
         Scope(state: \.features, action: \.features) {
             Home()
+        }
+        
+        Scope(state: \.profile, action: \.profile) {
+            ProfileRoot()
+        }
+        
+        Scope(state: \.chat, action: \.chat) {
+            ChatRoot()
         }
     }
 

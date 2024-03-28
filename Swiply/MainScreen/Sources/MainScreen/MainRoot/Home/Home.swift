@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Authorization
+import RandomCoffee
 
 @Reducer
 public struct Home {
@@ -7,6 +8,7 @@ public struct Home {
     @Reducer(state: .equatable)
     public enum Destination {
         case emailConformation(AuthorizationRoot)
+        case randomCoffee(RandomCoffeeFeature)
     }
 
     @ObservableState

@@ -19,19 +19,24 @@ public struct EditFeature: Reducer {
         case onCancelTap
         case show(Int)
         case changeInterests
+        case saveChanges(Person)
     }
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
         Reduce { state, action in
             switch action {
+            case .saveChanges:
+                return .none
             case let .show(index):
                 state.isPresented = true
                 state.imageIndex = index
                 return .none
-                
             case .onSaveTap:
-                return .none
+                let info = state.info
+                return .run { send in
+                    await send(.saveChanges(info))
+                }
             case .onCancelTap:
                 return .none
             case let .binding(newState):

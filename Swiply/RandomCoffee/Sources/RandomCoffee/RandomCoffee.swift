@@ -10,6 +10,8 @@ public struct RandomCoffeeFeature: Reducer {
         var startTime = Date()
         var endTime = Date()
         var town = ""
+        
+        public init() {}
     }
     
     public enum Action: BindableAction, Equatable {
@@ -20,13 +22,19 @@ public struct RandomCoffeeFeature: Reducer {
     public var body: some ReducerOf<Self> {
         BindingReducer()
     }
+    
+    public init() {}
 }
 
-struct RandomCoffeeView: View {
+public struct RandomCoffeeView: View {
     
     @Bindable var store: StoreOf<RandomCoffeeFeature>
     
-    var body: some View {
+    public init(store: StoreOf<RandomCoffeeFeature>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         VStack {
             HStack(alignment: .center) {
                 Image(.randomCoffee)
@@ -103,11 +111,12 @@ struct RandomCoffeeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding(.top, 30)
+            
             Spacer()
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
             }
-            .padding(.bottom, 60)
+            .padding(.bottom, 50)
             
         }
         
