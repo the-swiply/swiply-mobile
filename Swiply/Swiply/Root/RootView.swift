@@ -3,6 +3,7 @@ import ComposableArchitecture
 import Authorization
 import FormCreation
 import MainScreen
+import Chat
 
 struct RootView: View {
 
@@ -21,6 +22,11 @@ struct RootView: View {
         IfLetStore(store.scope(state: \.destination?.main, action: \.destination.main)) { store in
             MainRootView(store: store)
         }
+        
+        IfLetStore(store.scope(state: \.destination?.chat, action: \.destination.chat)) { store in
+            ChatRootView(store: store)
+        }
+        
     }
 
 }
