@@ -42,9 +42,15 @@ struct Profile: View {
     var body: some View {
         VStack {
             HStack(alignment: .center) {
+                Button {
+                   
+                } label: {
+                    Image(.settings).hidden()
+                }
+                
                 Spacer()
                 Image(.mainBarLogo)
-                
+                    .padding(.top, 10)
                 Spacer()
                 Button {
                     store.send(.onSettingsTap)
@@ -53,7 +59,8 @@ struct Profile: View {
                 }
                 
             }
-            
+
+            Spacer()
             ZStack(alignment: .topTrailing) {
                 Image(uiImage: store.user.images.first!!)
                     .resizable()
@@ -94,6 +101,7 @@ struct Profile: View {
                 .onTapGesture {
                     store.send(.onSubscriptionTap)
                 }
+            Spacer()
         }
         .padding(.horizontal, 24)
     }

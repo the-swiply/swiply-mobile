@@ -68,6 +68,7 @@ struct ChatView: View {
         VStack {
             HStack(alignment: .center) {
                 Image(.mainBarLogo)
+                    .padding(.top, 10)
             }
            
             ScrollView {
