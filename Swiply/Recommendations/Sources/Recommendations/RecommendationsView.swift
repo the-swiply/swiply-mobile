@@ -1,20 +1,21 @@
 import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
+import CardInformation
 
 public struct RecommendationsView: View {
 
 //    @Bindable var store: StoreOf<Recommendations>
 
     @State var cards: [CardView] = [
-        CardView(index: 0, images: [Image(.night), Image(.card)]),
-        CardView(index: 1, images: [Image(.night), Image(.card)]),
-        CardView(index: 2, images: [Image(.night), Image(.card)]),
-        CardView(index: 3, images: [Image(.night), Image(.card)]),
-        CardView(index: 4, images: [Image(.night), Image(.card)]),
-        CardView(index: 5, images: [Image(.night), Image(.card)]),
-        CardView(index: 6, images: [Image(.night), Image(.card)]),
-        CardView(index: 7, images: [Image(.night), Image(.card)])
+        CardView(index: 0, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 1, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 2, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 3, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 4, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 5, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 6, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
+        CardView(index: 7, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() })
     ]
 
     public init() { }
@@ -22,29 +23,31 @@ public struct RecommendationsView: View {
     // MARK: - View
 
     public var body: some View {
-        VStack {
-            MainBarView(onBack: {}, onOptions: {})
-
-            Spacer()
-
-            CardSwiperView(cards: self.$cards , onCardSwiped: { swipeDirection, index in
-
-                switch swipeDirection {
-                case .left:
-                    print("Card swiped Left direction at index \(index)")
-                case .right:
-                    print("Card swiped Right direction at index \(index)")
-                case .top:
-                    print("Card swiped Top direction at index \(index)")
-                case .bottom:
-                    print("Card swiped Bottom direction at index \(index)")
-                }
-            }, onCardDragged: { swipeDirection, index, offset in
-                print("Card dragged \(swipeDirection) direction at index \(index) with offset \(offset)")
-            })
+        NavigationStack {
+            VStack {
+                MainBarView(onBack: {}, onOptions: {})
+                
+                Spacer()
+                
+                CardSwiperView(cards: self.$cards , onCardSwiped: { swipeDirection, index in
+                    
+                    switch swipeDirection {
+                    case .left:
+                        print("Card swiped Left direction at index \(index)")
+                    case .right:
+                        print("Card swiped Right direction at index \(index)")
+                    case .top:
+                        print("Card swiped Top direction at index \(index)")
+                    case .bottom:
+                        print("Card swiped Bottom direction at index \(index)")
+                    }
+                }, onCardDragged: { swipeDirection, index, offset in
+                    print("Card dragged \(swipeDirection) direction at index \(index) with offset \(offset)")
+                })
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
         }
-        .padding(.horizontal, 24)
-        .padding(.bottom, 24)
     }
 
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 import SYVisualKit
+import CardInformation
 
 public struct LikesCardView: View {
 
@@ -8,33 +9,38 @@ public struct LikesCardView: View {
     let age: String
 
     public var body: some View {
-        image
-            .centerCropped()
-            .overlay {
-                VStack(alignment: .leading) {
-                    Spacer()
+        NavigationLink(
+            destination: CardInformationView(),
+            label: {
+                image
+                    .centerCropped()
+                    .overlay {
+                        VStack(alignment: .leading) {
+                            Spacer()
 
-                    Text(name + "," + age)
-                        .foregroundStyle(.white)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .padding(.bottom, 8)
+                            Text(name + "," + age)
+                                .foregroundStyle(.white)
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .padding(.bottom, 8)
 
-                    HStack {
-                        Image(.dislike)
-                            .resizable()
-                            .frame(width: 40, height: 40)
+                            HStack {
+                                Image(.dislike)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
 
-                        Spacer()
+                                Spacer()
 
-                        Image(.like)
-                            .resizable()
-                            .frame(width: 40, height: 40)
+                                Image(.like)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                            }
+                        }
+                        .padding(.all, 12)
                     }
-                }
-                .padding(.all, 12)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
             }
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+        )
     }
 
 }

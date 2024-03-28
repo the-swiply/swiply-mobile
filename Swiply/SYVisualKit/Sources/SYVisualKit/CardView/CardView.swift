@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct CardView: View {
+public struct CardView<V: View>: View {
 
     var info: [(Image, String)] {
         [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
@@ -11,11 +11,13 @@ public struct CardView: View {
     var index: Int
     var tagId: UUID
     var images: [Image] = []
+    var navigateTo: () -> V
 
-    public init(index: Int, tagId: UUID = UUID(), images: [Image]) {
+    public init(index: Int, tagId: UUID = UUID(), images: [Image], navigateTo: @escaping () -> V) {
         self.index = index
         self.tagId = tagId
         self.images = images
+        self.navigateTo = navigateTo
     }
 
     public var body: some View {
@@ -67,6 +69,17 @@ public struct CardView: View {
         }
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 20))
+        .overlay {
+            NavigationLink(
+                destination: navigateTo(),
+                label: {
+                    Rectangle()
+                        .frame(width: 90, height: 600)
+                        .background(.clear)
+                        .opacity(0)
+                }
+            )
+        }
     }
 
 }

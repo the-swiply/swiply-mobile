@@ -1,7 +1,7 @@
 import SwiftUI
 import SYVisualKit
 
-struct CardInformationView: View {
+public struct CardInformationView: View {
 
     var info: [(Image, String)] {
         [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
@@ -9,7 +9,9 @@ struct CardInformationView: View {
 
     private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"]
 
-    var body: some View {
+    public init() { }
+
+    public var body: some View {
         ScrollView {
             PhotosView(images: [Image(.girl2), Image(.girl3)])
                 .frame(height: 640)
