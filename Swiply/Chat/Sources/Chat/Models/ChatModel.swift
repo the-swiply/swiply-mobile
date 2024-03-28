@@ -54,7 +54,7 @@ public extension ChatModel {
     
     static let chatSample = [
         ChatModel(
-            person: Person.jungkook,
+            person: Person.daria,
             messages: [
                 Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
                 Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
@@ -69,7 +69,7 @@ public extension ChatModel {
             unreadMessage: true
         ),
         ChatModel(
-            person: Person.suga,
+            person: Person.ann,
             messages: [
                 Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
                 Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent),
@@ -90,26 +90,26 @@ public extension ChatModel {
 public extension Matches {
     static let matchesSample = [
         Matches(
-            person: Person.jungkook,
+            person: Person.ann,
             isViewed: true
         ),
         Matches(
-            person: Person.ui,
+            person: Person.daria,
             isViewed: true
         ),
         
         Matches(
-            person: Person.suga,
+            person: Person.kate,
             isViewed: false
         ),
         
         Matches(
-            person: Person.te,
+            person: Person.maria,
             isViewed: false
         ),
         
         Matches(
-            person: Person.jimin,
+            person: Person.vera,
             isViewed: false
         )
     ]

@@ -7,7 +7,7 @@ public struct EditFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        var info = Person.jungkook
+        var info = Person.tima
         var image: UIImage?
         var isPresented: Bool = false
         var imageIndex: Int = 0

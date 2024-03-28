@@ -6,7 +6,7 @@ public struct ProfileFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        var user = Person.jungkook
+        var user = Person.tima
         public init() {}
     }
     
