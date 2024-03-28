@@ -14,6 +14,7 @@ public struct ProfileFeature: Reducer {
         case onSettingsTap
         case onEditTap
         case onSubscriptionTap
+        case showEdit(Person)
     }
     
     public var body: some ReducerOf<Self> {
@@ -22,8 +23,13 @@ public struct ProfileFeature: Reducer {
             case .onSettingsTap:
                 return .none
             case .onEditTap:
-                return .none
+                let user = state.user
+                return .run { send in
+                    await send(.showEdit(user))
+                }
             case .onSubscriptionTap:
+                return .none
+            case .showEdit:
                 return .none
             }
         }

@@ -37,12 +37,13 @@ public struct ProfileRoot {
         Reduce { state, action in
             switch action {
             case let .profile(action):
-                if action == .onEditTap {
-                    state.path.append(.edit(EditFeature.State()))
-                }
-                
-                if action == .onSettingsTap {
+                switch action {
+                case let .showEdit(user):
+                    state.path.append(.edit(EditFeature.State(info: user)))
+                case .onSettingsTap:
                     state.path.append(.settings(SettingsFeature.State()))
+                default:
+                    break
                 }
                 return .none
             case .path(.element(_, let .edit(.saveChanges(person)))):

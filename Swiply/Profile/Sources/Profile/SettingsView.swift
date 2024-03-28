@@ -13,6 +13,8 @@ public struct SettingsFeature: Reducer {
         public init() {}
     }
     
+    @Dependency(\.dismiss) var dismiss
+    
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case saveButtonTapped
@@ -20,6 +22,16 @@ public struct SettingsFeature: Reducer {
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .saveButtonTapped:
+                return .run { _ in
+                    await self.dismiss()
+                }
+            case .binding:
+                return .none
+            }
+        }
     }
 }
 
