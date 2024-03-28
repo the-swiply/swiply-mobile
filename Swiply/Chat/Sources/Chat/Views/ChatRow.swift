@@ -10,7 +10,7 @@ struct ChatRow: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 20) {
-                chat.person.imgString
+                Image(uiImage: chat.person.images.first!!)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 70, height: 70)

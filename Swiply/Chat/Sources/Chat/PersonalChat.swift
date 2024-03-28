@@ -77,7 +77,7 @@ struct PersonalChat: View {
             ToolbarItem(placement: .topBarLeading) {
                 VStack {
                     HStack {
-                        store.chat.person.imgString
+                        Image(uiImage: store.chat.person.images.first!!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 40, height: 40)

@@ -4,6 +4,7 @@ import Authorization
 import FormCreation
 import MainScreen
 import Chat
+import Profile
 
 struct RootView: View {
 
@@ -27,6 +28,9 @@ struct RootView: View {
             ChatRootView(store: store)
         }
         
+        IfLetStore(store.scope(state: \.destination?.profile, action: \.destination.profile)) { store in
+            ProfileRootView(store: store)
+        }
     }
 
 }

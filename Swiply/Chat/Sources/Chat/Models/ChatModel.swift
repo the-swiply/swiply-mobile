@@ -1,4 +1,5 @@
 import SwiftUI
+import UserService
 
 public struct ChatModel: Identifiable, Equatable {
     public var id: UUID { person.id }
@@ -13,12 +14,6 @@ public struct Matches: Identifiable, Equatable {
     var isViewed: Bool
 }
 
-public struct Person: Identifiable, Equatable {
-    public let id = UUID()
-    let name: String
-    let imgString: Image
-    var isViewed: Bool
-}
 
 public struct Message: Identifiable, Equatable {
     public let id = UUID()
@@ -54,13 +49,6 @@ public struct Message: Identifiable, Equatable {
     }
 }
 
-public extension Person {
-    static let jungkook = Person(name: "Jungkook", imgString: Image(.jungkook), isViewed: false)
-    static let suga = Person(name: "Suga", imgString: Image(.suga), isViewed: false)
-    static let ui = Person(name: "UI", imgString: Image(.ui), isViewed: false)
-    static let te =  Person(name: "Te", imgString: Image(.techen), isViewed: false)
-    static let jimin = Person(name: "Jimin", imgString: Image(.jimin), isViewed: false)
-}
 
 public extension ChatModel {
     

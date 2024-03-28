@@ -23,6 +23,9 @@
 		3EDBE7722B9E163200DDC677 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBE7712B9E163200DDC677 /* RootView.swift */; };
 		3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3EE80C5B2BAA19F60018ED2F /* MainScreen */; };
 		3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF79C942BA788C000D4D3BE /* SYKeychain */; };
+		5E09F4892BB591F00030F785 /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 5E09F4882BB591F00030F785 /* Profile */; };
+		5E09F48C2BB5A6690030F785 /* UserService in Frameworks */ = {isa = PBXBuildFile; productRef = 5E09F48B2BB5A6690030F785 /* UserService */; };
+		5E09F48F2BB5DC0C0030F785 /* RandomCoffee in Frameworks */ = {isa = PBXBuildFile; productRef = 5E09F48E2BB5DC0C0030F785 /* RandomCoffee */; };
 		5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */ = {isa = PBXBuildFile; productRef = 5E1FC8432BA3509B0077946F /* FormCreation */; };
 		5E4860952BB232F8006F10F5 /* Chat in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4860942BB232F8006F10F5 /* Chat */; };
 /* End PBXBuildFile section */
@@ -46,6 +49,9 @@
 		3EE80C5A2BAA0FC40018ED2F /* MainScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainScreen; sourceTree = "<group>"; };
 		3EE80EAC2BAF6CF60018ED2F /* Recommendations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Recommendations; sourceTree = "<group>"; };
 		3EF79C122BA7561E00D4D3BE /* SYKeychain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYKeychain; sourceTree = "<group>"; };
+		5E09F4872BB591E00030F785 /* Profile */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Profile; sourceTree = "<group>"; };
+		5E09F48A2BB5A65C0030F785 /* UserService */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = UserService; sourceTree = "<group>"; };
+		5E09F48D2BB5DB760030F785 /* RandomCoffee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RandomCoffee; sourceTree = "<group>"; };
 		5E339C0D2BA34C7800B65E39 /* FormCreation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FormCreation; sourceTree = "<group>"; };
 		5E4860932BB232B0006F10F5 /* Chat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Chat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,15 +62,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E6CDC762B815F4100E4C890 /* ComposableArchitecture in Frameworks */,
+				5E09F4892BB591F00030F785 /* Profile in Frameworks */,
 				5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */,
 				3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */,
 				3E27EB9C2BB35941007BB9CB /* Likes in Frameworks */,
 				3E6CDEC82B85392E00E4C890 /* Authorization in Frameworks */,
 				5E4860952BB232F8006F10F5 /* Chat in Frameworks */,
 				3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */,
+				5E09F48F2BB5DC0C0030F785 /* RandomCoffee in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 				3E8B3E712B89029700E77CC9 /* SYVisualKit in Frameworks */,
 				3E1104602BB2234A001C6DC8 /* Recommendations in Frameworks */,
+				5E09F48C2BB5A6690030F785 /* UserService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +83,9 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				5E09F48D2BB5DB760030F785 /* RandomCoffee */,
+				5E09F48A2BB5A65C0030F785 /* UserService */,
+				5E09F4872BB591E00030F785 /* Profile */,
 				3E27EB9D2BB386F5007BB9CB /* CardInformation */,
 				3E27EB9A2BB34E89007BB9CB /* Likes */,
 				5E4860932BB232B0006F10F5 /* Chat */,
@@ -188,6 +200,9 @@
 				3E11045F2BB2234A001C6DC8 /* Recommendations */,
 				5E4860942BB232F8006F10F5 /* Chat */,
 				3E27EB9B2BB35941007BB9CB /* Likes */,
+				5E09F4882BB591F00030F785 /* Profile */,
+				5E09F48B2BB5A6690030F785 /* UserService */,
+				5E09F48E2BB5DC0C0030F785 /* RandomCoffee */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -503,6 +518,18 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SYKeychain;
 		};
+		5E09F4882BB591F00030F785 /* Profile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Profile;
+		};
+		5E09F48B2BB5A6690030F785 /* UserService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UserService;
+		};
+		5E09F48E2BB5DC0C0030F785 /* RandomCoffee */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RandomCoffee;
+		};
 		5E1FC8432BA3509B0077946F /* FormCreation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FormCreation;
@@ -510,10 +537,6 @@
 		5E4860942BB232F8006F10F5 /* Chat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Chat;
-		};
-		5E1FC8432BA3509B0077946F /* FormCreation */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FormCreation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -17,7 +17,7 @@ struct MatchesRow: View {
                 
                 HStack(spacing: 10) {
                     ForEach(matches) { match in
-                        match.person.imgString
+                        Image(uiImage: match.person.images.first!!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 70, height: 70)

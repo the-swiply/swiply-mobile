@@ -50,8 +50,9 @@ struct InterestsView: View {
                 title: "Интересы",
                 desription: "Добавь в профиль свои интересы, так ты сможешь найти людей с общими интересами"
             )
-            .padding(.bottom, 30)
-
+            .padding(.bottom, 18)
+            .padding(.horizontal, 8)
+            
             SYFlowView(
                 content: interests.map { interest in
                     SYChip(text: interest) { text in
@@ -66,10 +67,10 @@ struct InterestsView: View {
             }
             .disabled(store.isButtonDisabled)
             .padding(.top, 5)
-
+            .padding(.horizontal, 8)
             Spacer()
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 16)
     }
 }
 

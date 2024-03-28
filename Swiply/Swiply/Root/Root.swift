@@ -5,6 +5,7 @@ import FormCreation
 import Networking
 import MainScreen
 import Chat
+import Profile
 
 @Reducer
 struct Root {
@@ -15,6 +16,7 @@ struct Root {
         case formCreation(FormCreationRoot)
         case main(MainRoot)
         case chat(ChatRoot)
+        case profile(ProfileRoot)
     }
 
     @ObservableState
@@ -35,7 +37,7 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
-                state.destination = .formCreation(.init())
+                state.destination = .profile(.init())
                 
                 return .run { [forbiddenErrorNotifier] send in
                     forbiddenErrorNotifier.add { [send] in

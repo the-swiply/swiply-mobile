@@ -1,14 +1,9 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
+import UserService
 
 public struct GenderFeature: Reducer {
-    
-    public enum Gender {
-        case male
-        case female
-        case none
-    }
     
     @ObservableState
     public struct State: Equatable {

@@ -51,7 +51,7 @@ struct ImageView: View {
             LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 16), count: 3), spacing: 16, content: {
                 ForEach((0..<store.images.count), id: \.self) { index in
                     HStack {
-                        ImagePickerView(image:  $store.images[index],
+                        ImagePickerView(image: $store.images[index],
                                         index: index) { index in
                             store.send(.show(index))
                         }.sheet(isPresented: $store.isPresented) {
@@ -136,7 +136,6 @@ public struct ImagePickerView: View {
 
     
         ZStack(alignment: .bottomTrailing) {
-           
             if let imageProfile = image {
                 Image(uiImage: imageProfile)
                     .resizable()
