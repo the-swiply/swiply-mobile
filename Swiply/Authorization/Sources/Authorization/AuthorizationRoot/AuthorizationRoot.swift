@@ -1,6 +1,5 @@
 import ComposableArchitecture
 import SwiftUI
-import FormCreation
 
 @Reducer
 public struct AuthorizationRoot {
@@ -9,7 +8,6 @@ public struct AuthorizationRoot {
     public enum Path {
         case emailInput(EmailInput)
         case otp(OTP)
-        case createProfile(FormCreationRoot)
     }
 
     @ObservableState
@@ -37,12 +35,8 @@ public struct AuthorizationRoot {
         Scope(state: \.welcome, action: \.welcome) {
             Welcome()
         }
-        
         Reduce { state, action in
             switch action {
-            case .path(.element(_, .otp(.continueButtonTapped))):
-                state.path.append(.createProfile(FormCreationRoot.State()))
-                return .none
             case .path(.element(_, .emailInput(.delegate(.receiveSuccessFromServer)))):
                 state.path.append(.otp(OTP.State()))
                 return .none

@@ -13,10 +13,12 @@ public struct FormCreationRootView: View {
         NavigationStack(
             path: $store.scope(state: \.path, action: \.path)
         ) {
-           
-            viewK(store: store.scope(state: \.welcome, action: \.welcome))
-             
-            
+            InfoInputView(
+                title: "Моё имя",
+                placeHolder: "Введите имя",
+                description: "Ваше имя будет отображаться в профиле Swiply, и у вас будет возможность его изменить",
+                store: store.scope(state: \.welcome, action: \.welcome)
+            )
         } destination: { store in
             switch store.case {
             case let .cityInput(store):
@@ -50,13 +52,6 @@ public struct FormCreationRootView: View {
                 )
             case let .imageView(store):
                 ImageView(store: store)
-            case let .nameInput(store):
-                InfoInputView(
-                    title: "Моё имя",
-                    placeHolder: "Введите имя",
-                    description: "Ваше имя будет отображаться в профиле Swiply, и у вас будет возможность его изменить",
-                    store: store)
-                
             }
         }
     }

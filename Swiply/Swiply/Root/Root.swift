@@ -37,7 +37,7 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
-                state.destination = .authorization(.init())
+                state.destination = .main(.init())
                 
                 return .run { [forbiddenErrorNotifier] send in
                     forbiddenErrorNotifier.add { [send] in

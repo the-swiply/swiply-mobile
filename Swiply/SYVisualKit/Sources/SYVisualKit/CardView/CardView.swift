@@ -13,7 +13,7 @@ public struct CardView<V: View>: View {
     var images: [Image] = []
     var navigateTo: () -> V
 
-    public init(index: Int, tagId: UUID = UUID(), images: [Image], navigateTo: @escaping () -> V) {
+    public init(index: Int, tagId: UUID = UUID(), person, navigateTo: @escaping () -> V) {
         self.index = index
         self.tagId = tagId
         self.images = images
