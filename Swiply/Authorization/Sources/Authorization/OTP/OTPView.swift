@@ -2,13 +2,17 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 
-struct OTPView: View {
+public struct OTPView: View {
 
     @Bindable var store: StoreOf<OTP>
 
+    public init(store: StoreOf<OTP>) {
+        self.store = store
+    }
+
     // MARK: - View
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 30) {
             SYOTPTextField(
                 isDestructive: $store.isIncorrectCodeEntered.sending(\.binding),

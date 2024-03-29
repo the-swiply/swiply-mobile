@@ -45,6 +45,8 @@ public struct OTP {
     @Dependency(\.authService) var authService
     @Dependency(\.dataManager) var dataManager
 
+    public init() { }
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {

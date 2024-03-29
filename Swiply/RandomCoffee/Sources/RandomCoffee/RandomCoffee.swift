@@ -2,7 +2,8 @@ import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
 
-public struct RandomCoffeeFeature: Reducer {
+@Reducer
+public struct RandomCoffeeFeature {
     
     @ObservableState
     public struct State: Equatable {

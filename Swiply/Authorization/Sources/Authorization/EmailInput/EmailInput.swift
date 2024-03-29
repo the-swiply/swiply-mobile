@@ -41,6 +41,8 @@ public struct EmailInput {
     @Dependency(\.authService.sendCode) var sendCode
     @Dependency(\.dataManager) var dataManager
 
+    public init() { }
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {

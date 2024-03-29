@@ -6,33 +6,46 @@ import RandomCoffee
 public struct Home {
 
     @Reducer(state: .equatable)
-    public enum Destination {
-        case emailConformation(AuthorizationRoot)
+    public enum Path {
+        case emailConformation(EmailInput)
+        case otp(OTP)
         case randomCoffee(RandomCoffeeFeature)
     }
 
     @ObservableState
     public struct State: Equatable {
-        @Presents var destination: Destination.State?
+        var path = StackState<Path.State>()
     }
 
     public enum Action {
-        case skipWelcome
-        case destination(PresentationAction<Destination.Action>)
+        case randomCoffeeTapped
+        case emailConfirmationTapped
+        case path(StackAction<Path.State, Path.Action>)
     }
+
+    public init() { }
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .destination:
+            case .path(.element(id: _, action: .emailConformation(.continueButtonTapped))):
+                state.path.append(.otp(.init()))
                 return .none
 
-            case .skipWelcome:
-                state.destination = .randomCoffee(RandomCoffeeFeature.State())
+            case .path:
                 return .none
+
+            case .emailConfirmationTapped:
+                state.path.append(.emailConformation(.init()))
+                return .none
+
+            case .randomCoffeeTapped:
+                state.path.append(.randomCoffee(.init()))
+                return .none
+
             }
         }
-        .ifLet(\.$destination, action: \.destination)
+        .forEach(\.path, action: \.path)
     }
 
 }

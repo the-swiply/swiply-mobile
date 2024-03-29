@@ -2,14 +2,18 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 
-struct EmailInputView: View {
-    
+public struct EmailInputView: View {
+
     @Bindable var store: StoreOf<EmailInput>
     @State var isValid = true
     
+    public init(store: StoreOf<EmailInput>) {
+        self.store = store
+    }
+    
     // MARK: - View
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 95) {
             VStack(alignment: .leading) {
                 SYTextField(

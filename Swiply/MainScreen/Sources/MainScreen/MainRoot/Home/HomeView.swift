@@ -10,88 +10,91 @@ struct HomeView: View {
     // MARK: - View
 
     var body: some View {
-        if store.destination == nil {
-            NavigationStack {
-                VStack {
-                    Image(.logo)
-                        .padding(.top, 10)
+        NavigationStack(
+            path: $store.scope(state: \.path, action: \.path)
+        ) {
+            VStack {
+                Image(.logo)
+                    .padding(.top, 10)
 
-
-                    HStack {
-                        Text("Главная")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-
-                        Spacer()
-                    }
-                    .padding(.all, 30)
-
-                    Button {
-
-                    } label: {
-                        HStack {
-                            Text("Подтвердить корпоративную почту")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.black)
-                                .multilineTextAlignment(.leading)
-
-                            Spacer()
-
-                            Image(.email)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.pink)
-                                .frame(width: 40)
-                        }
-                        .padding(.all, 24)
-                        .background {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundStyle(.white)
-                                .shadow(radius: 8)
-                        }
-                        .padding(.bottom, 8)
-                        .padding(.horizontal, 24)
-                    }
-
-
-                    Button {
-                        store.send(.skipWelcome)
-                    } label: {
-                        HStack {
-                            Text("Random \nCoffee")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.black)
-                                .multilineTextAlignment(.leading)
-
-                            Spacer()
-
-                            Image(.coffee)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.pink)
-                                .frame(width: 40)
-                        }
-                        .padding(.all, 24)
-                        .background {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundStyle(.white)
-                                .shadow(radius: 8)
-                        }
-                        .padding(.horizontal, 24)
-                    }
+                HStack {
+                    Text("Главная")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
 
                     Spacer()
                 }
+                .padding(.all, 30)
+
+                Button {
+                    store.send(.emailConfirmationTapped)
+                } label: {
+                    HStack {
+                        Text("Подтвердить корпоративную почту")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black)
+                            .multilineTextAlignment(.leading)
+
+                        Spacer()
+
+                        Image(.email)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.pink)
+                            .frame(width: 40)
+                    }
+                    .padding(.all, 24)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .foregroundStyle(.white)
+                            .shadow(radius: 8)
+                    }
+                    .padding(.bottom, 8)
+                    .padding(.horizontal, 24)
+                }
+
+
+                Button {
+                    store.send(.randomCoffeeTapped)
+                } label: {
+                    HStack {
+                        Text("Random \nCoffee")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black)
+                            .multilineTextAlignment(.leading)
+
+                        Spacer()
+
+                        Image(.coffee)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.pink)
+                            .frame(width: 40)
+                    }
+                    .padding(.all, 24)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .foregroundStyle(.white)
+                            .shadow(radius: 8)
+                    }
+                    .padding(.horizontal, 24)
+                }
+
+                Spacer()
             }
-        }
-        IfLetStore(store.scope(state: \.destination?.emailConformation, action: \.destination.emailConformation)) { store in
-            AuthorizationRootView(store: store)
-        }
-        
-        IfLetStore(store.scope(state: \.destination?.randomCoffee, action: \.destination.randomCoffee)) { store in
-            RandomCoffeeView(store: store)
+        } destination: { store in
+            switch store.case {
+            case let .emailConformation(store):
+                EmailInputView(store: store)
+
+            case let .otp(store):
+                OTPView(store: store)
+
+            case let .randomCoffee(store):
+                RandomCoffeeView(store: store)
+            }
         }
     }
 
