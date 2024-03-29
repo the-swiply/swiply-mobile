@@ -45,27 +45,27 @@ struct InfoInputView: View {
     
     
     var body: some View {
-        VStack(alignment: .leading) {
-            SYHeaderView(
-                title: title
-            )
-            SYTextField(
-                placeholder: placeHolder,
-                footerText: description,
-                text: $store.userInfo
-            )
-            .padding(.top, 80)
-          
-            SYButton(title: "Продолжить") {
-                store.send(.continueButtonTapped)
+            VStack(alignment: .leading) {
+                SYHeaderView(
+                    title: title
+                )
+                SYTextField(
+                    placeholder: placeHolder,
+                    footerText: description,
+                    text: $store.userInfo
+                )
+                .padding(.top, 80)
+                
+                SYButton(title: "Продолжить") {
+                    store.send(.continueButtonTapped)
+                }
+                .disabled(store.isButtonDisabled)
+                .padding(.top, 95)
+                Spacer()
+                
             }
-            .disabled(store.isButtonDisabled)
-            .padding(.top, 95)
-           Spacer()
-        
+            .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 24)
-    }
 }
 
 
