@@ -13,14 +13,28 @@ public struct RandomCoffeeFeature: Reducer {
         
         public init() {}
     }
+    @Dependency(\.dismiss) var dismiss
     
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case continueButtonTapped
+        case dismiss
     }
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .dismiss:
+                return .run { _ in
+                    await self.dismiss()
+                }
+            case .binding:
+                return .none
+            case .continueButtonTapped:
+                return .none
+            }
+        }
     }
     
     public init() {}
@@ -36,6 +50,10 @@ public struct RandomCoffeeView: View {
     
     public var body: some View {
         VStack {
+            Image(systemName: "trash")
+                .onTapGesture {
+                    store.send(.dismiss)
+                }
             HStack(alignment: .center) {
                 Image(.randomCoffee)
                     .resizable()

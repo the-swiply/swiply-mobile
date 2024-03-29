@@ -8,7 +8,7 @@ struct MatchesRow: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-            Text("Лайки")
+            Text("Метчи")
                 .bold()
                 .font(.subheadline)
                 .foregroundStyle(.pink)

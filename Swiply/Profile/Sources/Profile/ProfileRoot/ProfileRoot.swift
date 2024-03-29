@@ -1,14 +1,15 @@
 import ComposableArchitecture
 import SwiftUI
+import Authorization
 
 @Reducer
-
 public struct ProfileRoot {
     
     @Reducer(state: .equatable)
     public enum Path {
         case edit(EditFeature)
         case settings(SettingsFeature)
+        case emailConformation(AuthorizationRoot)
     }
     
     @ObservableState
@@ -50,6 +51,9 @@ public struct ProfileRoot {
                 state.profile.user = person
                 return .none
                 
+            case .path(.element(_, .settings(.exitButtonTapped))):
+                state.path.append(.emailConformation(AuthorizationRoot.State()))
+                return .none
             case .path:
                 return .none
                 

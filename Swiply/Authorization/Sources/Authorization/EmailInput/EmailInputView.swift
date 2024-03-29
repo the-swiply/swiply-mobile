@@ -5,25 +5,45 @@ import ComposableArchitecture
 struct EmailInputView: View {
     
     @Bindable var store: StoreOf<EmailInput>
+    @State var isValid = true
     
     // MARK: - View
     
     var body: some View {
         VStack(spacing: 95) {
-            SYTextField(
-                placeholder: "Email",
-                footerText: "Мы отправим текстовое сообщение с кодом подтверждения",
-                text: $store.text.sending(\.textChanged)
-            )
+            VStack(alignment: .leading) {
+                SYTextField(
+                    placeholder: "Email",
+                    footerText: "Мы отправим текстовое сообщение с кодом подтверждения",
+                    text: $store.text.sending(\.textChanged)
+                )
+                Text("Некорректная почта")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle( isValid ? .clear : .red)
+                    .padding(.top, 10)
+            }
+            
             
             SYButton(title: "Продолжить") {
-                store.send(.delegate(.receiveSuccessFromServer))
+                isValid = isValidEmail(store.text)
+                if isValid {
+                    store.send(.delegate(.receiveSuccessFromServer))
+                }
+               
             }
             .disabled(store.isContinueButtonDisabled)
         }
         .padding(.horizontal, 24)
         .navigationTitle("Мой Email")
         .navigationBarTitleDisplayMode(.large)
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
 
 }

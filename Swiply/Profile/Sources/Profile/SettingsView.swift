@@ -18,6 +18,7 @@ public struct SettingsFeature: Reducer {
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case saveButtonTapped
+        case exitButtonTapped
     }
     
     public var body: some ReducerOf<Self> {
@@ -29,6 +30,8 @@ public struct SettingsFeature: Reducer {
                     await self.dismiss()
                 }
             case .binding:
+                return .none
+            case .exitButtonTapped:
                 return .none
             }
         }
@@ -60,6 +63,9 @@ struct SettingsView: View {
                 }
                 
                 Text("Выйти")
+                    .onTapGesture {
+                        store.send(.exitButtonTapped)
+                    }
             }
             //
             

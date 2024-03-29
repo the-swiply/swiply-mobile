@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import Authorization
 
 public struct ProfileRootView: View {
     @Bindable var store: StoreOf<ProfileRoot>
@@ -19,6 +20,8 @@ public struct ProfileRootView: View {
                 EditView(store: store)
             case let .settings(store):
                 SettingsView(store: store)
+            case let .emailConformation(store):
+                AuthorizationRootView(store: store)
             }
         }
     }
