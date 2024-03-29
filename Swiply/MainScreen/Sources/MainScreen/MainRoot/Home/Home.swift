@@ -28,7 +28,7 @@ public struct Home {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .path(.element(id: _, action: .emailConformation(.continueButtonTapped))):
+            case .path(.element(id: _, action: .emailConformation(.delegate(.receiveSuccessFromServer)))):
                 state.path.append(.otp(.init()))
                 return .none
 

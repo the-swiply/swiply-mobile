@@ -45,6 +45,14 @@ struct Root {
                     }
                 }
 
+            case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.continueButtonTapped)))))):
+                state.destination = .formCreation(.init())
+                return .none
+
+            case .destination(.presented(.formCreation(.path(.element(id: _, action: .imageView(.continueButtonTapped)))))):
+                state.destination = .main(.init(selectedTab: .profile))
+                return .none
+
             case .appDelegate:
                 return .none
 
