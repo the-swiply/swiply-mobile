@@ -11,14 +11,19 @@ public struct RandomCoffeeFeature {
         var startTime = Date()
         var endTime = Date()
         var town = ""
-        
+        var time: TimeInterval = 10000
+        var timeString: String = ""
+
         public init() {}
     }
     @Dependency(\.dismiss) var dismiss
-    
+    @Dependency(\.continuousClock) var clock
+
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case continueButtonTapped
+        case timerTick
+        case startTimer
         case dismiss
     }
     
@@ -32,13 +37,30 @@ public struct RandomCoffeeFeature {
                 }
             case .binding:
                 return .none
+
             case .continueButtonTapped:
+                return .none
+
+            case .startTimer:
+                return .run { send in
+                    await self.startTimer(send: send)
+                }
+
+            case .timerTick:
+                state.time -= 1
+                state.timeString = state.time.format()
                 return .none
             }
         }
     }
     
     public init() {}
+
+    private func startTimer(send: Send<Action>) async {
+      for await _ in self.clock.timer(interval: .seconds(1)) {
+        await send(.timerTick)
+      }
+    }
 }
 
 public struct RandomCoffeeView: View {
@@ -50,11 +72,7 @@ public struct RandomCoffeeView: View {
     }
     
     public var body: some View {
-        VStack {
-            Image(systemName: "trash")
-                .onTapGesture {
-                    store.send(.dismiss)
-                }
+        ScrollView {
             HStack(alignment: .center) {
                 Image(.randomCoffee)
                     .resizable()
@@ -130,7 +148,9 @@ public struct RandomCoffeeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding(.top, 30)
-            
+
+            Text(store.timeString)
+
             Spacer()
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
@@ -138,9 +158,11 @@ public struct RandomCoffeeView: View {
             .padding(.bottom, 50)
             
         }
-        
         .padding(.horizontal, 24)
-        
+        .task {
+            store.send(.startTimer)
+        }
+
     }
 }
 
@@ -162,4 +184,47 @@ extension View {
         )
         .mask(self)
     }
+}
+
+extension TimeInterval {
+
+    var days: Int { Int(self) / (3600 * 24) }
+    var hours: Int { (Int(self) / 3600) % 24 }
+    var minutes: Int { Int(self) / 60 % 60 }
+    var seconds: Int { Int(self) % 60 }
+
+    var isLongerThanDay: Bool { days > 0 }
+
+    func format() -> String {
+        guard self >= 0 else { return "" }
+
+        if isLongerThanDay {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d MMMM HH:mm"
+            return String.from(Date().addingTimeInterval(self))
+        }
+
+        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+    }
+
+}
+
+private func convert(timeInterval: Double) -> String {
+        let hours = Int(timeInterval) / 60
+        let minutes = Int(timeInterval) % 60
+        return String(format: "%02i:%02i", hours, minutes)
+}
+
+extension String {
+
+    static func from(_ date: Date, timeZone: TimeZone? = nil) -> String {
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone ?? TimeZone(secondsFromGMT: 0) ?? .current
+
+        let hour = calendar.component(.hour, from: date)
+        let minute = calendar.component(.minute, from: date)
+
+        return String(format: "%02i:%02i", hour, minute)
+    }
+
 }
