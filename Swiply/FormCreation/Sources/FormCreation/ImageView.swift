@@ -27,7 +27,7 @@ public struct ImageFeature: Reducer {
             case .continueButtonTapped:
                 return .none
             case .binding:
-                state.isButtonDisabled = !(state.images.filter {  $0 != nil }.count >= 2)
+                state.isButtonDisabled = !(state.images.filter {  $0 != nil }.count >= 1)
                 return .none
             case let .show(index):
                 state.isPresented = true
@@ -44,7 +44,7 @@ struct ImageView: View {
         VStack(alignment: .leading) {
             SYHeaderView(
                 title: "Мои фотографии",
-                desription: "Добавь не менее двух фотографий, чтобы продолжить"
+                desription: "Добавь не менее одной фотографии, чтобы продолжить"
             )
             .padding(.bottom, 30)
             

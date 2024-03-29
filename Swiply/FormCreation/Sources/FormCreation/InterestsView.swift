@@ -50,7 +50,7 @@ struct InterestsView: View {
                 title: "Интересы",
                 desription: "Добавь в профиль свои интересы, так ты сможешь найти людей с общими интересами"
             )
-            .padding(.bottom, 18)
+            .padding(.top, -80)
             .padding(.horizontal, 8)
             
             SYFlowView(
@@ -60,8 +60,8 @@ struct InterestsView: View {
                     }
                 }
             )
-            .padding(.bottom, 35)
-
+           .padding(.bottom, 35)
+         
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
             }
@@ -69,6 +69,7 @@ struct InterestsView: View {
             .padding(.top, 5)
             .padding(.horizontal, 8)
             Spacer()
+  
         }
         .padding(.horizontal, 16)
     }
