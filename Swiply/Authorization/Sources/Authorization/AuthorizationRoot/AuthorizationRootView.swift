@@ -1,6 +1,5 @@
 import SwiftUI
 import ComposableArchitecture
-import FormCreation
 
 public struct AuthorizationRootView: View {
 
@@ -19,8 +18,6 @@ public struct AuthorizationRootView: View {
             )
         } destination: { store in
             switch store.case {
-            case let .createProfile(store):
-                FormCreationRootView(store: store)
             case let .emailInput(store):
                 EmailInputView(store: store)
 
