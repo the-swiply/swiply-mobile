@@ -18,11 +18,11 @@ public struct RecommendationsView: View {
     ]
 
     @State var cards: [CardView] = [
-        CardView(index: 0, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.ann) }),
-        CardView(index: 1, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.daria) }),
-        CardView(index: 2, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.kate) }),
-        CardView(index: 3, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.maria) }),
-        CardView(index: 4, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.vera) })
+        CardView(index: 0, person: UserService.Person.ann.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.ann) }),
+        CardView(index: 1, person: UserService.Person.daria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.daria) }),
+        CardView(index: 2, person: UserService.Person.kate.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.kate) }),
+        CardView(index: 3, person: UserService.Person.maria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.maria) }),
+        CardView(index: 4, person: UserService.Person.vera.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.vera) })
     ]
 
     public init() { }
@@ -86,6 +86,14 @@ private struct MainBarView: View {
                 Image(.filter)
             }
         }
+    }
+
+}
+
+extension Person {
+
+    var toCardPerson: CardPerson {
+        .init(name: name, age: age, interests: interests, town: town, description: description, images: images.map { Image(uiImage: $0!) })
     }
 
 }

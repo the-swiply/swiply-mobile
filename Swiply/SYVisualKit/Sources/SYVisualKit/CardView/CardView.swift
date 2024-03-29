@@ -1,5 +1,24 @@
 import SwiftUI
 
+public struct CardPerson: Identifiable, Equatable {
+    public let id = UUID()
+    public var name: String
+    public let age: Int
+    public var interests: [String]
+    public var town: String
+    public var description: String
+    public var images: [Image]
+
+    public init(name: String, age: Int, interests: [String], town: String, description: String, images: [Image]) {
+        self.name = name
+        self.age = age
+        self.interests = interests
+        self.town = town
+        self.description = description
+        self.images = images
+    }
+}
+
 public struct CardView<V: View>: View {
 
     var info: [(Image, String)] {
@@ -10,22 +29,22 @@ public struct CardView<V: View>: View {
 
     var index: Int
     var tagId: UUID
-    var images: [Image] = []
+    var person: CardPerson
     var navigateTo: () -> V
 
-    public init(index: Int, tagId: UUID = UUID(), person, navigateTo: @escaping () -> V) {
+    public init(index: Int, tagId: UUID = UUID(), person: CardPerson, navigateTo: @escaping () -> V) {
         self.index = index
         self.tagId = tagId
-        self.images = images
+        self.person = person
         self.navigateTo = navigateTo
     }
 
     public var body: some View {
         ZStack {
-            PhotosView(images: images)
+            PhotosView(images: person.images)
                 .overlay(alignment: .bottomLeading) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Мария, 20")
+                        Text("\(person.name), \(person.age)")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
@@ -33,7 +52,7 @@ public struct CardView<V: View>: View {
                         HStack(spacing: 8) {
                             Image(.homeCardIcon)
 
-                            Text("Москва")
+                            Text(person.town)
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.white)

@@ -37,9 +37,11 @@ public struct PhotosView: View {
                             let leftPart = geometry.size.width - spacing
                             let width = leftPart / CGFloat(images.count)
 
-                            RoundedRectangle(cornerRadius: 1.5)
-                                .foregroundStyle(index == currentIndex ? .white : .gray.opacity(0.3))
-                                .frame(width: width, height: 3)
+                            if images.count > 1 {
+                                RoundedRectangle(cornerRadius: 1.5)
+                                    .foregroundStyle(index == currentIndex ? .white : .gray.opacity(0.3))
+                                    .frame(width: width, height: 3)
+                            }
                         }
                     }
 

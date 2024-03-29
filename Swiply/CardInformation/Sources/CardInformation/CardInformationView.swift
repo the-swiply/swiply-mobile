@@ -59,6 +59,7 @@ public struct CardInformationView: View {
                     .foregroundStyle(.white)
                     .shadow(radius: 2)
             }
+            .padding(.horizontal, 1)
 
             SYFlowView(
                 content: person.interests.map { interest in
@@ -71,6 +72,7 @@ public struct CardInformationView: View {
         }
         .scrollIndicators(.hidden)
         .padding(.horizontal, 24)
+        .navigationTitle("\(person.name), \(person.age)")
     }
 
 }
