@@ -2,20 +2,27 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 import CardInformation
+import UserService
 
 public struct RecommendationsView: View {
 
 //    @Bindable var store: StoreOf<Recommendations>
 
+    @State private var data: [Person] =
+    [
+        UserService.Person.ann,
+        UserService.Person.daria,
+        UserService.Person.kate,
+        UserService.Person.maria,
+        UserService.Person.vera,
+    ]
+
     @State var cards: [CardView] = [
-        CardView(index: 0, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 1, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 2, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 3, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 4, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 5, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 6, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() }),
-        CardView(index: 7, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView() })
+        CardView(index: 0, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.ann) }),
+        CardView(index: 1, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.daria) }),
+        CardView(index: 2, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.kate) }),
+        CardView(index: 3, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.maria) }),
+        CardView(index: 4, images: [Image(.night), Image(.card)], navigateTo: { CardInformationView(person: UserService.Person.vera) })
     ]
 
     public init() { }

@@ -1,18 +1,17 @@
 import SwiftUI
 import SYVisualKit
 import CardInformation
+import UserService
 
 public struct LikesCardView: View {
 
-    let image: Image
-    let name: String
-    let age: String
+    @State var person: Person
 
     public var body: some View {
         NavigationLink(
-            destination: CardInformationView(),
+            destination: CardInformationView(person: person),
             label: {
-                image
+                Image(uiImage: person.images.first!!)
                     .centerCropped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
             }
@@ -21,7 +20,7 @@ public struct LikesCardView: View {
             VStack(alignment: .leading) {
                 Spacer()
 
-                Text(name + "," + age)
+                Text(person.name + "," + person.age.description)
                     .foregroundStyle(.white)
                     .font(.headline)
                     .fontWeight(.semibold)
@@ -51,12 +50,4 @@ public struct LikesCardView: View {
         }
     }
 
-}
-
-#Preview {
-    LikesCardView(
-        image: Image(.night),
-        name: "Night",
-        age: "7"
-    )
 }

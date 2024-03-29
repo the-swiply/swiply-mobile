@@ -1,5 +1,6 @@
 import SwiftUI
 import SYVisualKit
+import UserService
 
 public struct CardInformationView: View {
 
@@ -7,26 +8,28 @@ public struct CardInformationView: View {
         [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
     }
 
-    private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"]
+    var person: Person
 
-    public init() { }
+    public init(person: Person) {
+        self.person = person
+    }
 
     public var body: some View {
         ScrollView {
-            PhotosView(images: [Image(.girl2), Image(.girl3)])
+            PhotosView(images: person.images.map { Image(uiImage: $0!) })
                 .frame(height: 640)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Мария, 20")
+                    Text("\(person.name), \(person.age.description)")
                         .font(.largeTitle)
                         .fontWeight(.bold)
 
                     HStack(spacing: 8) {
                         Image(.city)
 
-                        Text("Москва")
+                        Text(person.town)
                     }
 
                     HStack(spacing: 8) {
@@ -47,7 +50,7 @@ public struct CardInformationView: View {
             .frame(minHeight: 110)
 
             Text(
-                "В любой сложной жизненной ситуации остаюсь оптимисткой. \n\nВерю в людей и в то, что встречу здесь достойного человека, которому нужна любовь и поддержка. \n\nМужчине, которого полюблю, отдам всю свою заботу и нежность. Давай знакомиться!"
+                person.description
             )
             .padding(.all, 16)
             .multilineTextAlignment(.leading)
@@ -58,7 +61,7 @@ public struct CardInformationView: View {
             }
 
             SYFlowView(
-                content: interests.map { interest in
+                content: person.interests.map { interest in
                     SYChip(text: interest) { _ in }
                 }
             )
@@ -101,6 +104,6 @@ struct SYPinkChip: View {
 
 }
 
-#Preview {
-    CardInformationView()
-}
+//#Preview {
+//    CardInformationView()
+//}
