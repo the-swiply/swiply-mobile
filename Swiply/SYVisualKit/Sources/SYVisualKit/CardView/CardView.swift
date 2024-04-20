@@ -29,7 +29,7 @@ public struct CardView<V: View>: View {
 
     var index: Int
     var tagId: UUID
-    var person: CardPerson
+    public var person: CardPerson
     var navigateTo: () -> V
 
     public init(index: Int, tagId: UUID = UUID(), person: CardPerson, navigateTo: @escaping () -> V) {
