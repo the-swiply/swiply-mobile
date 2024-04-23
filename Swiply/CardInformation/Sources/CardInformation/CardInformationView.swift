@@ -16,7 +16,7 @@ public struct CardInformationView: View {
 
     public var body: some View {
         ScrollView {
-            PhotosView(images: person.images.map { Image(uiImage: $0!) })
+            ImageScrollingView(images: person.images.map { Image(uiImage: $0!) }, onTapCenter: nil)
                 .frame(height: 640)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 

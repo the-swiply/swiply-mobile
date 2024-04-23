@@ -51,21 +51,13 @@ public struct RecommendationsView: View {
 
                 Spacer()
 
-                CardSwiperView(cards: self.$cards , onCardSwiped: { swipeDirection, index in
-                    lastIndex = index
-                    switch swipeDirection {
-                    case .left:
-                        print("Card swiped Left direction at index \(index)")
-                    case .right:
-                        print("Card swiped Right direction at index \(index)")
-                    case .top:
-                        print("Card swiped Top direction at index \(index)")
-                    case .bottom:
-                        print("Card swiped Bottom direction at index \(index)")
+                ZStack {
+                    ForEach(cards, id: \.person.id) { card in
+                        SwipableView {
+                            card
+                        }
                     }
-                }, onCardDragged: { swipeDirection, index, offset in
-                    print("Card dragged \(swipeDirection) direction at index \(index) with offset \(offset)")
-                })
+                }
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
