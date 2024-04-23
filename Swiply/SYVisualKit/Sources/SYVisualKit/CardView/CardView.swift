@@ -29,7 +29,7 @@ public struct CardView<V: View>: View {
 
     var index: Int
     var tagId: UUID
-    var person: CardPerson
+    public var person: CardPerson
     var navigateTo: () -> V
 
     public init(index: Int, tagId: UUID = UUID(), person: CardPerson, navigateTo: @escaping () -> V) {
@@ -41,49 +41,9 @@ public struct CardView<V: View>: View {
 
     public var body: some View {
         ZStack {
-            PhotosView(images: person.images)
+            ImageScrollingView(images: person.images, onTapCenter: nil)
                 .overlay(alignment: .bottomLeading) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(person.name), \(person.age)")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.white)
-
-                        HStack(spacing: 8) {
-                            Image(.homeCardIcon)
-
-                            Text(person.town)
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.bottom, 12)
-
-                        SYFlowView(
-                            content: info.map {
-                                SYBlurChip(text: $0.1, image: $0.0)
-                            }
-                        )
-
-                        HStack {
-                            Button {
-
-                            } label: {
-                                Image(.dislike)
-                            }
-
-                            Spacer()
-
-                            Button {
-
-                            } label: {
-                                Image(.like)
-                            }
-                        }
-                        .padding(.top, 16)
-                    }
-                    .padding(.bottom, 35)
-                    .padding(.horizontal, 16)
+                    BiographyOverlay(person: person)
                 }
         }
         .background(.white)
@@ -93,7 +53,7 @@ public struct CardView<V: View>: View {
                 destination: navigateTo(),
                 label: {
                     Rectangle()
-                        .frame(width: 90, height: 600)
+                        .frame(width: 50, height: 600)
                         .background(.clear)
                         .opacity(0)
                 }
