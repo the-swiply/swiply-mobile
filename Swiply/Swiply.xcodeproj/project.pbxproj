@@ -60,7 +60,6 @@
 		5E5E5F132BDFE60D0051A343 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
 		5E5E5F152BDFE60D0051A343 /* SourceEditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorCommand.swift; sourceTree = "<group>"; };
 		5E5E5F172BDFE60D0051A343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E5E5F182BDFE60D0051A343 /* swiftFormat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = swiftFormat.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +104,6 @@
 				3E171AB52B7EB45700D4E016 /* Networking */,
 				3E6CDC6F2B81525800E4C890 /* Authorization */,
 				3E171AA42B7EB36200D4E016 /* Swiply */,
-				5E5E5F122BDFE60D0051A343 /* swiftFormat */,
 				3E171AA32B7EB36200D4E016 /* Products */,
 				3E171AB62B7EB47500D4E016 /* Frameworks */,
 			);
@@ -182,17 +180,6 @@
 				3EDBE76E2B9E0F1800DDC677 /* AppDelegate.swift */,
 			);
 			path = AppDelegate;
-			sourceTree = "<group>";
-		};
-		5E5E5F122BDFE60D0051A343 /* swiftFormat */ = {
-			isa = PBXGroup;
-			children = (
-				5E5E5F132BDFE60D0051A343 /* SourceEditorExtension.swift */,
-				5E5E5F152BDFE60D0051A343 /* SourceEditorCommand.swift */,
-				5E5E5F172BDFE60D0051A343 /* Info.plist */,
-				5E5E5F182BDFE60D0051A343 /* swiftFormat.entitlements */,
-			);
-			path = swiftFormat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
