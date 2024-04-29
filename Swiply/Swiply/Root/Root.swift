@@ -37,7 +37,7 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
-                state.destination = .main(.init())
+                state.destination = .formCreation(.init())
                 
                 return .run { [forbiddenErrorNotifier] send in
                     forbiddenErrorNotifier.add { [send] in
@@ -49,7 +49,7 @@ struct Root {
                 state.destination = .formCreation(.init())
                 return .none
 
-            case .destination(.presented(.formCreation(.path(.element(id: _, action: .imageView(.continueButtonTapped)))))):
+            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.continueButtonTapped)))))):
                 state.destination = .main(.init(selectedTab: .profile))
                 return .none
 

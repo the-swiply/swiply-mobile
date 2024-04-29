@@ -9,6 +9,8 @@ public struct Person: Identifiable, Equatable {
     public var town: String
     public var description: String
     public var images: [UIImage?]
+    public var education: String = ""
+    public var work: String = ""
 }
 
 public enum Gender {

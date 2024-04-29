@@ -30,6 +30,7 @@ public struct InfoInputReducer: Reducer {
                 return .none
             case .continueButtonTapped:
                 return .none
+                
             }
         }
     }
@@ -40,6 +41,8 @@ struct InfoInputView: View {
     var title: String
     var placeHolder: String
     var description: String
+    var isOptional: Bool = false
+    var isMultiLine: Bool = false
     
     @Bindable var store: StoreOf<InfoInputReducer>
     
@@ -52,15 +55,36 @@ struct InfoInputView: View {
                 SYTextField(
                     placeholder: placeHolder,
                     footerText: description,
-                    text: $store.userInfo
+                    text: $store.userInfo,
+                    isMultiLine: isMultiLine
                 )
                 .padding(.top, 80)
                 
-                SYButton(title: "Продолжить") {
-                    store.send(.continueButtonTapped)
+                HStack {
+                    SYButton(title: "Продолжить") {
+                        store.send(.continueButtonTapped)
+                    }
+                    .disabled(store.isButtonDisabled)
+                    .padding(.top, 95)
+                    
+                    if isOptional {
+                        Button {
+                            store.send(.continueButtonTapped)
+                        } label : {
+                            Text("Пропустить")
+                                .font(.title3)
+                                .bold()
+                                .foregroundStyle(.white)
+                                .padding(.vertical, 9)
+                                .frame(maxWidth: .infinity)
+                            
+                        }
+                        .tint(.gray.opacity(0.4))
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.roundedRectangle(radius: 16))
+                        .padding(.top, 95)
+                    }
                 }
-                .disabled(store.isButtonDisabled)
-                .padding(.top, 95)
                 Spacer()
                 
             }

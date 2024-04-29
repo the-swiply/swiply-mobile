@@ -48,10 +48,27 @@ public struct FormCreationRootView: View {
                     title: "Моя биография",
                     placeHolder: "Напиши немного о себе",
                     description: "Напиши о себе, биография будет отображаться в твоём профиле",
+                    isMultiLine: true,
                     store: store
                 )
             case let .imageView(store):
                 ImageView(store: store)
+            case let .education(store):
+                InfoInputView(
+                    title: "Моё образование", 
+                    placeHolder: "Институт, курсы ...",
+                    description: "Напиши о своём образование",
+                    isOptional: true ,
+                    store: store
+                )
+            case let .work(store):
+                InfoInputView(
+                    title: "Моя работа",
+                    placeHolder: "Название компании, род деятельности ...",
+                    description: "Напиши где тв работаешь или чем занимаешься",
+                    isOptional: true ,
+                    store: store
+                )
             }
         }
     }
