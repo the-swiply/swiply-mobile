@@ -10,6 +10,7 @@ public protocol UpdateTokenMiddleware: Middleware { }
 enum UpdateTokenMiddlewareKey: DependencyKey {
 
     public static var liveValue: any UpdateTokenMiddleware = LiveUpdateTokenMiddleware()
+    
 }
 
 // MARK: - DependencyValues

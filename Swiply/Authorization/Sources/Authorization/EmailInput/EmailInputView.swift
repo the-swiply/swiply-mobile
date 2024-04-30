@@ -32,7 +32,7 @@ public struct EmailInputView: View {
             SYButton(title: "Продолжить") {
                 isValid = isValidEmail(store.text)
                 if isValid {
-                    store.send(.delegate(.receiveSuccessFromServer))
+                    store.send(.continueButtonTapped)
                 }
                
             }
