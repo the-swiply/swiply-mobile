@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Authorization
 import RandomCoffee
+import Events
 
 @Reducer
 public struct Home {
@@ -10,6 +11,7 @@ public struct Home {
         case emailConformation(EmailInput)
         case otp(OTP)
         case randomCoffee(RandomCoffeeFeature)
+        case events(EventsFeature)
     }
 
     @ObservableState
@@ -20,6 +22,7 @@ public struct Home {
     public enum Action {
         case randomCoffeeTapped
         case emailConfirmationTapped
+        case eventsTapped
         case path(StackAction<Path.State, Path.Action>)
     }
 
@@ -41,6 +44,10 @@ public struct Home {
 
             case .randomCoffeeTapped:
                 state.path.append(.randomCoffee(.init()))
+                return .none
+
+            case .eventsTapped:
+                state.path.append(.events(.init()))
                 return .none
 
             }
