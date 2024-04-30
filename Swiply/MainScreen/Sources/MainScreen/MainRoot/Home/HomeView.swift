@@ -2,6 +2,7 @@ import SwiftUI
 import ComposableArchitecture
 import Authorization
 import RandomCoffee
+import Events
 
 struct HomeView: View {
 
@@ -79,6 +80,34 @@ struct HomeView: View {
                             .foregroundStyle(.white)
                             .shadow(radius: 8)
                     }
+                    .padding(.bottom, 8)
+                    .padding(.horizontal, 24)
+                }
+
+                Button {
+                    store.send(.eventsTapped)
+                } label: {
+                    HStack {
+                        Text("Events")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black)
+                            .multilineTextAlignment(.leading)
+
+                        Spacer()
+
+                        Image(.events)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.pink)
+                            .frame(width: 40)
+                    }
+                    .padding(.all, 24)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .foregroundStyle(.white)
+                            .shadow(radius: 8)
+                    }
                     .padding(.horizontal, 24)
                 }
 
@@ -94,6 +123,9 @@ struct HomeView: View {
 
             case let .randomCoffee(store):
                 RandomCoffeeView(store: store)
+
+            case let .events(store):
+                EventsView()
             }
         }
     }
