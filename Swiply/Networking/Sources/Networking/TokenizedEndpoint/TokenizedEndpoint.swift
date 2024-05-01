@@ -13,8 +13,7 @@ extension TokenizedEndpoint {
 
     var header: [String: String]? {
         [
-            "access": keychain.getToken(type: .access) ?? "",
-            "refresh": keychain.getToken(type: .refresh) ?? ""
+            "Authorization": keychain.getToken(type: .access) ?? ""
         ]
     }
 
