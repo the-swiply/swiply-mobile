@@ -6,6 +6,7 @@ import UserService
 public struct LikesCardView: View {
 
     @State var person: Person
+    var action: () -> Void
 
     public var body: some View {
         NavigationLink(
@@ -28,7 +29,7 @@ public struct LikesCardView: View {
 
                 HStack {
                     Button {
-
+                        action()
                     } label : {
                         Image(.dislike)
                             .resizable()
@@ -38,7 +39,7 @@ public struct LikesCardView: View {
                     Spacer()
 
                     Button {
-
+                        action()
                     } label: {
                         Image(.like)
                             .resizable()

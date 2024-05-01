@@ -32,12 +32,24 @@ struct Root {
     }
 
     @Dependency(\.forbiddenErrorNotifier) var forbiddenErrorNotifier
+    @Dependency(\.appStateManager) var appStateManager
 
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
-                state.destination = .formCreation(.init())
+                let appState = appStateManager.getState()
+
+                switch appState {
+                case .authorization:
+                    state.destination = .authorization(.init())
+
+                case .main:
+                    state.destination = .main(.init())
+
+                case .profileCreation:
+                    state.destination = .profile(.init())
+                }
                 
                 return .run { [forbiddenErrorNotifier] send in
                     forbiddenErrorNotifier.add { [send] in
@@ -45,7 +57,7 @@ struct Root {
                     }
                 }
 
-            case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.continueButtonTapped)))))):
+            case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
                 state.destination = .formCreation(.init())
                 return .none
 
