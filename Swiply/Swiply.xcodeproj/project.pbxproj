@@ -55,11 +55,6 @@
 		5E09F48D2BB5DB760030F785 /* RandomCoffee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RandomCoffee; sourceTree = "<group>"; };
 		5E339C0D2BA34C7800B65E39 /* FormCreation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FormCreation; sourceTree = "<group>"; };
 		5E4860932BB232B0006F10F5 /* Chat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Chat; sourceTree = "<group>"; };
-		5E5E5F0E2BDFE60D0051A343 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		5E5E5F102BDFE60D0051A343 /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
-		5E5E5F132BDFE60D0051A343 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
-		5E5E5F152BDFE60D0051A343 /* SourceEditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorCommand.swift; sourceTree = "<group>"; };
-		5E5E5F172BDFE60D0051A343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,8 +138,6 @@
 		3E171AB62B7EB47500D4E016 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5E5E5F0E2BDFE60D0051A343 /* Cocoa.framework */,
-				5E5E5F102BDFE60D0051A343 /* XcodeKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
