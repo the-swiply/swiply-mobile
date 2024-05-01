@@ -57,7 +57,7 @@ enum AuthEndpoint: Endpoint {
             "/v1/send-authorization-code"
 
         case .login:
-            "/v1/send-authorization-code"
+            "/v1/login"
         }
 
     }
@@ -79,7 +79,12 @@ enum AuthEndpoint: Endpoint {
     #if DEBUG
 
     var host: String {
-        return "localhost:18081"
+        "192.168.1.34"
+//        "127.0.0.1."
+    }
+
+    var port: Int? {
+        18081
     }
 
     #endif

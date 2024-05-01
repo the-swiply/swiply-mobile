@@ -20,6 +20,10 @@ public extension HTTPClient {
         urlComponents.host = endpoint.host
         urlComponents.path = endpoint.path
 
+        if let port = endpoint.port {
+            urlComponents.port = port
+        }
+
         guard let url = urlComponents.url else {
             return .failure(.invalidURL)
         }
