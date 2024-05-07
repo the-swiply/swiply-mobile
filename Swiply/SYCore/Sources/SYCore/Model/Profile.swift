@@ -10,7 +10,7 @@ public struct Profile {
     public var interests: [String]
     public var town: String
     public var description: String
-    public var images: [LoadableImage]
+    public var images: [ProfileImage]
 }
 
 // MARK: - Gender
@@ -32,4 +32,16 @@ public enum Gender {
             ""
         }
     }
+}
+
+// MARK: - ProfileImage
+
+public class ProfileImage {
+
+    var image: LoadableImage
+
+    init(image: LoadableImage) {
+        self.image = image
+    }
+
 }

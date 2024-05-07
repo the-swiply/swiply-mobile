@@ -4,7 +4,7 @@ import Networking
 // MARK: - DependencyClient
 
 @DependencyClient
-struct AuthService: HTTPClient {
+struct AuthNetworking: HTTPClient {
 
     var sendCode: (_ email: String) async -> Result<EmptyResponse, RequestError> = { _ in .success(EmptyResponse()) }
     var login: (_ email: String, _ code: String) async ->
@@ -14,9 +14,9 @@ struct AuthService: HTTPClient {
 
 // MARK: - DependencyKey
 
-extension AuthService: DependencyKey {
+extension AuthNetworking: DependencyKey {
 
-    static var liveValue: AuthService {
+    static var liveValue: AuthNetworking {
         let sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { email in
             await sendRequest(endpoint: AuthEndpoint.sendCode(email: email))
         }
@@ -25,7 +25,7 @@ extension AuthService: DependencyKey {
             await sendRequest(endpoint: AuthEndpoint.login(email: email, code: code))
         }
 
-        return AuthService(
+        return AuthNetworking(
             sendCode: sendCode,
             login: login
         )
@@ -37,9 +37,9 @@ extension AuthService: DependencyKey {
 
 extension DependencyValues {
 
-  var authService: AuthService {
-    get { self[AuthService.self] }
-    set { self[AuthService.self] = newValue }
+  var authNetworking: AuthNetworking {
+    get { self[AuthNetworking.self] }
+    set { self[AuthNetworking.self] = newValue }
   }
 
 }

@@ -110,4 +110,3 @@ enum UserServiceEndpoint: TokenizedEndpoint {
     #endif
 
 }
-

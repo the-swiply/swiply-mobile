@@ -42,7 +42,7 @@ public struct OTP {
     }
 
     @Dependency(\.continuousClock) var clock
-    @Dependency(\.authService) var authService
+    @Dependency(\.authNetworking) var authNetworking
     @Dependency(\.dataManager) var dataManager
 
     public init() { }
@@ -54,7 +54,7 @@ public struct OTP {
                 return .run { [state] send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.authService.login("", "")
+                            let response = await self.authNetworking.login("", "")
                         }
                         group.addTask {
                             await send(.toggleTimer(isOn: false))
@@ -66,7 +66,7 @@ public struct OTP {
                 return .run { send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.authService.sendCode(email: dataManager.getEmail())
+                            let response = await self.authNetworking.sendCode(email: dataManager.getEmail())
                         }
                         group.addTask {
                             await send(.toggleTimer(isOn: false))
