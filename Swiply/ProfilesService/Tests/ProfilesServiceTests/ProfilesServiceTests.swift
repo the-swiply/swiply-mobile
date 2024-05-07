@@ -1,7 +1,7 @@
 import XCTest
-@testable import UserService
+@testable import ProfilesService
 
-final class UserServiceTests: XCTestCase {
+final class ProfilesServiceTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest

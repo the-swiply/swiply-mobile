@@ -2,7 +2,7 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 import CardInformation
-import UserService
+import ProfilesService
 
 public struct RecommendationsView: View {
 

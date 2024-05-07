@@ -1,7 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
-import UserService
+import ProfilesService
 import SYCore
 
 public struct GenderFeature: Reducer {

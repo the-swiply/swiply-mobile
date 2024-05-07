@@ -1,7 +1,7 @@
 import SwiftUI
 import SYVisualKit
 import CardInformation
-import UserService
+import ProfilesService
 
 public struct LikesView: View {
 

@@ -2,7 +2,7 @@ import Dependencies
 import Networking
 import SYCore
 
-// MARK: - UserService
+// MARK: - ProfilesService
 
 public protocol RecommendationsNetworking {
 
@@ -30,7 +30,7 @@ public extension DependencyValues {
 }
 
 
-// MARK: - LiveUserService
+// MARK: - LiveProfilesService
 
 class LiveRecommendationsNetworking: LiveTokenUpdatableClient, RecommendationsNetworking {
 

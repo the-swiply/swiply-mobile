@@ -19,7 +19,7 @@ let package = Package(
         .package(path: "../SYVisualKit"),
         .package(path: "../Networking"),
         .package(path: "../CardInformation"),
-        .package(path: "../UserService")
+        .package(path: "../ProfilesService")
 
     ],
     targets: [
@@ -32,7 +32,7 @@ let package = Package(
                 "SYVisualKit",
                 "Networking",
                 "CardInformation",
-                "UserService"
+                "ProfilesService"
             ],
             resources: [.process("Resources/Assets.xcassets")]
         ),

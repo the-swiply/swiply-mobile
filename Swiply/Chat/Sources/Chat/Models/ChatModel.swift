@@ -1,5 +1,5 @@
 import SwiftUI
-import UserService
+import ProfilesService
 
 public struct ChatModel: Identifiable, Equatable {
     public var id: UUID { person.id }

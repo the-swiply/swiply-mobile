@@ -2,7 +2,7 @@ import Dependencies
 import Networking
 import SYCore
 
-// MARK: - UserService
+// MARK: - ProfilesService
 
 public protocol RecommendationsService {
 
@@ -29,12 +29,12 @@ public extension DependencyValues {
 
 }
 
-// MARK: - LiveUserService
+// MARK: - LiveProfilesService
 
 class LiveRecommendationsService: LiveTokenUpdatableClient, RecommendationsService {
 
     @Dependency(\.recommendationsNetworking) var recommendationsNetworking
-    @Dependency(\.userService) var userService
+    @Dependency(\.profilesService) var profilesService
 
     func getProfiles(number: Int) async -> [Profile] {
         []
