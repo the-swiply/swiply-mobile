@@ -60,8 +60,8 @@ enum UpdateTokenEndpoint: Endpoint {
 
     #if DEBUG
 
-    var host: String {
-        return "localhost:18081"
+    var port: Int? {
+        18081
     }
 
     #endif

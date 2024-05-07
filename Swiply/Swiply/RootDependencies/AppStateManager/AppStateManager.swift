@@ -16,7 +16,7 @@ protocol AppStateManager {
 
 enum AppStateManagerKey: DependencyKey {
 
-    public static var liveValue: any AppStateManager = AppStateManagerImpl()
+    public static var liveValue: any AppStateManager = LiveAppStateManager()
 
 }
 
@@ -33,7 +33,7 @@ extension DependencyValues {
 
 // MARK: - AppStateManager
 
-class AppStateManagerImpl: AppStateManager {
+class LiveAppStateManager: AppStateManager {
 
     @Dependency(\.keychain) var keychain
 

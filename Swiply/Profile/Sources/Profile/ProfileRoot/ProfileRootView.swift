@@ -13,7 +13,7 @@ public struct ProfileRootView: View {
         NavigationStack(
             path: $store.scope(state: \.path, action: \.path)
         ) {
-            Profile(store: store.scope(state: \.profile, action: \.profile))
+            ProfileView(store: store.scope(state: \.profile, action: \.profile))
         } destination: { store in
             switch store.case {
             case let .edit(store):

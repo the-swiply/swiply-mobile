@@ -4,30 +4,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "SYKeychain",
+    name: "SYCore",
     platforms: [
         .iOS(.v17),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "SYKeychain",
-            targets: ["SYKeychain"]),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.10.2")
+            name: "SYCore",
+            targets: ["SYCore"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SYKeychain",
-            dependencies: [
-                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
-            ]
-        ),
+            name: "SYCore"),
         .testTarget(
-            name: "SYKeychainTests",
-            dependencies: ["SYKeychain"]),
+            name: "SYCoreTests",
+            dependencies: ["SYCore"]),
     ]
 )

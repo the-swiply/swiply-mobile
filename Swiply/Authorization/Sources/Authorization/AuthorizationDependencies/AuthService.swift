@@ -6,9 +6,9 @@ import Networking
 @DependencyClient
 struct AuthService: HTTPClient {
 
-    var sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { _ in .success(EmptyResponse()) }
+    var sendCode: (_ email: String) async -> Result<EmptyResponse, RequestError> = { _ in .success(EmptyResponse()) }
     var login: (_ email: String, _ code: String) async ->
-        (Result<EmptyResponse, RequestError>) = { _, _ in .success(EmptyResponse()) }
+        Result<EmptyResponse, RequestError> = { _, _ in .success(EmptyResponse()) }
 
 }
 
@@ -77,11 +77,6 @@ enum AuthEndpoint: Endpoint {
     }
 
     #if DEBUG
-
-    var host: String {
-        "192.168.1.34"
-//        "127.0.0.1."
-    }
 
     var port: Int? {
         18081
