@@ -1,6 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
-import UserService
+import ProfilesService
 
 
 public struct EditFeature: Reducer {

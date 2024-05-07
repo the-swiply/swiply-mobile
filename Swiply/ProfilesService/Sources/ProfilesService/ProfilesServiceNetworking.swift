@@ -1,9 +1,9 @@
 import Dependencies
 import Networking
 
-// MARK: - UserService
+// MARK: - ProfilesService
 
-public protocol UserService {
+public protocol ProfilesService {
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
@@ -13,9 +13,9 @@ public protocol UserService {
 
 // MARK: - DependencyKey
 
-enum UserServiceKey: DependencyKey {
+enum ProfilesServiceKey: DependencyKey {
 
-    public static var liveValue: any UserService = LiveUserService()
+    public static var liveValue: any ProfilesService = LiveProfilesService()
 
 }
 
@@ -23,35 +23,35 @@ enum UserServiceKey: DependencyKey {
 
 public extension DependencyValues {
 
-    var userService: any UserService {
-        get { self[UserServiceKey.self] }
-        set { self[UserServiceKey.self] = newValue }
+    var profilesService: any ProfilesService {
+        get { self[ProfilesServiceKey.self] }
+        set { self[ProfilesServiceKey.self] = newValue }
     }
 
 }
 
 
-// MARK: - LiveUserService
+// MARK: - LiveProfilesService
 
-class LiveUserService: LiveTokenUpdatableClient, UserService {
+class LiveProfilesService: LiveTokenUpdatableClient, ProfilesService {
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError> {
-        await sendRequest(endpoint: UserServiceEndpoint.getProfile(id: id))
+        await sendRequest(endpoint: ProfilesServiceEndpoint.getProfile(id: id))
     }
 
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError> {
-        await sendRequest(endpoint: UserServiceEndpoint.getPhotos(id: id))
+        await sendRequest(endpoint: ProfilesServiceEndpoint.getPhotos(id: id))
     }
 
     func getLikes() async -> Result<IDListResponse, RequestError> {
-        await sendRequest(endpoint: UserServiceEndpoint.getLikes)
+        await sendRequest(endpoint: ProfilesServiceEndpoint.getLikes)
     }
 
 }
 
 // MARK: - Endpoint
 
-enum UserServiceEndpoint: TokenizedEndpoint {
+enum ProfilesServiceEndpoint: TokenizedEndpoint {
 
     case getProfile(id: String)
     case getPhotos(id: String)
