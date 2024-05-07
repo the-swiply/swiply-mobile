@@ -15,7 +15,7 @@ let package = Package(
             targets: ["Likes"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.9.2"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.10.2"),
         .package(path: "../SYVisualKit"),
         .package(path: "../Networking"),
         .package(path: "../CardInformation"),

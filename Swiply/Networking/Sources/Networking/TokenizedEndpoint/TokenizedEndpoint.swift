@@ -3,9 +3,9 @@ import SYKeychain
 
 // MARK: - Endpoint
 
-protocol TokenizedEndpoint: Endpoint { }
+public protocol TokenizedEndpoint: Endpoint { }
 
-extension TokenizedEndpoint {
+public extension TokenizedEndpoint {
 
     var keychain: SYKeychain {
         DependencyValues.live.keychain

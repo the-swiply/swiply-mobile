@@ -38,7 +38,7 @@ public struct EmailInput {
         }
     }
 
-    @Dependency(\.authService.sendCode) var sendCode
+    @Dependency(\.authNetworking.sendCode) var sendCode
     @Dependency(\.dataManager) var dataManager
 
     public init() { }

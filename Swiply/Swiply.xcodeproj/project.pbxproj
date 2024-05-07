@@ -49,6 +49,7 @@
 		3E6CDC782B82506B00E4C890 /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
 		3E79FB642BD86CF900749E6B /* Events */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Events; sourceTree = "<group>"; };
 		3E8B3E6F2B88FEE400E77CC9 /* SYVisualKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYVisualKit; sourceTree = "<group>"; };
+		3EA72FAE2BE950A7003919EA /* SYCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYCore; sourceTree = "<group>"; };
 		3EB9BF482B811DBD000C502A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3EDBE76E2B9E0F1800DDC677 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EDBE7712B9E163200DDC677 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3EA72FAE2BE950A7003919EA /* SYCore */,
 				3E79FB642BD86CF900749E6B /* Events */,
 				5E09F48D2BB5DB760030F785 /* RandomCoffee */,
 				5E09F48A2BB5A65C0030F785 /* UserService */,

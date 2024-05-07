@@ -36,7 +36,7 @@ public struct ProfileFeature: Reducer {
     }
 }
 
-struct Profile: View {
+struct ProfileView: View {
     @Bindable var store: StoreOf<ProfileFeature>
     
     var body: some View {
@@ -108,7 +108,7 @@ struct Profile: View {
 }
 
 #Preview {
-    Profile(
+    ProfileView(
         store: Store(
             initialState: ProfileFeature.State(),
             reducer: { ProfileFeature()._printChanges() }

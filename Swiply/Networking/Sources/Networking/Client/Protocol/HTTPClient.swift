@@ -19,14 +19,13 @@ public extension HTTPClient {
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
         urlComponents.path = endpoint.path
+        urlComponents.port = endpoint.port
 
-        if let port = endpoint.port {
-            urlComponents.port = port
-        }
-
-        guard let url = urlComponents.url else {
+        guard var url = urlComponents.url else {
             return .failure(.invalidURL)
         }
+
+        endpoint.pathComponents.forEach { url.append(path: $0) }
 
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue

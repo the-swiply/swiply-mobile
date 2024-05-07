@@ -2,58 +2,6 @@ import SwiftUI
 import Networking
 import SYVisualKit
 
-//enum AuthEndpoint: Endpoint {
-//
-//    case sendEmail
-//
-//    var path: String { "/v1/send-authorization-code" }
-//
-//    var method: HTTPMethod { .post }
-//
-//    var header: [String : String]? {
-//        [:]
-//    }
-//
-//    var body: [String : String]? { ["email": "xfiniks@gmail.com"]}
-//
-//}
-//
-//protocol AuthServiceable {
-//    func sendCode() async -> Result<EmptyResponse, RequestError>
-//}
-//
-//struct AuthService: HTTPClient, AuthServiceable {
-//    func sendCode() async -> Result<EmptyResponse, RequestError> {
-//        return await sendRequest(endpoint: AuthEndpoint.sendEmail)
-//    }
-//}
-
-enum AuthEndpoint: Endpoint {
-
-    case sendEmail
-
-    var path: String { "/v1/send-authorization-code" }
-
-    var method: HTTPMethod { .post }
-
-    var header: [String : String]? {
-        [:]
-    }
-
-    var body: [String : String]? { ["email": "xfiniks@gmail.com"]}
-
-}
-
-protocol AuthServiceable {
-    func sendCode() async -> Result<EmptyResponse, RequestError>
-}
-
-struct AuthService: HTTPClient, AuthServiceable {
-    func sendCode() async -> Result<EmptyResponse, RequestError> {
-        return await AuthService.sendRequest(endpoint: AuthEndpoint.sendEmail)
-    }
-}
-
 struct ContentView: View {
 
     @State var isDestructive = false

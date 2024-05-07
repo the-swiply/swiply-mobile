@@ -14,11 +14,21 @@ let package = Package(
             name: "UserService",
             targets: ["UserService"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.10.2"),
+        .package(path: "../Networking"),
+        .package(path: "../SYCore")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "UserService",
+            dependencies: [
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "Networking",
+                "SYCore"
+            ],
             resources: [.process("Resources/Assets.xcassets")]
         ),
         .testTarget(

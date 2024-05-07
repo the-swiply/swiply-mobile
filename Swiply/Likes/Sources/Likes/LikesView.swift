@@ -7,11 +7,11 @@ public struct LikesView: View {
 
     @State private var data: [Person] =
     [
-        UserService.Person.ann,
-        UserService.Person.daria,
-        UserService.Person.kate,
-        UserService.Person.maria,
-        UserService.Person.vera,
+        Person.ann,
+        Person.daria,
+        Person.kate,
+        Person.maria,
+        Person.vera,
     ]
 
     public init() { }

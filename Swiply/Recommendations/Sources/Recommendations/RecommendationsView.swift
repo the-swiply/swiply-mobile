@@ -12,27 +12,27 @@ public struct RecommendationsView: View {
 
     @State private var data: [Person] =
     [
-        UserService.Person.daria,
-        UserService.Person.kate,
-        UserService.Person.maria,
-        UserService.Person.vera,
-        UserService.Person.ann
+        Person.daria,
+        Person.kate,
+        Person.maria,
+        Person.vera,
+        Person.ann
     ]
 
     @State var initialCards: [CardView] = [
-        CardView(index: 0, person: UserService.Person.daria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.daria) }),
-        CardView(index: 1, person: UserService.Person.kate.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.kate) }),
-        CardView(index: 2, person: UserService.Person.maria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.maria) }),
-        CardView(index: 3, person: UserService.Person.vera.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.vera) }),
-        CardView(index: 4, person: UserService.Person.ann.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.ann) })
+        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
+        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
+        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
+        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
+        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
     ]
 
     @State var cards: [CardView] = [
-        CardView(index: 0, person: UserService.Person.daria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.daria) }),
-        CardView(index: 1, person: UserService.Person.kate.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.kate) }),
-        CardView(index: 2, person: UserService.Person.maria.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.maria) }),
-        CardView(index: 3, person: UserService.Person.vera.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.vera) }),
-        CardView(index: 4, person: UserService.Person.ann.toCardPerson, navigateTo: { CardInformationView(person: UserService.Person.ann) })
+        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
+        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
+        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
+        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
+        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
     ]
 
     @State var value: Double = 30
