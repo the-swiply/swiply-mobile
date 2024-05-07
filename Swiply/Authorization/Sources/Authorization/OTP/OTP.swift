@@ -54,7 +54,15 @@ public struct OTP {
                 return .run { [state] send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.authNetworking.login("", "")
+                            let response = await self.authNetworking.login(dataManager.getEmail(), state.code)
+
+                            switch response {
+                            case .success:
+                                await send(.delegate(.finishAuthorization))
+
+                            case .failure:
+                                break
+                            }
                         }
                         group.addTask {
                             await send(.toggleTimer(isOn: false))
