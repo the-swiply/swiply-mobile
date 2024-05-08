@@ -5,7 +5,7 @@ import Dependencies
 
 public protocol TokenUpdatableClient {
 
-    func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    func sendRequest<T: Decodable>(_ request: Request) async -> Result<T, RequestError>
 
 }
 
@@ -35,8 +35,8 @@ open class LiveTokenUpdatableClient: TokenUpdatableClient {
 
     @Dependency(\.updateTokenMiddleware) var middleware
 
-    public func sendRequest<T>(endpoint: any Endpoint) async -> Result<T, RequestError> where T : Decodable {
-        await HTTPClientImpl.sendRequestWithMiddleware(endpoint: endpoint, middleware: middleware)
+    public func sendRequest<T>(_ request: Request) async -> Result<T, RequestError> where T : Decodable {
+        await HTTPClientImpl.sendRequestWithMiddleware(request, middleware: middleware)
     }
 
     public init() { }

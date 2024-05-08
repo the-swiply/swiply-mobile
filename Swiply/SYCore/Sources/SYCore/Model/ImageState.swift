@@ -1,8 +1,8 @@
 import SwiftUI
 
-// MARK: - LoadableImage
+// MARK: - ImageState
 
-public enum LoadableImage {
+public enum ImageState {
     case loading
     case image(Image)
 }

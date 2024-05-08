@@ -1,9 +1,9 @@
 import Dependencies
 import Networking
 
-// MARK: - ProfilesService
+// MARK: - ProfilesServiceNetworking
 
-public protocol ProfilesService {
+public protocol ProfilesServiceNetworking {
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
@@ -13,9 +13,9 @@ public protocol ProfilesService {
 
 // MARK: - DependencyKey
 
-enum ProfilesServiceKey: DependencyKey {
+enum ProfilesServiceNetworkingKey: DependencyKey {
 
-    public static var liveValue: any ProfilesService = LiveProfilesService()
+    public static var liveValue: any ProfilesServiceNetworking = LiveProfilesServiceNetworking()
 
 }
 
@@ -23,35 +23,35 @@ enum ProfilesServiceKey: DependencyKey {
 
 public extension DependencyValues {
 
-    var profilesService: any ProfilesService {
-        get { self[ProfilesServiceKey.self] }
-        set { self[ProfilesServiceKey.self] = newValue }
+    var profilesServiceNetworking: any ProfilesServiceNetworking {
+        get { self[ProfilesServiceNetworkingKey.self] }
+        set { self[ProfilesServiceNetworkingKey.self] = newValue }
     }
 
 }
 
 
-// MARK: - LiveProfilesService
+// MARK: - LiveProfilesServiceNetworking
 
-class LiveProfilesService: LiveTokenUpdatableClient, ProfilesService {
+class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNetworking {
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError> {
-        await sendRequest(endpoint: ProfilesServiceEndpoint.getProfile(id: id))
+        await sendRequest(.getProfile(id: id))
     }
 
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError> {
-        await sendRequest(endpoint: ProfilesServiceEndpoint.getPhotos(id: id))
+        await sendRequest(.getPhotos(id: id))
     }
 
     func getLikes() async -> Result<IDListResponse, RequestError> {
-        await sendRequest(endpoint: ProfilesServiceEndpoint.getLikes)
+        await sendRequest(.getLikes)
     }
 
 }
 
 // MARK: - Endpoint
 
-enum ProfilesServiceEndpoint: TokenizedEndpoint {
+enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
     case getProfile(id: String)
     case getPhotos(id: String)
@@ -110,3 +110,23 @@ enum ProfilesServiceEndpoint: TokenizedEndpoint {
     #endif
 
 }
+
+// MARK: - Extension Request
+
+private extension Request {
+
+    static var getLikes: Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
+    }
+
+    static func getProfile(id: String) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.getProfile(id: id))
+    }
+
+    static func getPhotos(id: String) -> Self {
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getPhotos(id: id))
+    }
+
+}
+
+

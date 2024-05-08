@@ -18,11 +18,11 @@ extension AuthNetworking: DependencyKey {
 
     static var liveValue: AuthNetworking {
         let sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { email in
-            await sendRequest(endpoint: AuthEndpoint.sendCode(email: email))
+            await sendRequest(.sendCode(email: email))
         }
 
         let login: (_ email: String, _ code: String) async -> (Result<EmptyResponse, RequestError>) = { email, code in
-            await sendRequest(endpoint: AuthEndpoint.login(email: email, code: code))
+            await sendRequest(.login(email: email, code: code))
         }
 
         return AuthNetworking(
@@ -83,5 +83,19 @@ enum AuthEndpoint: Endpoint {
     }
 
     #endif
+
+}
+
+// MARK: - Extension Request
+
+private extension Request {
+
+    static func sendCode(email: String) -> Self {
+        .init(endpoint: AuthEndpoint.sendCode(email: email))
+    }
+
+    static func login(email: String, code: String) -> Self {
+        .init(endpoint: AuthEndpoint.login(email: email, code: code))
+    }
 
 }

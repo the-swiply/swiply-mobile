@@ -10,12 +10,12 @@ public struct Profile {
     public var interests: [String]
     public var town: String
     public var description: String
-    public var images: [ProfileImage]
+    public var images: [LoadableImage]
 }
 
 // MARK: - Gender
 
-public enum Gender {
+public enum Gender: Codable {
     case male
     case female
     case none
@@ -34,13 +34,13 @@ public enum Gender {
     }
 }
 
-// MARK: - ProfileImage
+// MARK: - LoadableImage
 
-public class ProfileImage {
+public class LoadableImage {
 
-    var image: LoadableImage
+    var image: ImageState
 
-    init(image: LoadableImage) {
+    init(image: ImageState) {
         self.image = image
     }
 
