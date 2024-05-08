@@ -16,7 +16,7 @@ extension UpdateTokenService: DependencyKey {
     static var liveValue: UpdateTokenService {
         return UpdateTokenService(
             refresh: { token in
-                await sendRequest(endpoint: UpdateTokenEndpoint.refresh(token: token))
+                await sendRequest(.refresh(token: token))
             }
         )
     }
@@ -65,5 +65,15 @@ enum UpdateTokenEndpoint: Endpoint {
     }
 
     #endif
+
+}
+
+// MARK: - Extension Request
+
+private extension Request {
+
+    static func refresh(token: String) -> Self {
+        .init(endpoint: UpdateTokenEndpoint.refresh(token: token))
+    }
 
 }

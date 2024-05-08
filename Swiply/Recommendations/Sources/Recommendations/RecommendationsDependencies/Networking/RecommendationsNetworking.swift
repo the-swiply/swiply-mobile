@@ -35,7 +35,7 @@ public extension DependencyValues {
 class LiveRecommendationsNetworking: LiveTokenUpdatableClient, RecommendationsNetworking {
 
     func getProfiles(number: Int) async -> Result<RecommendationsResponse, RequestError> {
-        await sendRequest(endpoint: RecommendationsNetworkingEndpoint.getProfiles(number: number))
+        await sendRequest(.getProfiles(number: number))
     }
 
 }
@@ -74,6 +74,16 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
     }
 
     #endif
+
+}
+
+// MARK: - Extension Request
+
+private extension Request {
+
+    static func getProfiles(number: Int) -> Self {
+        .init(endpoint: RecommendationsNetworkingEndpoint.getProfiles(number: number))
+    }
 
 }
 
