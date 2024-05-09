@@ -1,7 +1,7 @@
 import XCTest
-@testable import UserService
+@testable import SYCore
 
-final class UserServiceTests: XCTestCase {
+final class SYCoreTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest

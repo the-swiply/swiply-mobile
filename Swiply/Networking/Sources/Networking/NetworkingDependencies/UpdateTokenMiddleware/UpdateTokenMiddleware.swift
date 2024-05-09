@@ -34,8 +34,8 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
     @Dependency(\.keychain) var keychain
     @Dependency(\.updateTokenService.refresh) var refresh
 
-    func processRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError> {
-        let result: Result<T, RequestError> = await HTTPClientImpl.sendRequest(endpoint: endpoint)
+    func processRequest<T: Decodable>(_ request: Request) async -> Result<T, RequestError> {
+        let result: Result<T, RequestError> = await HTTPClientImpl.sendRequest(request)
 
         switch result {
         case .success:
@@ -55,7 +55,7 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
                     keychain.setToken(token: response.accessToken, type: .access)
                     keychain.setToken(token: response.refreshToken, type: .refresh)
 
-                    return await processRequest(endpoint: endpoint)
+                    return await processRequest(request)
 
                 case let .failure(error):
                     return .failure(error)

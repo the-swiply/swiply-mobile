@@ -16,7 +16,7 @@ extension UpdateTokenService: DependencyKey {
     static var liveValue: UpdateTokenService {
         return UpdateTokenService(
             refresh: { token in
-                await sendRequest(endpoint: UpdateTokenEndpoint.refresh(token: token))
+                await sendRequest(.refresh(token: token))
             }
         )
     }
@@ -60,10 +60,20 @@ enum UpdateTokenEndpoint: Endpoint {
 
     #if DEBUG
 
-    var host: String {
-        return "localhost:18081"
+    var port: Int? {
+        18081
     }
 
     #endif
+
+}
+
+// MARK: - Extension Request
+
+private extension Request {
+
+    static func refresh(token: String) -> Self {
+        .init(endpoint: UpdateTokenEndpoint.refresh(token: token))
+    }
 
 }

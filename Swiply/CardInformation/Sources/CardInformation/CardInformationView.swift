@@ -1,6 +1,6 @@
 import SwiftUI
 import SYVisualKit
-import UserService
+import ProfilesService
 
 public struct CardInformationView: View {
 

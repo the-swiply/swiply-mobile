@@ -1,5 +1,5 @@
 import SwiftUI
-import UserService
+import ProfilesService
 
 
 public enum ChatOptions: Identifiable, Equatable {

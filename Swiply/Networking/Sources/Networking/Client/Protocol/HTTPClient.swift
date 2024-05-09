@@ -2,9 +2,9 @@ import Foundation
 
 public protocol HTTPClient {
     
-    static func sendRequest<T: Decodable>(endpoint: Endpoint) async -> Result<T, RequestError>
+    static func sendRequest<T: Decodable>(_ request: Request) async -> Result<T, RequestError>
     static func sendRequestWithMiddleware<T: Decodable>(
-        endpoint: Endpoint,
+        _ request: Request,
         middleware: Middleware
     ) async -> Result<T, RequestError>
 
@@ -13,31 +13,43 @@ public protocol HTTPClient {
 public extension HTTPClient {
 
     static func sendRequest<T: Decodable>(
-        endpoint: Endpoint
+        _ request: Request
     ) async -> Result<T, RequestError> {
+        let endpoint = request.endpoint
+
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
         urlComponents.path = endpoint.path
+        urlComponents.port = endpoint.port
 
-        if let port = endpoint.port {
-            urlComponents.port = port
-        }
-
-        guard let url = urlComponents.url else {
+        guard var url = urlComponents.url else {
             return .failure(.invalidURL)
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = endpoint.method.rawValue
-        request.allHTTPHeaderFields = endpoint.header
+        endpoint.pathComponents.forEach { url.append(path: $0) }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = endpoint.method.rawValue
+        urlRequest.allHTTPHeaderFields = endpoint.header
 
         if let body = endpoint.body {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
+            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request, delegate: nil)
+            let config = URLSessionConfiguration.default
+            config.waitsForConnectivity = true
+
+            switch request.requestTimeout {
+            case let .finite(interval):
+                config.timeoutIntervalForResource = interval
+
+            case .infinite:
+                config.timeoutIntervalForResource = 30000000
+            }
+
+            let (data, response) = try await URLSession(configuration: config).data(for: urlRequest, delegate: nil)
 
             guard let response = response as? HTTPURLResponse else {
                 return .failure(.noResponse)
@@ -79,10 +91,10 @@ public extension HTTPClient {
 public extension HTTPClient {
 
     static func sendRequestWithMiddleware<T: Decodable>(
-        endpoint: Endpoint,
+        _ request: Request,
         middleware: Middleware
     ) async -> Result<T, RequestError> {
-        await middleware.processRequest(endpoint: endpoint)
+        await middleware.processRequest(request)
     }
 
 }
