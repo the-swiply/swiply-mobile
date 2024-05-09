@@ -116,11 +116,11 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 private extension Request {
 
     static var getLikes: Self {
-        .init(endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
     }
 
     static func getProfile(id: String) -> Self {
-        .init(endpoint: ProfilesServiceNetworkingEndpoint.getProfile(id: id))
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getProfile(id: id))
     }
 
     static func getPhotos(id: String) -> Self {

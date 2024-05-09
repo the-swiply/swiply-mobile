@@ -25,6 +25,7 @@
 		3EDBE76F2B9E0F1800DDC677 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBE76E2B9E0F1800DDC677 /* AppDelegate.swift */; };
 		3EDBE7722B9E163200DDC677 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBE7712B9E163200DDC677 /* RootView.swift */; };
 		3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */ = {isa = PBXBuildFile; productRef = 3EE80C5B2BAA19F60018ED2F /* MainScreen */; };
+		3EE8E7B12BEBFA0400DEBE2C /* SYCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3EE8E7B02BEBFA0400DEBE2C /* SYCore */; };
 		3EF79C952BA788C000D4D3BE /* SYKeychain in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF79C942BA788C000D4D3BE /* SYKeychain */; };
 		3EFA20232BE151FE00E6DC1B /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFA20222BE151FE00E6DC1B /* AppStateManager.swift */; };
 		5E09F4892BB591F00030F785 /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 5E09F4882BB591F00030F785 /* Profile */; };
@@ -80,6 +81,7 @@
 				5E4860952BB232F8006F10F5 /* Chat in Frameworks */,
 				3EE80C5C2BAA19F60018ED2F /* MainScreen in Frameworks */,
 				5E09F48F2BB5DC0C0030F785 /* RandomCoffee in Frameworks */,
+				3EE8E7B12BEBFA0400DEBE2C /* SYCore in Frameworks */,
 				3E171AB82B7EB47500D4E016 /* Networking in Frameworks */,
 				3E8B3E712B89029700E77CC9 /* SYVisualKit in Frameworks */,
 				3E1104602BB2234A001C6DC8 /* Recommendations in Frameworks */,
@@ -243,6 +245,7 @@
 				5E09F48E2BB5DC0C0030F785 /* RandomCoffee */,
 				3E27EB9E2BB38D83007BB9CB /* CardInformation */,
 				3E79FB652BD8772100749E6B /* Events */,
+				3EE8E7B02BEBFA0400DEBE2C /* SYCore */,
 			);
 			productName = Swiply;
 			productReference = 3E171AA22B7EB36200D4E016 /* Swiply.app */;
@@ -563,6 +566,10 @@
 		3EE80C5B2BAA19F60018ED2F /* MainScreen */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MainScreen;
+		};
+		3EE8E7B02BEBFA0400DEBE2C /* SYCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SYCore;
 		};
 		3EF79C942BA788C000D4D3BE /* SYKeychain */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,3 +1,4 @@
+// MARK: - RequestError
 
 public enum RequestError: Error {
 

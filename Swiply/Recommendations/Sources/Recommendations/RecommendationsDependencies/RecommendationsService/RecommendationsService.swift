@@ -6,7 +6,7 @@ import SYCore
 
 public protocol RecommendationsService {
 
-    func getProfiles(number: Int) async -> [Profile]
+    func getProfiles(number: Int) async -> Result<[Profile], BaseError>
 
 }
 
@@ -31,13 +31,14 @@ public extension DependencyValues {
 
 // MARK: - LiveProfilesService
 
-class LiveRecommendationsService: LiveTokenUpdatableClient, RecommendationsService {
+class LiveRecommendationsService: RecommendationsService {
 
     @Dependency(\.recommendationsNetworking) var recommendationsNetworking
     @Dependency(\.profilesService) var profilesService
 
-    func getProfiles(number: Int) async -> [Profile] {
-        []
+    func getProfiles(number: Int) async -> Result<[Profile], BaseError> {
+//        profilesService.getProfile(id: <#T##String#>)
+        return .failure(.error)
     }
 
 }
