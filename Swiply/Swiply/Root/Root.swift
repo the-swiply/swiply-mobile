@@ -6,6 +6,7 @@ import Networking
 import MainScreen
 import Chat
 import Profile
+import SYCore
 
 @Reducer
 struct Root {

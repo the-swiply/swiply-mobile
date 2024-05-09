@@ -10,7 +10,26 @@ public struct Profile {
     public var interests: [String]
     public var town: String
     public var description: String
-    public var images: [LoadableImage]
+    public var images: LoadableImageCollection
+
+    public init(id: UUID,
+                name: String,
+                age: Int,
+                gender: Gender,
+                interests: [String],
+                town: String,
+                description: String,
+                images: LoadableImageCollection){
+        
+        self.id = id
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.interests = interests
+        self.town = town
+        self.description = description
+        self.images = images
+    }
 }
 
 // MARK: - Gender
@@ -34,14 +53,16 @@ public enum Gender: Codable {
     }
 }
 
-// MARK: - LoadableImage
+// MARK: - LoadableImageCollection
 
-public class LoadableImage {
+@Observable
+public class LoadableImageCollection {
 
-    var image: ImageState
+    public var images: [ImageState]
+    public var task: Task<Void, Never>?
 
-    init(image: ImageState) {
-        self.image = image
+    public init(images: [ImageState] = [.loading]) {
+        self.images = images
     }
 
 }

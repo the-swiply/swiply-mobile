@@ -45,9 +45,35 @@ class LiveProfilesService: ProfilesService {
     @Dependency(\.profilesServiceNetworking) private var profilesServiceNetworking
 
     func getProfile(id: String) async -> Result<Profile, RequestError> {
-//        let getProfileResult = await profilesServiceNetworking.getProfile(id: id)
-//        await profilesServiceNetworking.getPhotos(id: id)
-        .failure(.decode)
+        let getProfileResult = await profilesServiceNetworking.getProfile(id: id)
+
+        let profile: Profile
+
+        switch getProfileResult {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(serverProfile):
+            profile = serverProfile.userProfile.toProfile
+        }
+
+        Task { [profilesServiceNetworking]
+            let getPhotosResult = await profilesServiceNetworking.getPhotos(id: id)
+
+            switch getPhotosResult {
+            case let .failure(error):
+                break
+
+            case let .success(images):
+                images.content.forEach { imageString in
+                    if let data = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters){
+//                        return UIImage(data: data)
+                    }
+                }
+            }
+        }
+
+        return .success(profile)
     }
 
 }
