@@ -20,9 +20,8 @@ public struct OTP {
 
     }
 
-    public enum Action: BindableAction {
-        case binding(BindingAction<State>)
-//        case binding(Bool)
+    public enum Action {
+        case binding(Bool)
         case textChanged(String)
         case continueButtonTapped
         case retryButtonTapped
@@ -44,11 +43,12 @@ public struct OTP {
     @Dependency(\.continuousClock) var clock
     @Dependency(\.authNetworking) var authNetworking
     @Dependency(\.dataManager) var dataManager
+    @Dependency(\.keychain) var keychain
 
     public init() { }
 
     public var body: some ReducerOf<Self> {
-        BindingReducer()
+
         Reduce { state, action in
             switch action {
             case .continueButtonTapped:
@@ -58,7 +58,10 @@ public struct OTP {
                             let response = await self.authNetworking.login(dataManager.getEmail(), state.code)
 
                             switch response {
-                            case .success:
+                            case let .success(tokens):
+                                keychain.setToken(token: tokens.accessToken, type: .access)
+                                keychain.setToken(token: tokens.refreshToken, type: .refresh)
+
                                 await send(.delegate(.finishAuthorization))
 
                             case .failure:
@@ -75,7 +78,7 @@ public struct OTP {
                 return .run { send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.authNetworking.sendCode(email: dataManager.getEmail())
+                            _ = await self.authNetworking.sendCode(email: dataManager.getEmail())
                         }
                         group.addTask {
                             await send(.toggleTimer(isOn: false))
@@ -111,7 +114,8 @@ public struct OTP {
                     .cancellable(id: CancelID.timer)
                 }
 
-            case .textChanged:
+            case let .textChanged(text):
+                state.code = text
                 return .none
 
             case .binding:

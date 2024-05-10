@@ -8,7 +8,7 @@ struct AuthNetworking: HTTPClient {
 
     var sendCode: (_ email: String) async -> Result<EmptyResponse, RequestError> = { _ in .success(EmptyResponse()) }
     var login: (_ email: String, _ code: String) async ->
-        Result<EmptyResponse, RequestError> = { _, _ in .success(EmptyResponse()) }
+        Result<LoginResponse, RequestError> = { _, _ in .success(.init(accessToken: "", refreshToken: "")) }
 
 }
 
@@ -17,11 +17,11 @@ struct AuthNetworking: HTTPClient {
 extension AuthNetworking: DependencyKey {
 
     static var liveValue: AuthNetworking {
-        let sendCode: (_ email: String) async -> (Result<EmptyResponse, RequestError>) = { email in
+        let sendCode: (_ email: String) async -> Result<EmptyResponse, RequestError> = { email in
             await sendRequest(.sendCode(email: email))
         }
 
-        let login: (_ email: String, _ code: String) async -> (Result<EmptyResponse, RequestError>) = { email, code in
+        let login: (_ email: String, _ code: String) async -> Result<LoginResponse, RequestError> = { email, code in
             await sendRequest(.login(email: email, code: code))
         }
 
