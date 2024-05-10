@@ -2,6 +2,7 @@ import Foundation
 import ComposableArchitecture
 import Networking
 import SYCore
+import SwiftUI
 
 // MARK: - ProfilesService
 
@@ -57,7 +58,7 @@ class LiveProfilesService: ProfilesService {
             profile = serverProfile.userProfile.toProfile
         }
 
-        Task { [profilesServiceNetworking]
+        Task { [profilesServiceNetworking] in
             let getPhotosResult = await profilesServiceNetworking.getPhotos(id: id)
 
             switch getPhotosResult {
@@ -65,10 +66,16 @@ class LiveProfilesService: ProfilesService {
                 break
 
             case let .success(images):
-                images.content.forEach { imageString in
-                    if let data = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters){
-//                        return UIImage(data: data)
+                let profileImages = images.content.compactMap { imageString in
+                    if let data = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters) {
+                        return UIImage(data: data)
                     }
+
+                    return nil
+                }
+
+                profile.images.images = profileImages.map { image in
+                    return .image(Image(uiImage: image))
                 }
             }
         }

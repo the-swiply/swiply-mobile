@@ -13,33 +13,39 @@ public struct OTPView: View {
     // MARK: - View
 
     public var body: some View {
-        VStack(spacing: 30) {
+        VStack {
+            Spacer()
+
             SYOTPTextField(
-                isDestructive: $store.isIncorrectCodeEntered.sending(\.binding),
+                isDestructive: store.isIncorrectCodeEntered,
                 isFullfilled: $store.isFullfilled.sending(\.binding),
                 text: $store.code.sending(\.textChanged)
             )
 
-            switch store.isRetryButtonDisabled {
-            case .enabled:
-                SYStrokeButton(title: "Отправить код заново") {
-                    store.send(.retryButtonTapped)
-                }
-                .tint(.black)
+            Spacer()
 
-            case let .disabled(remainingTime):
-                SYStrokeButton(title: "Отправить код заново: \(remainingTime)") {
-                    store.send(.retryButtonTapped)
-                }
-                .tint(.black)
-                .disabled(true)
-            }
+            VStack(spacing: 35) {
+                switch store.isRetryButtonDisabled {
+                case .enabled:
+                    SYStrokeButton(title: "Отправить код заново") {
+                        store.send(.retryButtonTapped)
+                    }
+                    .tint(.black)
 
-            SYButton(title: "Продолжить") {
-                store.send(.continueButtonTapped)
+                case let .disabled(remainingTime):
+                    SYStrokeButton(title: "Отправить код заново: \(remainingTime)") {
+                        store.send(.retryButtonTapped)
+                    }
+                    .tint(.black)
+                    .disabled(true)
+                }
+
+                SYButton(title: "Продолжить") {
+                    store.send(.continueButtonTapped)
+                }
             }
         }
-        .padding(.horizontal, 24)
+        .padding(.all, 24)
         .navigationTitle("Мой Код")
         .navigationBarTitleDisplayMode(.large)
         .task {
@@ -52,7 +58,7 @@ public struct OTPView: View {
 #Preview {
     OTPView(
         store: Store(initialState: OTP.State()) {
-            OTP()
+            OTP()._printChanges()
         }
     )
 }
