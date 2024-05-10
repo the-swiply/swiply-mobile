@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 import ComposableArchitecture
+import Firebase
+import FirebaseCrashlytics
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -15,6 +17,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         UIView.appearance().tintColor = .systemPink
 
         store.send(.appDelegate(.didFinishLaunching))
+        FirebaseApp.configure()
         return true
     }
 

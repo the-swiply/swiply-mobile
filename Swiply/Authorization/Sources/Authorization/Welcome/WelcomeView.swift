@@ -21,9 +21,21 @@ public struct WelcomeView: View {
 
             Spacer()
 
-            SYButton(title: "Войти") {
-                store.send(.continueButtonTapped)
+            Button("Crash") {
+              fatalError("Crash was triggered")
             }
+            Button("Crash 2") {
+                let str: String? = nil
+                let str2 = str!
+            }
+            
+            Button("Crash 3") {
+                let str = []
+                let str2 = str[1]
+            }
+//            SYButton(title: "Войти") {
+//                store.send(.continueButtonTapped)
+//            }
             .padding(.all, 24)
         }
     }
