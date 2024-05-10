@@ -45,10 +45,13 @@ public struct FormCreationRoot {
         Reduce { state, action in
             switch action {
             case let .welcome(action):
-                if action == .continueButtonTapped {
+                switch action {
+                case .continueButtonTapped:
                     state.path.append(.birthdayView(BirthdayFeature.State()))
+                    return .none
+                default:
+                    return .none
                 }
-                return .none
                 
             case .path(.element(_, .birthdayView(.continueButtonTapped))):
                 state.path.append(.genderView(GenderFeature.State()))

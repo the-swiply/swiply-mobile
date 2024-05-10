@@ -1,11 +1,13 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
+import ProfilesService
 
 public struct BirthdayFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var selectedDate = Date()
    
     }
@@ -17,6 +19,15 @@ public struct BirthdayFeature: Reducer {
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .binding:
+                return .none
+            case .continueButtonTapped:
+                state.profile.age = state.selectedDate
+                return .none
+            }
+        }
     }
 }
 

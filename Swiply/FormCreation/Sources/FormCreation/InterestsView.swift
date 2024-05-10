@@ -1,11 +1,12 @@
 import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
-
+import ProfilesService
 public struct InterestsReducer: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var selectedInterests = Set<String>()
         var isButtonDisabled = true
     }
@@ -20,6 +21,7 @@ public struct InterestsReducer: Reducer {
         Reduce { state, action in
             switch action {
             case .continueButtonTapped:
+                state.profile.interests = state.selectedInterests.map { $0 }
                 return .none
             case let .interestButtonTapped(interest):
                 if state.selectedInterests.contains(interest) {

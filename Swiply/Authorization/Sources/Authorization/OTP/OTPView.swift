@@ -15,9 +15,9 @@ public struct OTPView: View {
     public var body: some View {
         VStack(spacing: 30) {
             SYOTPTextField(
-                isDestructive: $store.isIncorrectCodeEntered.sending(\.binding),
-                isFullfilled: $store.isFullfilled.sending(\.binding),
-                text: $store.code.sending(\.textChanged)
+                isDestructive: $store.isIncorrectCodeEntered,
+                isFullfilled: $store.isFullfilled,
+                text: $store.code
             )
 
             switch store.isRetryButtonDisabled {

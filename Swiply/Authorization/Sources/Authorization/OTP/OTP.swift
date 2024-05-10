@@ -11,7 +11,7 @@ public struct OTP {
             case disabled(remainingTime: Int)
         }
 
-        var code: String = ""
+        var code: String = "0000"
         var isFullfilled: Bool = false
         var isIncorrectCodeEntered: Bool = false
         var isRetryButtonDisabled: RetryButtonState = .disabled(remainingTime: 59)
@@ -20,9 +20,9 @@ public struct OTP {
 
     }
 
-    public enum Action {
-
-        case binding(Bool)
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
+//        case binding(Bool)
         case textChanged(String)
         case continueButtonTapped
         case retryButtonTapped
@@ -48,6 +48,7 @@ public struct OTP {
     public init() { }
 
     public var body: some ReducerOf<Self> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .continueButtonTapped:

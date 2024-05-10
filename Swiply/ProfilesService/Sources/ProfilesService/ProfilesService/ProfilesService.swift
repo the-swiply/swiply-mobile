@@ -8,6 +8,7 @@ import SYCore
 public protocol ProfilesService {
 
     func getProfile(id: String) async -> Result<Profile, RequestError>
+    func createProfile(profile: CreatedProfile) async -> Result<Profile, RequestError>
 
 }
 
@@ -76,4 +77,19 @@ class LiveProfilesService: ProfilesService {
         return .success(profile)
     }
 
+    func createProfile(profile: CreatedProfile) async -> Result<Profile, Networking.RequestError> {
+        let createProfileResult = await profilesServiceNetworking.createProfile(profile: profile)
+        
+        let profile: Profile = Profile(id: UUID(), name: "", age: 1, gender: .female, interests: [], town: "", description: "", images: LoadableImageCollection())
+        
+        switch createProfileResult {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(serverProfile):
+            print(serverProfile)
+        }
+        
+        return .success(profile)
+    }
 }

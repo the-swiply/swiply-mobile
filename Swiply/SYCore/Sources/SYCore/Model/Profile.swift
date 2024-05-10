@@ -51,6 +51,17 @@ public enum Gender: Codable {
             ""
         }
     }
+    
+    public var code: Int {
+        switch self {
+        case .male:
+            1
+        case .female:
+            2
+        case .none:
+            0
+        }
+    }
 }
 
 // MARK: - LoadableImageCollection

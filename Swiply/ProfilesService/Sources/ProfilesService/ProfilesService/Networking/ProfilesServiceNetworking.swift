@@ -8,6 +8,7 @@ public protocol ProfilesServiceNetworking {
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
+    func createProfile(profile: CreatedProfile) async -> Result<String, RequestError>
 
 }
 
@@ -34,6 +35,10 @@ public extension DependencyValues {
 // MARK: - LiveProfilesServiceNetworking
 
 class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNetworking {
+    
+    func createProfile(profile: CreatedProfile) async -> Result<String, Networking.RequestError> {
+        await sendRequest(.createProfile(profile: profile))
+    }
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError> {
         await sendRequest(.getProfile(id: id))
@@ -56,6 +61,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case getProfile(id: String)
     case getPhotos(id: String)
     case getLikes
+    case createProfile(CreatedProfile)
 
     var path: String {
         switch self {
@@ -67,6 +73,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
         case .getPhotos:
             "/v1/photo"
+            
+        case .createProfile:
+            "/v1/profile/create"
         }
     }
 
@@ -80,6 +89,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
         case .getLikes:
             []
+            
+        case .createProfile:
+            []
         }
     }
 
@@ -89,6 +101,8 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getLikes,
              .getPhotos:
             .get
+        case .createProfile:
+                .post
         }
     }
 
@@ -97,7 +111,17 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         case .getProfile,
              .getLikes,
              .getPhotos:
-            nil
+            return nil
+            
+        case let .createProfile(profile):
+            return ["email": profile.email,
+             "name": profile.name,
+             "interests": "",
+             "birth_day": profile.age.description,
+             "gender": profile.gender.code.description,
+             "info": profile.description]
+            
+            
         }
     }
 
@@ -125,6 +149,10 @@ private extension Request {
 
     static func getPhotos(id: String) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getPhotos(id: id))
+    }
+    
+    static func createProfile(profile: CreatedProfile) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.createProfile(profile))
     }
 
 }

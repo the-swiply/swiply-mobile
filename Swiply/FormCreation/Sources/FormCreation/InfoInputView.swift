@@ -1,20 +1,30 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
+import ProfilesService
 
 public struct InfoInputReducer: Reducer {
     
+    @Dependency(\.profilesServiceNetworking) var profilesServiceNetworking
+    
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var userInfo = ""
         var isButtonDisabled = true
         public init() { }
     }
     
-    public enum Action: BindableAction, Sendable, Equatable  {
+    public enum Action: BindableAction, Equatable  {
         case binding(BindingAction<State>)
         case changeButtonState
-        case continueButtonTapped
+        case continueButtonTapped(Types)
+        case delegate(Delegate)
+
+        @CasePathable
+        public enum Delegate {
+            case finishProfile
+        }
      }
     
     public var body: some ReducerOf<Self> {
@@ -28,9 +38,43 @@ public struct InfoInputReducer: Reducer {
             case .changeButtonState:
                 state.isButtonDisabled = state.userInfo.isEmpty
                 return .none
-            case .continueButtonTapped:
-                return .none
+            case let .continueButtonTapped(type):
+                switch type {
+                case .name:
+                    state.profile.name = state.userInfo
+                case .town:
+                    state.profile.town = state.userInfo
+                case .info:
+                    state.profile.description = state.userInfo
+                case .education:
+                    state.profile.education = state.userInfo
+                case .work:
+                    state.profile.work = state.userInfo
+                }
                 
+                if type == .work {
+                    return .run { [state] send in
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                let response = await self.profilesServiceNetworking.createProfile(profile: state.profile)
+
+                                switch response {
+                                case .success:
+                                    await send(.delegate(.finishProfile))
+
+                                case .failure:
+                                    break
+                                }
+                            }
+                            
+                        }
+                    }
+                } else {
+                    return .none
+                }
+                
+            case .delegate:
+                return .none
             }
         }
     }
@@ -38,9 +82,7 @@ public struct InfoInputReducer: Reducer {
 
 struct InfoInputView: View {
     
-    var title: String
-    var placeHolder: String
-    var description: String
+    var type: Types
     var isOptional: Bool = false
     var isMultiLine: Bool = false
     
@@ -50,11 +92,11 @@ struct InfoInputView: View {
     var body: some View {
             VStack(alignment: .leading) {
                 SYHeaderView(
-                    title: title
+                    title: type.title
                 )
                 SYTextField(
-                    placeholder: placeHolder,
-                    footerText: description,
+                    placeholder: type.placeHolder,
+                    footerText: type.description,
                     text: $store.userInfo,
                     isMultiLine: isMultiLine
                 )
@@ -62,14 +104,14 @@ struct InfoInputView: View {
                 
                 HStack {
                     SYButton(title: "Продолжить") {
-                        store.send(.continueButtonTapped)
+                        store.send(.continueButtonTapped(type))
                     }
                     .disabled(store.isButtonDisabled)
                     .padding(.top, 95)
                     
                     if isOptional {
                         Button {
-                            store.send(.continueButtonTapped)
+                            store.send(.continueButtonTapped(type))
                         } label : {
                             Text("Пропустить")
                                 .font(.title3)
@@ -99,9 +141,7 @@ struct InfoInputView: View {
     })
     
     return InfoInputView(
-        title: "Моё имя",
-        placeHolder: "Введите имя",
-        description: "Ваше имя будет отображаться в профиле Swiply, и у вас будет возможность его изменить",
+        type: .name,
         store: Store(initialState: InfoInputReducer.State(), reducer: {
             InfoInputReducer()._printChanges()
         })

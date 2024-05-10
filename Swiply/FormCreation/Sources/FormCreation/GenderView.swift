@@ -8,6 +8,7 @@ public struct GenderFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var selectedDate = Date()
         var isContinueDisabled = true
         var isFirstSelected = false
@@ -28,6 +29,7 @@ public struct GenderFeature: Reducer {
             case .binding:
                 return .none
             case .continueButtonTapped:
+                state.profile.gender = state.gender
                 return .none
             case let .genderButtonTapped(value):
                 state.gender = value

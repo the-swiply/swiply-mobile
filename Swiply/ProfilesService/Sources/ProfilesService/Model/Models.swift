@@ -3,6 +3,7 @@ import SYCore
 
 public struct Person: Identifiable, Equatable {
     public let id = UUID()
+    public let email: String
     public var name: String
     public let age: Int
     public let gender: Gender
@@ -16,6 +17,7 @@ public struct Person: Identifiable, Equatable {
 
 public extension Person {
     static let ann = Person(
+        email: "userTestAna@",
         name: "Аня",
         age: 19,
         gender: .female,
@@ -26,6 +28,7 @@ public extension Person {
     )
 
     static let kate = Person(
+        email: "userTestKate@",
         name: "Екатерина",
         age: 22,
         gender: .female,
@@ -36,6 +39,7 @@ public extension Person {
     )
 
     static let maria = Person(
+        email: "userTestMaria@",
         name: "Мария",
         age: 20,
         gender: .female,
@@ -47,6 +51,7 @@ public extension Person {
 
 
     static let daria = Person(
+        email: "userTestDaria@",
         name: "Дарья",
         age: 25,
         gender: .female,
@@ -58,6 +63,7 @@ public extension Person {
 
 
     static let vera = Person(
+        email: "userTestVera@",
         name: "Вероника",
         age: 26,
         gender: .female,
@@ -69,6 +75,7 @@ public extension Person {
 
 
     static let tima = Person(
+        email: "userTestTim@",
         name: "Тимофей",
         age: 21,
         gender: .male,
@@ -80,4 +87,43 @@ public extension Person {
 
 
 
+}
+
+public struct CreatedProfile: Equatable {
+    public let email: String
+    public var name: String
+    public var age: Date
+    public var gender: Gender
+    public var interests: [String]
+    public var town: String
+    public var description: String
+    public var images: [UIImage?]
+    public var education: String = ""
+    public var work: String = ""
+    
+    public init(email: String, name: String, age: Date, gender: Gender, interests: [String], town: String, description: String, images: [UIImage?], education: String, work: String) {
+        self.email = email
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.interests = interests
+        self.town = town
+        self.description = description
+        self.images = images
+        self.education = education
+        self.work = work
+    }
+    
+    public init() {
+        self.email = "email@test.com"
+        self.name = "name"
+        self.age = Date()
+        self.gender = .female
+        self.interests = []
+        self.town = "town"
+        self.description = "description"
+        self.images = []
+        self.education = "education"
+        self.work = "work"
+    }
 }
