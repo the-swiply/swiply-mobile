@@ -59,6 +59,7 @@ struct Root {
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
+                appStateManager.setAuthComplete()
                 state.destination = .formCreation(.init())
                 return .none
 
