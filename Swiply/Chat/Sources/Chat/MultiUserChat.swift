@@ -2,11 +2,11 @@ import SwiftUI
 import ComposableArchitecture
 
 
-public struct PersonalChatFeature: Reducer {
+public struct MultiUserChatFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        var chat = PersonalChatModel.chatSample[0]
+        var chat = MultiUserChatModel.chatSample[0]
         var text = ""
         var messageIDScroll: UUID?
     }
@@ -14,7 +14,7 @@ public struct PersonalChatFeature: Reducer {
     public enum Action: BindableAction, Equatable  {
         case binding(BindingAction<State>)
         case sendMessage(String)
-        case update(PersonalChatModel)
+        case update(MultiUserChatModel)
     }
     
     public var body: some ReducerOf<Self> {
@@ -40,9 +40,9 @@ public struct PersonalChatFeature: Reducer {
 }
 
 
-struct PersonalChat: View {
+struct MultiUserChat: View {
     
-    @Bindable var store: StoreOf<PersonalChatFeature>
+    @Bindable var store: StoreOf<MultiUserChatFeature>
     @FocusState private var isFocused
     
     var body: some View {
@@ -77,14 +77,14 @@ struct PersonalChat: View {
             ToolbarItem(placement: .topBarLeading) {
                 VStack {
                     HStack {
-                        Image(uiImage: store.chat.person.images.first!!)
+                        Image(uiImage: store.chat.image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 40, height: 40)
                             .clipShape(Circle())
                             .shadow(radius: 1)
                         
-                        Text(store.chat.person.name)
+                        Text(store.chat.title)
                             .bold()
                         
                     }
@@ -141,6 +141,14 @@ struct PersonalChat: View {
             ForEach(store.chat.messages) { message in
                 let isReceived = message.type == .received
                 HStack(spacing: 0) {
+                    if isReceived {
+                        Image(uiImage: message.person.images.first!!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
+                            .shadow(radius: 1)
+                    }
                     ZStack {
                         Text(message.text)
                             .padding(.horizontal)
@@ -162,10 +170,10 @@ struct PersonalChat: View {
 
 #Preview {
     NavigationView {
-        PersonalChat(
+        MultiUserChat(
             store: Store(
-                initialState: PersonalChatFeature.State(),
-                reducer: { PersonalChatFeature()._printChanges() }
+                initialState: MultiUserChatFeature.State(),
+                reducer: { MultiUserChatFeature()._printChanges() }
             )
         )
     }

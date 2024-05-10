@@ -91,8 +91,12 @@ struct EditView: View {
                     Section(header: Text("Данные")) {
                         TextField("Имя", text: $store.info.name)
                         TextField("Город", text: $store.info.town)
+                        TextField("Образование", text: $store.info.education, axis: .vertical)
+                        TextField("Работа", text: $store.info.work, axis: .vertical)
                         TextField("Описание", text: $store.info.description, axis: .vertical)
                             .lineLimit(1...10)
+                       
+                       
                         Button(
                             action: {
                                 store.send(.changeInterests)

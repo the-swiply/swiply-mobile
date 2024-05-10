@@ -17,15 +17,16 @@ struct HomeView: View {
             VStack {
                 Image(.logo)
                     .padding(.top, 10)
+                    .padding(.bottom, 40)
 
-                HStack {
-                    Text("Главная")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-
-                    Spacer()
-                }
-                .padding(.all, 30)
+//                HStack {
+//                    Text("Главная")
+//                        .font(.largeTitle)
+//                        .fontWeight(.bold)
+//
+//                    Spacer()
+//                }
+//                .padding(.all, 30)
 
                 Button {
                     store.send(.emailConfirmationTapped)
@@ -49,7 +50,7 @@ struct HomeView: View {
                     .background {
                         RoundedRectangle(cornerRadius: 20)
                             .foregroundStyle(.white)
-                            .shadow(radius: 8)
+                            .shadow(radius: 5)
                     }
                     .padding(.bottom, 8)
                     .padding(.horizontal, 24)
@@ -78,7 +79,7 @@ struct HomeView: View {
                     .background {
                         RoundedRectangle(cornerRadius: 20)
                             .foregroundStyle(.white)
-                            .shadow(radius: 8)
+                            .shadow(radius: 5)
                     }
                     .padding(.bottom, 8)
                     .padding(.horizontal, 24)

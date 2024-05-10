@@ -13,6 +13,8 @@ public struct RandomCoffeeFeature {
         var town = ""
         var time: TimeInterval = 10000
         var timeString: String = ""
+        var isON = false
+        var isButtonDisabled = true
 
         public init() {}
     }
@@ -36,9 +38,11 @@ public struct RandomCoffeeFeature {
                     await self.dismiss()
                 }
             case .binding:
+                state.isButtonDisabled = false
                 return .none
 
             case .continueButtonTapped:
+                state.isON = true
                 return .none
 
             case .startTimer:
@@ -101,7 +105,7 @@ public struct RandomCoffeeView: View {
                     .foregroundStyle(.white)
                 
             }
-            .padding(.top, 30)
+            .padding(.top, 10)
             HStack(spacing: 0) {
                 Text("Время начала встречи")
                     .font(.callout)
@@ -120,7 +124,7 @@ public struct RandomCoffeeView: View {
             .padding()
             .background(.thickMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .padding(.top, 30)
+            .padding(.top, 20)
             
             HStack(spacing: 0) {
                 Text("Время конца встречи")
@@ -140,22 +144,48 @@ public struct RandomCoffeeView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.top, 10)
             
-            VStack(alignment: .leading) {
+//            VStack(alignment: .leading) {
+//                TextField("Город встречи", text: $store.town)
+//                    .padding(10)
+//                    .background(.thickMaterial)
+//                    .clipShape(RoundedRectangle(cornerRadius: 16))
+//            }
+//            .padding(.top, 10)
+            
+            if store.isON {
                 
-                TextField("Город встречи", text: $store.town)
-                    .padding(15)
-                    .background(.thickMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                Text(store.timeString)
+                    .fontWeight(.semibold)
+                    .font(.title3)
+                    .gradientForeground(colors: [.pink, .purple])
+                    .padding()
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16).stroke(.pink.opacity(0.5), lineWidth: 3)
+                    }
+                    .padding(.top, 15)
+                
+                    
+            } else {
+                
+                Text("store.timeString")
+                    .fontWeight(.semibold)
+                    .font(.title3)
+                    .gradientForeground(colors: [.pink, .purple])
+                    .padding()
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16).stroke(.pink.opacity(0.5), lineWidth: 3)
+                    }
+                    .padding(.top, 15)
+                    .hidden()
+                    
             }
-            .padding(.top, 30)
-
-            Text(store.timeString)
-
+            
             Spacer()
-            SYButton(title: "Продолжить") {
+            SYButton(title: store.isON ? "Редактировать" : "Продолжить") {
                 store.send(.continueButtonTapped)
-            }
-            .padding(.bottom, 50)
+            }.disabled(store.isButtonDisabled)
+            
+            .padding(.top, 20)
             
         }
         .padding(.horizontal, 24)

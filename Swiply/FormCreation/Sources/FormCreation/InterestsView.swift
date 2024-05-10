@@ -50,7 +50,7 @@ struct InterestsView: View {
                 title: "Интересы",
                 desription: "Добавь в профиль свои интересы, так ты сможешь найти людей с общими интересами"
             )
-            .padding(.top, -80)
+//            .padding(.top, 80)
             .padding(.horizontal, 8)
             
             SYFlowView(

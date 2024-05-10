@@ -62,7 +62,7 @@ struct Root {
                 state.destination = .formCreation(.init())
                 return .none
 
-            case .destination(.presented(.formCreation(.path(.element(id: _, action: .imageView(.continueButtonTapped)))))):
+            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.continueButtonTapped)))))):
                 state.destination = .main(.init(selectedTab: .profile))
                 return .none
 

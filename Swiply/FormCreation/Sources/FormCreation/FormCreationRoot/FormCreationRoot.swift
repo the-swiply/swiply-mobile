@@ -11,8 +11,10 @@ public struct FormCreationRoot {
         case genderView(GenderFeature)
         case interestsInput(InterestsReducer)
         case cityInput(InfoInputReducer)
-        case biographyView(InfoInputReducer)
         case imageView(ImageFeature)
+        case biographyView(InfoInputReducer)
+        case education(InfoInputReducer)
+        case work(InfoInputReducer)
     }
 
     @ObservableState
@@ -62,12 +64,21 @@ public struct FormCreationRoot {
                 return .none
                 
             case .path(.element(_, .cityInput(.continueButtonTapped))):
+                state.path.append(.imageView(ImageFeature.State()))
+                return .none
+                
+            case .path(.element(_, .imageView(.continueButtonTapped))):
                 state.path.append(.biographyView(InfoInputReducer.State()))
                 return .none
                 
             case .path(.element(_, .biographyView(.continueButtonTapped))):
-                state.path.append(.imageView(ImageFeature.State()))
+                state.path.append(.education(InfoInputReducer.State()))
                 return .none
+                
+            case .path(.element(_, .education(.continueButtonTapped))):
+                state.path.append(.work(InfoInputReducer.State()))
+                return .none
+                
             case .path:
                 return .none
             }

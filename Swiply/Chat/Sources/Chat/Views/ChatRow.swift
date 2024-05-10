@@ -4,8 +4,11 @@ import ComposableArchitecture
 
 struct ChatRow: View {
     
-    let chat: ChatModel
-    let action: (ChatModel) -> Void
+    let chat: PersonalChatModel
+    let action: (PersonalChatModel) -> Void
+    let delete: (PersonalChatModel) -> Void
+    let mute: (PersonalChatModel) -> Void
+    @State private var showingPopover = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -24,8 +27,11 @@ struct ChatRow: View {
                             HStack {
                                 Text(chat.person.name)
                                     .bold()
+                                if chat.isMuted {
+                                    Image(systemName: "speaker.slash")
+                                }
+                                
                                 Spacer()
-                                //                        Text("09/06/2023")
                             }
                             
                             HStack {
@@ -37,24 +43,27 @@ struct ChatRow: View {
                                     .padding(.trailing, 40)
                                 
                             }
-                            //                    Divider().padding(.top)
                             
                         }
+                    
                         
                         Circle()
                             .foregroundStyle(chat.unreadMessage ? .pink : .clear)
                             .frame(width: 18, height: 18)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-                    
+                  
                     
                 }
                 .frame(height: 80)
                 .padding(.horizontal)
+           
             }
+           
             .onTapGesture {
                 action(chat)
             }
+           
             Divider()
                 .padding(.leading, 90)
                 .padding(.trailing)
