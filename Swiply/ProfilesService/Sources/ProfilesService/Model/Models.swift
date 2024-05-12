@@ -13,6 +13,43 @@ public struct Person: Identifiable, Equatable {
     public var images: [UIImage?]
     public var education: String = ""
     public var work: String = ""
+    
+    init(email: String, name: String, age: Int, gender: Gender, interests: [String], town: String, description: String, images: [UIImage?], education: String, work: String) {
+        self.email = email
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.interests = interests
+        self.town = town
+        self.description = description
+        self.images = images
+        self.education = education
+        self.work = work
+    }
+    
+    init(email: String, name: String, age: Int, gender: Gender, interests: [String], town: String, description: String, images: [UIImage?]) {
+        self.email = email
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.interests = interests
+        self.town = town
+        self.description = description
+        self.images = images
+    }
+    
+    public init(profile: Profile) {
+        self.email = profile.email
+        self.name = profile.name
+        self.age = profile.age
+        self.gender = profile.gender
+        self.interests = profile.interests
+        self.town = "" //town profile.city
+        self.description = profile.description
+        self.images = []
+        self.education = "" //education
+        self.work = "work"
+    }
 }
 
 public extension Person {
@@ -126,4 +163,9 @@ public struct CreatedProfile: Equatable {
         self.education = "education"
         self.work = "work"
     }
+}
+
+
+public struct UserID: Decodable {
+    let id: String
 }

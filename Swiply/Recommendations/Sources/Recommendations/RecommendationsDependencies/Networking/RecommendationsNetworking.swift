@@ -69,7 +69,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 
     #if DEBUG
 
-    var port: Int {
+    var port: Int? {
         18083
     }
 

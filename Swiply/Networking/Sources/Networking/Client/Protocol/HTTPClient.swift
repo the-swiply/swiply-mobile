@@ -36,6 +36,7 @@ public extension HTTPClient {
         if let body = endpoint.body {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
+        
         print("-----------")
         print(urlRequest.cURL())
         print("-----------")
@@ -66,11 +67,22 @@ public extension HTTPClient {
 
                     return .success(emptyResponse)
                 }
+                
+//                let jsonData = try JSONSerialization.data(withJSONObject: data)
+
+                // Convert to a string and print
+                if let JSONString = String(data: data, encoding: String.Encoding.utf8) {
+                   print(JSONString)
+                }
 
                 guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else {
                     return .failure(.decode)
                 }
 
+                print("----ответ-------")
+                print(decodedResponse)
+                print("----ответ-------")
+                
                 return .success(decodedResponse)
 
             case 401:

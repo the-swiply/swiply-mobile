@@ -9,6 +9,7 @@ public protocol ProfilesServiceNetworking {
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
     func createProfile(profile: CreatedProfile) async -> Result<String, RequestError>
+    func whoAmI() async -> Result<UserID, RequestError>
 
 }
 
@@ -51,6 +52,10 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
     func getLikes() async -> Result<IDListResponse, RequestError> {
         await sendRequest(.getLikes)
     }
+    
+    func whoAmI() async -> Result<UserID, Networking.RequestError> {
+        await sendRequest(.whoAmI)
+    }
 
 }
 
@@ -62,6 +67,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case getPhotos(id: String)
     case getLikes
     case createProfile(CreatedProfile)
+    case whoAmI
 
     var path: String {
         switch self {
@@ -76,6 +82,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .createProfile:
             "/v1/profile/create"
+            
+        case .whoAmI:
+            "/v1/profile/who-am-i"
         }
     }
 
@@ -92,6 +101,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .createProfile:
             []
+            
+        case .whoAmI:
+            []
         }
     }
 
@@ -99,7 +111,8 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .getProfile,
              .getLikes,
-             .getPhotos:
+             .getPhotos,
+             .whoAmI:
             .get
         case .createProfile:
                 .post
@@ -108,26 +121,29 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
     var body: [String : String]? {
         switch self {
-        case .getProfile,
-             .getLikes,
-             .getPhotos:
+        case .getLikes,
+             .getPhotos,
+             .whoAmI:
             return nil
             
         case let .createProfile(profile):
-            return ["email": profile.email,
-             "name": profile.name,
-             "interests": "",
-             "birth_day": profile.age.description,
-             "gender": profile.gender.code.description,
-             "info": profile.description]
+            return [
+                "email": profile.email,
+                "name": profile.name,
+                "birth_day": "2024-05-10T20:12:00.326Z",
+                "gender": "MALE",
+                "info": profile.description,
+                "subscriptionType": "STANDARD"
+            ]
             
-            
+        case let .getProfile(id):
+            return ["id": id]
         }
     }
 
     #if DEBUG
 
-    var port: Int {
+    var port: Int? {
         18086
     }
 
@@ -153,6 +169,10 @@ private extension Request {
     
     static func createProfile(profile: CreatedProfile) -> Self {
         .init(endpoint: ProfilesServiceNetworkingEndpoint.createProfile(profile))
+    }
+    
+    static var whoAmI: Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.whoAmI)
     }
 
 }

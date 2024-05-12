@@ -10,7 +10,7 @@ public protocol ProfilesService {
 
     func getProfile(id: String) async -> Result<Profile, RequestError>
     func createProfile(profile: CreatedProfile) async -> Result<Profile, RequestError>
-
+    func whoAmI() async -> Result<UserID, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -87,7 +87,7 @@ class LiveProfilesService: ProfilesService {
     func createProfile(profile: CreatedProfile) async -> Result<Profile, Networking.RequestError> {
         let createProfileResult = await profilesServiceNetworking.createProfile(profile: profile)
         
-        let profile: Profile = Profile(id: UUID(), name: "", age: 1, gender: .female, interests: [], town: "", description: "", images: LoadableImageCollection())
+        let profile: Profile = Profile(id: UUID(), name: "", age: 1, gender: .female, interests: [], town: "", description: "", email: "", images: LoadableImageCollection())
         
         switch createProfileResult {
         case let .failure(error):
@@ -98,5 +98,16 @@ class LiveProfilesService: ProfilesService {
         }
         
         return .success(profile)
+    }
+    
+    func whoAmI() async -> Result<UserID, Networking.RequestError> {
+        let findProfileResult = await profilesServiceNetworking.whoAmI()
+        
+        switch findProfileResult {
+        case let .success(userId):
+            return .success(userId)
+        case let .failure(error):
+            return .failure(error)
+        }
     }
 }

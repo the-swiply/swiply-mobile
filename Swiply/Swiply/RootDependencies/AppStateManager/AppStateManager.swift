@@ -10,6 +10,7 @@ protocol AppStateManager {
     func getState() -> AppState
     func setAuthComplete()
     func setProfileCreationComplete()
+    func setUserId(id: String)
 
 }
 
@@ -40,6 +41,7 @@ class LiveAppStateManager: AppStateManager {
     @Dependency(\.defaultAppStorage) var storage
 
     func getState() -> AppState {
+//        return .authorization
         if !storage.bool(forKey: "isAuthComplete") {
             return .authorization
         }
@@ -61,11 +63,15 @@ class LiveAppStateManager: AppStateManager {
     }
 
     func setAuthComplete() {
-        storage.setValue(false, forKey: "isFirstRun")
+        storage.setValue(true, forKey: "isAuthComplete")
     }
 
     func setProfileCreationComplete() {
         storage.setValue(true, forKey: "wasProfileCreated")
+    }
+    
+    func setUserId(id: String) {
+        storage.setValue(id, forKey: "userId")
     }
 
 }

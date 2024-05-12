@@ -30,10 +30,15 @@ struct Root {
         case didChangeScenePhase(ScenePhase)
         case destination(PresentationAction<Destination.Action>)
         case requestAuthorization
+        case findProfile
+        case createProfile
+        case showMain
     }
 
-    @Dependency(\.forbiddenErrorNotifier) var forbiddenErrorNotifier
+    @Dependency(\.updateTokenMiddleware) var forbiddenErrorNotifier
     @Dependency(\.appStateManager) var appStateManager
+    @Dependency(\.rootServiceNetworking) var rootServiceNetworking
+    @Dependency(\.profileManager) var profileManager
 
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -45,11 +50,11 @@ struct Root {
                 case .authorization:
                     state.destination = .authorization(.init())
 
-                case .main:
+                case .main, .profileCreation:
                     state.destination = .main(.init())
 
-                case .profileCreation:
-                    state.destination = .profile(.init())
+//                case .profileCreation:
+//                    state.destination = .formCreation(.init())
                 }
                 
                 return .run { [forbiddenErrorNotifier] send in
@@ -60,11 +65,15 @@ struct Root {
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
                 appStateManager.setAuthComplete()
-                state.destination = .formCreation(.init())
-                return .none
+//                state.destination = .formCreation(.init())
+                return .run { send in
+                    await send(.findProfile)
+                }
 
             case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.delegate(.finishProfile))))))):
+                appStateManager.setProfileCreationComplete()
                 state.destination = .main(.init(selectedTab: .profile))
+                
                 return .none
 
             case .appDelegate:
@@ -79,6 +88,29 @@ struct Root {
 
             case .destination:
                 return .none
+            case .createProfile:
+                state.destination = .formCreation(.init())
+                return .none
+            case .showMain:
+                state.destination = .main(.init(selectedTab: .profile))
+                return .none
+            case .findProfile:
+                return .run { send in
+                    await withTaskGroup(of: Void.self) { group in
+                        group.addTask {
+                            let response = await self.rootServiceNetworking.whoAmI()
+
+                            switch response {
+                            case let .success(userId):
+                                //TODO:- сохранение профиля id и запрос данных
+                                profileManager.setUserId(id: userId.id)
+                                await send(.showMain)
+                            case .failure:
+                                await send(.createProfile)
+                            }
+                        }
+                    }
+                }
             }
         }
         .ifLet(\.$destination, action: \.destination)

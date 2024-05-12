@@ -32,6 +32,7 @@ public struct OTP {
         @CasePathable
         public enum Delegate {
             case finishAuthorization
+            
         }
         
     }

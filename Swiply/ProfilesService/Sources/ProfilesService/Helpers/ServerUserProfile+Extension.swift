@@ -8,10 +8,11 @@ extension ServerUserProfile {
             id: UUID(uuidString: self.id) ?? UUID(),
             name: self.name,
             age: 22,
-            gender: .male,
+            gender: .init(rawValue: self.gender) ?? .none,
             interests: self.interests.map { $0.id },
             town: "Moscow",
-            description: self.info,
+            description: self.info, 
+            email: self.email,
             images: .init()
         )
     }

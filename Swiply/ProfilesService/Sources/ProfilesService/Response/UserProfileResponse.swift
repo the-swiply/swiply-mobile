@@ -11,7 +11,8 @@ public struct UserProfileResponse: Codable {
 public struct ServerUserProfile: Codable {
     let id, email, name: String
     let interests: [InterestResponse]
-    let birthDay, gender, info, subscriptionType: String
+    let birthDay: Date
+    let gender, info, subscriptionType: String
     let location: LocationResponse
 }
 

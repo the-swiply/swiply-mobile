@@ -6,7 +6,7 @@ public struct ProfileFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        var user = Person.tima
+        @Shared(.inMemory("Person")) var user = Person.ann
         public init() {}
     }
     

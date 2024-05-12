@@ -13,7 +13,7 @@ public extension TokenizedEndpoint {
 
     var header: [String: String]? {
         [
-            "Authorization": keychain.getToken(type: .access) ?? ""
+            "Authorization": "Bearer " + (keychain.getToken(type: .access) ?? "")
         ]
     }
 

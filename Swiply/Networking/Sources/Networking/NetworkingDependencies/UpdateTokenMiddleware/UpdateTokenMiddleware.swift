@@ -3,7 +3,9 @@ import Dependencies
 
 // MARK: - UpdateTokenMiddleware
 
-public protocol UpdateTokenMiddleware: Middleware { }
+public protocol UpdateTokenMiddleware: Middleware { 
+    func add(handler: @escaping () async  -> Void)
+}
 
 // MARK: - DependencyKey
 
@@ -58,7 +60,19 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
                     return await processRequest(request)
 
                 case let .failure(error):
-                    return .failure(error)
+                    switch error {
+                    case .forbidden:
+                        forbiddenErrorHandlers.forEach { handler in
+                            Task.detached {
+                                await handler()
+                            }
+                        }
+
+                        return result
+
+                    default:
+                        return result
+                    }
                 }
 
             case .forbidden:
