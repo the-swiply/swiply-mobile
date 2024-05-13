@@ -10,6 +10,7 @@ public struct Home {
     public enum Path {
         case emailConformation(EmailInput)
         case otp(OTP)
+        case randomCoffeeInfo(RCInfo)
         case randomCoffee(RandomCoffeeFeature)
         case events(EventsFeature)
     }
@@ -31,6 +32,11 @@ public struct Home {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .path(.element(id: _, action: .randomCoffeeInfo(.continueButtonTapped))):
+                state.path.append(.randomCoffee(.init()))
+//                state.path.removeFirst()
+                return .none
+                
             case .path(.element(id: _, action: .emailConformation(.delegate(.receiveSuccessFromServer)))):
                 state.path.append(.otp(.init()))
                 return .none
@@ -43,13 +49,12 @@ public struct Home {
                 return .none
 
             case .randomCoffeeTapped:
-                state.path.append(.randomCoffee(.init()))
+                state.path.append(.randomCoffeeInfo(.init()))
                 return .none
 
             case .eventsTapped:
                 state.path.append(.events(.init()))
                 return .none
-
             }
         }
         .forEach(\.path, action: \.path)

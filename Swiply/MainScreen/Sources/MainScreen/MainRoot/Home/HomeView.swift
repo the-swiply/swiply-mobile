@@ -127,6 +127,8 @@ struct HomeView: View {
 
             case let .events(store):
                 EventsView()
+            case let .randomCoffeeInfo(store):
+                RCInfoView(store: store)
             }
         }
     }
