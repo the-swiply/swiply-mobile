@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import SYCore
 
 @Reducer
 public struct EmailInput {
@@ -49,13 +50,13 @@ public struct EmailInput {
             case .continueButtonTapped:
                 state.isContinueButtonDisabled = true
                 dataManager.setEmail(state.text)
-
                 return .run { [state] send in
                     let result = await sendCode(state.text)
 
                     switch result {
                     case .success:
                         dataManager.setEmail(state.text)
+                        CrashManager.shared.addLog(message: "auth: Code send")
                         await send(.delegate(.receiveSuccessFromServer))
 
                     case .failure:

@@ -38,6 +38,7 @@ class LiveAppStateManager: AppStateManager {
     @Dependency(\.keychain) var keychain
 
     func getState() -> AppState {
+        return .authorization
         guard let refresh = keychain.getToken(type: .refresh) else {
             return .authorization
         }

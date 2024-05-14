@@ -1,6 +1,8 @@
 import SwiftUI
 import ComposableArchitecture
 import ProfilesService
+import SYCore
+import OSLog
 
 public struct ProfileFeature: Reducer {
     
@@ -104,6 +106,17 @@ struct ProfileView: View {
             Spacer()
         }
         .padding(.horizontal, 24)
+        .onAppear(perform: {
+            Logger.viewCycle.info("View Appeared!")
+            Logger.viewCycle.notice("Notice example")
+            Logger.viewCycle.info("Info example")
+            Logger.viewCycle.debug("Debug example")
+            Logger.viewCycle.trace("Notice example")
+            Logger.viewCycle.warning("Warning example")
+            Logger.viewCycle.error("Error example")
+            Logger.viewCycle.fault("Fault example")
+            Logger.viewCycle.critical("Critical example")
+        })
     }
 }
 

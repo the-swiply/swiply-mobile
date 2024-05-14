@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import ComposableArchitecture
 import Firebase
-import FirebaseCrashlytics
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
 

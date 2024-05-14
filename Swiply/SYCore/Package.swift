@@ -16,6 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.10.2"),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.25.0"),
         .package(path: "../Networking")
     ],
     targets: [
@@ -25,6 +26,7 @@ let package = Package(
             name: "SYCore",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk"),
                 "Networking"
             ]
         ),
@@ -33,3 +35,4 @@ let package = Package(
             dependencies: ["SYCore"]),
     ]
 )
+

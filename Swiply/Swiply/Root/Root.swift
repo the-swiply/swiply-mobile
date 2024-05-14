@@ -49,7 +49,7 @@ struct Root {
                     state.destination = .main(.init())
 
                 case .profileCreation:
-                    state.destination = .profile(.init())
+                    state.destination = .formCreation(.init())
                 }
                 
                 return .run { [forbiddenErrorNotifier] send in
@@ -59,7 +59,11 @@ struct Root {
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
+                CrashManager.shared.setIsUserPremium(false)
+                CrashManager.shared.addLog(message: "profileCreation: Start")
                 state.destination = .formCreation(.init())
+                let str: String? = nil
+                let str2 = str!
                 return .none
 
             case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.continueButtonTapped)))))):

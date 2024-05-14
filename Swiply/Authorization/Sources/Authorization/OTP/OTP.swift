@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import SYCore
 
 @Reducer
 public struct OTP {
@@ -58,6 +59,7 @@ public struct OTP {
 
                             switch response {
                             case .success:
+                                CrashManager.shared.addLog(message: "auth: Complete")
                                 await send(.delegate(.finishAuthorization))
 
                             case .failure:
