@@ -29,14 +29,10 @@ public struct FormCreationRootView: View {
                 
             case let .birthdayView(store):
                 BirthdayView(
-                    title: "Мой день рождения",
-                    description: "Ваш возраст будет указан в профиле",
                     store: store
                 )
             case let .genderView(store):
                 GenderView(
-                    title: "Мой пол",
-                    description: "Выберите свой пол",
                     store: store
                 )
             case let .biographyView(store):

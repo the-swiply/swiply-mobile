@@ -41,7 +41,7 @@ class LiveAppStateManager: AppStateManager {
     @Dependency(\.defaultAppStorage) var storage
 
     func getState() -> AppState {
-//        return .authorization
+        return .profileCreation
         if !storage.bool(forKey: "isAuthComplete") {
             return .authorization
         }
@@ -75,3 +75,5 @@ class LiveAppStateManager: AppStateManager {
     }
 
 }
+
+ 

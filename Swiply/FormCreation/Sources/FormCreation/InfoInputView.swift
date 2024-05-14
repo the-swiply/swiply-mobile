@@ -3,7 +3,7 @@ import ComposableArchitecture
 import SYVisualKit
 import ProfilesService
 
-public struct InfoInputReducer: Reducer {
+public struct InfoInputFeature: Reducer {
     
     @Dependency(\.profilesServiceNetworking) var profilesServiceNetworking
     
@@ -86,7 +86,7 @@ struct InfoInputView: View {
     var isOptional: Bool = false
     var isMultiLine: Bool = false
     
-    @Bindable var store: StoreOf<InfoInputReducer>
+    @Bindable var store: StoreOf<InfoInputFeature>
     
     
     var body: some View {
@@ -136,14 +136,14 @@ struct InfoInputView: View {
 
 
 #Preview {
-    @Bindable var kii = Store(initialState: InfoInputReducer.State(), reducer: {
-        InfoInputReducer()._printChanges()
+    @Bindable var kii = Store(initialState: InfoInputFeature.State(), reducer: {
+        InfoInputFeature()._printChanges()
     })
     
     return InfoInputView(
         type: .name,
-        store: Store(initialState: InfoInputReducer.State(), reducer: {
-            InfoInputReducer()._printChanges()
+        store: Store(initialState: InfoInputFeature.State(), reducer: {
+            InfoInputFeature()._printChanges()
         })
     )
 }

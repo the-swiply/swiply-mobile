@@ -123,7 +123,8 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .getLikes,
              .getPhotos,
-             .whoAmI:
+             .whoAmI,
+             .getProfile:
             return nil
             
         case let .createProfile(profile):
@@ -131,13 +132,13 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
                 "email": profile.email,
                 "name": profile.name,
                 "birth_day": "2024-05-10T20:12:00.326Z",
-                "gender": "MALE",
+                "gender": profile.gender.rawValue,
                 "info": profile.description,
-                "subscriptionType": "STANDARD"
+                "subscriptionType": "STANDARD",
+                "city": profile.town,
+                "work": profile.work,
+                "education": profile.education
             ]
-            
-        case let .getProfile(id):
-            return ["id": id]
         }
     }
 

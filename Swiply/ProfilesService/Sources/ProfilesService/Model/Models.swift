@@ -167,5 +167,5 @@ public struct CreatedProfile: Equatable {
 
 
 public struct UserID: Decodable {
-    let id: String
+    public let id: String
 }

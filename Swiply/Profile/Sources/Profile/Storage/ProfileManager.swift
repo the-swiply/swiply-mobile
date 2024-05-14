@@ -18,7 +18,7 @@ public protocol ProfileManager {
 //    func setProfileCreationComplete()
 //    func setUserId(id: String)
     func setUserId(id: String)
-//    func setProfileInfo(_ info: Person)
+    func setProfileInfo(_ info: Person)
     func getUserId() -> String
 //    func getProfileInfo()
     func clearAll()
@@ -55,7 +55,7 @@ class LiveProfileManager: ProfileManager {
 //        storage.object(forKey: "profile")
 //    }
     
-
+    @Shared(.inMemory("Person")) var user = Person.ann
     @Dependency(\.keychain) var keychain
     @Dependency(\.defaultAppStorage) var storage
     
@@ -64,9 +64,9 @@ class LiveProfileManager: ProfileManager {
         storage.setValue(id, forKey: "userId")
     }
     
-//    func setProfileInfo(_ info: ProfilesService.Person) {
-//
-//    }
+    func setProfileInfo(_ info: Person) {
+        user = info
+    }
 //    
     func getUserId() -> String {
         storage.string(forKey: "userId") ?? ""

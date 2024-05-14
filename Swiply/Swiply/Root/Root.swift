@@ -30,14 +30,15 @@ struct Root {
         case didChangeScenePhase(ScenePhase)
         case destination(PresentationAction<Destination.Action>)
         case requestAuthorization
-        case findProfile
+        case getUserId
+        case findProfile(id: String)
         case createProfile
         case showMain
     }
 
     @Dependency(\.updateTokenMiddleware) var forbiddenErrorNotifier
     @Dependency(\.appStateManager) var appStateManager
-    @Dependency(\.rootServiceNetworking) var rootServiceNetworking
+    @Dependency(\.profilesService) var rootServiceNetworking
     @Dependency(\.profileManager) var profileManager
 
     var body: some ReducerOf<Self> {
@@ -46,15 +47,16 @@ struct Root {
             case .appDelegate(.didFinishLaunching):
                 let appState = appStateManager.getState()
 
+                state.destination = .authorization(.init())
                 switch appState {
                 case .authorization:
                     state.destination = .authorization(.init())
 
-                case .main, .profileCreation:
+                case .main:
                     state.destination = .main(.init())
 
-//                case .profileCreation:
-//                    state.destination = .formCreation(.init())
+                case .profileCreation:
+                    state.destination = .formCreation(.init())
                 }
                 
                 return .run { [forbiddenErrorNotifier] send in
@@ -65,9 +67,8 @@ struct Root {
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
                 appStateManager.setAuthComplete()
-//                state.destination = .formCreation(.init())
                 return .run { send in
-                    await send(.findProfile)
+                    await send(.getUserId)
                 }
 
             case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.delegate(.finishProfile))))))):
@@ -94,16 +95,36 @@ struct Root {
             case .showMain:
                 state.destination = .main(.init(selectedTab: .profile))
                 return .none
-            case .findProfile:
+            case .getUserId:
+                let userId = profileManager.getUserId()
+                if userId.isEmpty {
+                    return .run { send in
+                        await withTaskGroup(of: Void.self) { group in
+                            let response = await self.rootServiceNetworking.whoAmI()
+                            switch response {
+                            case let .success(userId):
+                                profileManager.setUserId(id: userId.id)
+                                await send(.findProfile(id: userId.id))
+                            case .failure:
+//                              TODO: - показ ошибки
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    return .run { send in
+                        await send(.findProfile(id: userId))
+                    }
+                }
+                
+            case let .findProfile(id):
                 return .run { send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
-                            let response = await self.rootServiceNetworking.whoAmI()
-
-                            switch response {
-                            case let .success(userId):
-                                //TODO:- сохранение профиля id и запрос данных
-                                profileManager.setUserId(id: userId.id)
+                            let responseProfile = await self.rootServiceNetworking.getProfile(id: id)
+                            switch responseProfile {
+                            case let .success(profile):
+                          //     profileManager.setProfileInfo(profile)
                                 await send(.showMain)
                             case .failure:
                                 await send(.createProfile)

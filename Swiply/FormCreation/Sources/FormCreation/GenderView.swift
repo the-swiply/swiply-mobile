@@ -45,15 +45,13 @@ public struct GenderFeature: Reducer {
 
 struct GenderView: View {
     
-    var title: String
-    var description: String
     @Bindable var store: StoreOf<GenderFeature>
     
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(
-                title: title,
-                desription: description
+                title: "Мой пол",
+                desription: "Выберите свой пол"
             )
             
             SYStrokeButton(title: "Женщина") {
@@ -78,8 +76,6 @@ struct GenderView: View {
 
 #Preview {
     GenderView(
-        title: "Мой пол",
-        description: "Выберите свой пол",
         store: Store(initialState: GenderFeature.State(), reducer: {
             GenderFeature()._printChanges()
         })

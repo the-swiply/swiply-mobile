@@ -58,6 +58,10 @@ public extension HTTPClient {
                 return .failure(.noResponse)
             }
 
+            print("----statusCode-------")
+            print(response.statusCode)
+            print("----statusCode-------")
+            
             switch response.statusCode {
             case 200...299:
                 if T.self == EmptyResponse.self {
@@ -78,6 +82,7 @@ public extension HTTPClient {
                 guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else {
                     return .failure(.decode)
                 }
+   
 
                 print("----ответ-------")
                 print(decodedResponse)

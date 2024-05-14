@@ -42,7 +42,9 @@ public struct ImageFeature: Reducer {
 }
 
 struct ImageView: View {
+    
     @Bindable var store: StoreOf<ImageFeature>
+    
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(

@@ -2,7 +2,7 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 import ProfilesService
-public struct InterestsReducer: Reducer {
+public struct InterestsFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
@@ -42,7 +42,7 @@ public struct InterestsReducer: Reducer {
 
 struct InterestsView: View {
     
-    var store: StoreOf<InterestsReducer>
+    var store: StoreOf<InterestsFeature>
 
     private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"  ,"тeaтp"  ,"it" ,"суши" ,"книги"  ,"йога" ,"фотография" ,"стендап" ,"ландшафтный дизайн" , "тату", "иностранные языки" ,"танцы" ,"восточные танцы" ,"спорт","пошив одежды", "медитации", "бег" ,"здоровый образ жизни", "пицца"]
 
@@ -79,8 +79,8 @@ struct InterestsView: View {
 
 struct InterestsView_Preview: PreviewProvider {
     static var previews: some View {
-        InterestsView(store: Store(initialState: InterestsReducer.State(), reducer: {
-            InterestsReducer()
+        InterestsView(store: Store(initialState: InterestsFeature.State(), reducer: {
+            InterestsFeature()
                 ._printChanges()
         }))
     }

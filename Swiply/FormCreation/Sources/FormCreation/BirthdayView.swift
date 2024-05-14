@@ -33,15 +33,13 @@ public struct BirthdayFeature: Reducer {
 
 struct BirthdayView: View {
     
-    var title: String
-    var description: String
     @Bindable var store: StoreOf<BirthdayFeature>
     
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(
-                title: title,
-                desription: description
+                title: "Мой день рождения",
+                desription: "Ваш возраст будет указан в профиле"
             )
             
             DatePicker(
@@ -66,8 +64,6 @@ struct BirthdayView: View {
 
 #Preview {
     BirthdayView(
-        title: "Мой День рождения",
-        description: "Ваш возраст будет указан в профиле", 
         store: Store(initialState: BirthdayFeature.State(), reducer: {
             BirthdayFeature()._printChanges()
         })

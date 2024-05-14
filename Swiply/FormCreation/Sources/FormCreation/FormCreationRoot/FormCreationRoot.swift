@@ -9,22 +9,22 @@ public struct FormCreationRoot {
     public enum Path {
         case birthdayView(BirthdayFeature)
         case genderView(GenderFeature)
-        case interestsInput(InterestsReducer)
-        case cityInput(InfoInputReducer)
+        case interestsInput(InterestsFeature)
+        case cityInput(InfoInputFeature)
         case imageView(ImageFeature)
-        case biographyView(InfoInputReducer)
-        case education(InfoInputReducer)
-        case work(InfoInputReducer)
+        case biographyView(InfoInputFeature)
+        case education(InfoInputFeature)
+        case work(InfoInputFeature)
     }
 
     @ObservableState
     public struct State: Equatable {
 
         var path = StackState<Path.State>()
-        var welcome = InfoInputReducer.State()
+        var welcome = InfoInputFeature.State()
 
         public init(path: StackState<Path.State> = StackState<Path.State>(),
-                    welcome: InfoInputReducer.State = InfoInputReducer.State()) {
+                    welcome: InfoInputFeature.State = InfoInputFeature.State()) {
             self.path = path
             self.welcome = welcome
         }
@@ -33,14 +33,16 @@ public struct FormCreationRoot {
 
     public enum Action {
         case path(StackAction<Path.State, Path.Action>)
-        case welcome(InfoInputReducer.Action)
+        case welcome(InfoInputFeature.Action)
     }
 
+    @Dependency(\.profilesServiceNetworking) var profilesServiceNetworking
+    
     public init() {}
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.welcome, action: \.welcome) {
-            InfoInputReducer()
+            InfoInputFeature()
         }
         Reduce { state, action in
             switch action {
@@ -59,11 +61,11 @@ public struct FormCreationRoot {
 
         
             case .path(.element(_, .genderView(.continueButtonTapped))):
-                state.path.append(.interestsInput(InterestsReducer.State()))
+                state.path.append(.interestsInput(InterestsFeature.State()))
                 return .none
                 
             case .path(.element(_, .interestsInput(.continueButtonTapped))):
-                state.path.append(.cityInput(InfoInputReducer.State()))
+                state.path.append(.cityInput(InfoInputFeature.State()))
                 return .none
                 
             case .path(.element(_, .cityInput(.continueButtonTapped))):
@@ -71,15 +73,15 @@ public struct FormCreationRoot {
                 return .none
                 
             case .path(.element(_, .imageView(.continueButtonTapped))):
-                state.path.append(.biographyView(InfoInputReducer.State()))
+                state.path.append(.biographyView(InfoInputFeature.State()))
                 return .none
                 
             case .path(.element(_, .biographyView(.continueButtonTapped))):
-                state.path.append(.education(InfoInputReducer.State()))
+                state.path.append(.education(InfoInputFeature.State()))
                 return .none
                 
             case .path(.element(_, .education(.continueButtonTapped))):
-                state.path.append(.work(InfoInputReducer.State()))
+                state.path.append(.work(InfoInputFeature.State()))
                 return .none
                 
             case .path:
