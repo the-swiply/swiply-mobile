@@ -50,7 +50,7 @@ class LiveProfilesService: ProfilesService {
     func getProfile(id: String) async -> Result<Profile, RequestError> {
         let getProfileResult = await profilesServiceNetworking.getProfile(id: id)
 
-        let profile: Profile
+        var profile: Profile
 
         switch getProfileResult {
         case let .failure(error):
@@ -59,6 +59,9 @@ class LiveProfilesService: ProfilesService {
         case let .success(serverProfile):
             profile = serverProfile.userProfile.toProfile
         }
+
+        let imagesReferense = LoadableImageCollection()
+        profile.images = imagesReferense
 
         Task { [profilesServiceNetworking] in
             let getPhotosResult = await profilesServiceNetworking.getPhotos(id: id)
@@ -69,15 +72,19 @@ class LiveProfilesService: ProfilesService {
 
             case let .success(images):
                 let profileImages = images.photos.compactMap { imageString in
-                    imageString.content.toImage()
+                    if let data = Data(base64Encoded: imageString.content, options: .ignoreUnknownCharacters) {
+                        return UIImage(data: data)
+                    }
+
+                    return nil
                 }
 
-                profile.images.images = profileImages.map { image in
+                imagesReferense.images = profileImages.map { image in
                     return .image(image)
                 }
             }
         }
-
+        
         return .success(profile)
     }
     

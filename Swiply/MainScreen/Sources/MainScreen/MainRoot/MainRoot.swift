@@ -57,24 +57,15 @@ public struct MainRoot {
                 return .none
             case .loadProfile:
                 return .run { send in
-                    await withTaskGroup(of: Void.self) { group in
-                        group.addTask {
-                            let response = await self.profilesService.getProfile(
-                                id: profileManager.getUserId()
-                            )
+                    let response = await self.profilesService.getProfile(
+                        id: profileManager.getUserId()
+                    )
 
-                            switch response {
-                            case let .success(user):
-                                //TODO:- сохранение профиля id и запрос данных
-//                                state.user = .init(user)
-                                
-                                profileManager.setProfileInfo(.init(user))
-//                                await send(.showMain)
-                            case .failure:
-                                break
-//                                await send(.createProfile)
-                            }
-                        }
+                    switch response {
+                    case let .success(user):
+                        profileManager.setProfileInfo(.init(user))
+                    case .failure:
+                        break
                     }
                 }
             }
