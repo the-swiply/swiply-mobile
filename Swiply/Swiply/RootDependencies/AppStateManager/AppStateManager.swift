@@ -61,7 +61,7 @@ class LiveAppStateManager: AppStateManager {
     }
 
     func setAuthComplete() {
-        storage.setValue(false, forKey: "isFirstRun")
+        storage.setValue(true, forKey: "isAuthComplete")
     }
 
     func setProfileCreationComplete() {

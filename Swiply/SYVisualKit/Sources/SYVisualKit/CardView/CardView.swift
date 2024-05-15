@@ -19,46 +19,30 @@ public struct CardPerson: Identifiable, Equatable {
     }
 }
 
-public struct CardView<V: View>: View {
+public struct CardView: View {
 
-    var info: [(Image, String)] {
-        [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
-    }
+    let likeHandler: () -> Void
+    let dislikeHandler: () -> Void
+    let onTapCenter: () -> Void
 
-    @State var flowSize: CGSize = .zero
+    var person: CardPerson
 
-    var index: Int
-    var tagId: UUID
-    public var person: CardPerson
-    var navigateTo: () -> V
-
-    public init(index: Int, tagId: UUID = UUID(), person: CardPerson, navigateTo: @escaping () -> V) {
-        self.index = index
-        self.tagId = tagId
+    public init(person: CardPerson, likeHandler: @escaping () -> Void, dislikeHandler: @escaping () -> Void, onTapCenter: @escaping () -> Void) {
+        self.likeHandler = likeHandler
+        self.dislikeHandler = dislikeHandler
+        self.onTapCenter = onTapCenter
         self.person = person
-        self.navigateTo = navigateTo
     }
 
     public var body: some View {
         ZStack {
-            ImageScrollingView(images: person.images, onTapCenter: nil)
+            ImageScrollingView(images: person.images, onTapCenter: onTapCenter)
                 .overlay(alignment: .bottomLeading) {
-                    BiographyOverlay(person: person)
+                    BiographyOverlay(person: person, likeHandler: likeHandler, dislikeHandler: dislikeHandler)
                 }
         }
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .overlay {
-            NavigationLink(
-                destination: navigateTo(),
-                label: {
-                    Rectangle()
-                        .frame(width: 50, height: 600)
-                        .background(.clear)
-                        .opacity(0)
-                }
-            )
-        }
     }
 
 }

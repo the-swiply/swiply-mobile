@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SYKeychain
 
-// MARK: - Endpoint
+// MARK: - TokenizedEndpoint
 
 public protocol TokenizedEndpoint: Endpoint { }
 
@@ -13,10 +13,8 @@ public extension TokenizedEndpoint {
 
     var header: [String: String]? {
         [
-            "Authorization": keychain.getToken(type: .access) ?? ""
+            "Authorization": "Bearer \(keychain.getToken(type: .access) ?? "")"
         ]
     }
-
-
 
 }

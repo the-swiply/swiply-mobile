@@ -1,9 +1,10 @@
 import SYKeychain
 import Dependencies
+import Combine
 
 // MARK: - UpdateTokenMiddleware
 
-public protocol UpdateTokenMiddleware: Middleware { }
+public protocol UpdateTokenMiddleware: Middleware, ForbiddenErrorNotifier { }
 
 // MARK: - DependencyKey
 
@@ -27,9 +28,13 @@ public extension DependencyValues {
 
 // MARK: - LiveUpdateTokenMiddleware
 
-class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
+class LiveUpdateTokenMiddleware: UpdateTokenMiddleware {
 
-    var forbiddenErrorHandlers: [() async -> Void] = []
+    var publisher: AnyPublisher<Void, Never> {
+        forbiddenErrorSubject.eraseToAnyPublisher()
+    }
+
+    private var forbiddenErrorSubject: CurrentValueSubject<Void, Never> = .init(())
 
     @Dependency(\.keychain) var keychain
     @Dependency(\.updateTokenService.refresh) var refresh
@@ -58,15 +63,19 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
                     return await processRequest(request)
 
                 case let .failure(error):
+                    switch error {
+                    case .forbidden:
+                        forbiddenErrorSubject.send(())
+
+                    default:
+                        return .failure(error)
+                    }
+
                     return .failure(error)
                 }
 
             case .forbidden:
-                forbiddenErrorHandlers.forEach { handler in
-                    Task {
-                        await handler()
-                    }
-                }
+                forbiddenErrorSubject.send(())
 
                 return result
 
@@ -74,10 +83,6 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware, ForbiddenErrorNotifier {
                 return result
             }
         }
-    }
-
-    func add(handler: @escaping () async -> Void) {
-        forbiddenErrorHandlers.append(handler)
     }
 
 }

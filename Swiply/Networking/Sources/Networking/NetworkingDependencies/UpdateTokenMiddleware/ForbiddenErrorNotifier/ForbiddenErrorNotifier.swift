@@ -1,10 +1,11 @@
 import ComposableArchitecture
+import Combine
 
 // MARK: - ForbiddenErrorNotifier
 
 public protocol ForbiddenErrorNotifier {
 
-    func add(handler: @escaping () async  -> Void)
+    var publisher: AnyPublisher<Void, Never> { get }
 
 }
 
@@ -12,7 +13,7 @@ public protocol ForbiddenErrorNotifier {
 
 enum ForbiddenErrorNotifierKey: DependencyKey {
 
-    public static var liveValue: any ForbiddenErrorNotifier = LiveUpdateTokenMiddleware()
+    public static var liveValue: any ForbiddenErrorNotifier = DependencyValues.live.updateTokenMiddleware
 }
 
 // MARK: - DependencyValues

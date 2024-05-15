@@ -48,7 +48,7 @@ class LiveProfilesService: ProfilesService {
     func getProfile(id: String) async -> Result<Profile, RequestError> {
         let getProfileResult = await profilesServiceNetworking.getProfile(id: id)
 
-        let profile: Profile
+        var profile: Profile
 
         switch getProfileResult {
         case let .failure(error):
@@ -57,6 +57,9 @@ class LiveProfilesService: ProfilesService {
         case let .success(serverProfile):
             profile = serverProfile.userProfile.toProfile
         }
+
+        let imagesReferense = LoadableImageCollection()
+        profile.images = imagesReferense
 
         Task { [profilesServiceNetworking] in
             let getPhotosResult = await profilesServiceNetworking.getPhotos(id: id)
@@ -74,7 +77,7 @@ class LiveProfilesService: ProfilesService {
                     return nil
                 }
 
-                profile.images.images = profileImages.map { image in
+                imagesReferense.images = profileImages.map { image in
                     return .image(Image(uiImage: image))
                 }
             }

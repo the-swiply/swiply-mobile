@@ -4,7 +4,7 @@ import SYCore
 
 // MARK: - ProfilesService
 
-public protocol RecommendationsNetworking {
+protocol RecommendationsNetworking {
 
     func getProfiles(number: Int) async -> Result<RecommendationsResponse, RequestError>
 
@@ -20,7 +20,7 @@ enum RecommendationsNetworkingKey: DependencyKey {
 
 // MARK: - DependencyValues
 
-public extension DependencyValues {
+extension DependencyValues {
 
     var recommendationsNetworking: any RecommendationsNetworking {
         get { self[RecommendationsNetworkingKey.self] }
@@ -69,7 +69,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 
     #if DEBUG
 
-    var port: Int {
+    var port: Int? {
         18083
     }
 
@@ -82,7 +82,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 private extension Request {
 
     static func getProfiles(number: Int) -> Self {
-        .init(endpoint: RecommendationsNetworkingEndpoint.getProfiles(number: number))
+        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.getProfiles(number: number))
     }
 
 }

@@ -1,3 +1,4 @@
+import Foundation
 import Dependencies
 import Networking
 
@@ -8,6 +9,7 @@ public protocol ProfilesServiceNetworking {
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
+    func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) async -> Result<EmptyResponse, RequestError>
 
 }
 
@@ -35,6 +37,10 @@ public extension DependencyValues {
 
 class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNetworking {
 
+    func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) async -> Result<EmptyResponse, RequestError> {
+        await sendRequest(.interactWithProfile(id, interactionType: interactionType))
+    }
+
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError> {
         await sendRequest(.getProfile(id: id))
     }
@@ -53,12 +59,16 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
 
 enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
+    case interactWithProfile(_ id: UUID, interactionType: ProfileInteraction)
     case getProfile(id: String)
     case getPhotos(id: String)
     case getLikes
 
     var path: String {
         switch self {
+        case .interactWithProfile:
+            "/v1/interaction/create"
+
         case .getProfile:
             "/v1/profile"
 
@@ -78,7 +88,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         case .getPhotos(let id):
             [id]
 
-        case .getLikes:
+        case .getLikes, .interactWithProfile:
             []
         }
     }
@@ -89,6 +99,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getLikes,
              .getPhotos:
             .get
+
+        case .interactWithProfile:
+            .post
         }
     }
 
@@ -98,12 +111,18 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getLikes,
              .getPhotos:
             nil
+
+        case let .interactWithProfile(id, interactionType):
+            [
+                "id": id.uuidString,
+                "type": interactionType.rawValue
+            ]
         }
     }
 
     #if DEBUG
 
-    var port: Int {
+    var port: Int? {
         18086
     }
 
@@ -117,6 +136,10 @@ private extension Request {
 
     static var getLikes: Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
+    }
+
+    static func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.interactWithProfile(id, interactionType: interactionType))
     }
 
     static func getProfile(id: String) -> Self {

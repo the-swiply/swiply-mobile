@@ -41,21 +41,24 @@ struct Root {
             case .appDelegate(.didFinishLaunching):
                 let appState = appStateManager.getState()
 
-                switch appState {
-                case .authorization:
-                    state.destination = .authorization(.init())
+//                switch appState {
+//                case .authorization:
+//                    state.destination = .authorization(.init())
+//
+//                case .main:
+//                    state.destination = .main(.init())
+//
+//                case .profileCreation:
+//                    state.destination = .profile(.init())
+//                }
 
-                case .main:
-                    state.destination = .main(.init())
+                state.destination = .main(.init())
 
-                case .profileCreation:
-                    state.destination = .profile(.init())
-                }
-                
-                return .run { [forbiddenErrorNotifier] send in
-                    forbiddenErrorNotifier.add { [send] in
-                        await send(.requestAuthorization)
-                    }
+                return .publisher {
+                    return forbiddenErrorNotifier.publisher
+                        .dropFirst()
+                        .receive(on: DispatchQueue.main)
+                        .map { Action.requestAuthorization }
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):

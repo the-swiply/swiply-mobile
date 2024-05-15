@@ -6,9 +6,7 @@ import ProfilesService
 
 public struct RecommendationsView: View {
 
-//    @Bindable var store: StoreOf<Recommendations>
-
-    @State var lastIndex = 0
+    @Bindable var store: StoreOf<Recommendations>
 
     @State private var data: [Person] =
     [
@@ -19,48 +17,74 @@ public struct RecommendationsView: View {
         Person.ann
     ]
 
-    @State var initialCards: [CardView] = [
-        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
-        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
-        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
-        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
-        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
-    ]
-
-    @State var cards: [CardView] = [
-        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
-        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
-        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
-        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
-        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
-    ]
+//    @State var initialCards: [CardView] = [
+//        CardView(
+//            person: Person.daria.toCardPerson,
+//            likeHandler: {
+//                store.send(.likeButtonTapped)
+//            },
+//            dislikeHandler: store.send(.dislikeButtonTapped),
+//            onTapCenter: store.send(.onTapCenter)
+//        )
+//        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
+//        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
+//        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
+//        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
+//        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
+//    ]
+//
+//    @State var cards: [CardView] = [
+//        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
+//        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
+//        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
+//        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
+//        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
+//    ]
 
     @State var value: Double = 30
 
-    public init() { }
+    public init(store: StoreOf<Recommendations>) {
+        self.store = store
+    }
 
     // MARK: - View
 
     public var body: some View {
         NavigationStack {
             VStack {
-                MainBarView(onBack: { 
-                    cards.append(.init(index: cards.count - 1, person: data[lastIndex].toCardPerson, navigateTo: { CardInformationView(person: data[lastIndex]) }))
-                },
-                            onOptions:  { cards = initialCards.filter( { $0.person.age < Int(value) }) }, value: $value)
+                VStack {
+                    MainBarView(onBack: {
+                        store.send(.backButtonTapped)
+                    },
+                    onOptions:  { /*cards = initialCards.filter( { $0.person.age < Int(value) }) */}, value: $value)
 
-                Spacer()
+                    Spacer()
 
-                ZStack {
-                    ForEach(cards, id: \.person.id) { card in
-                        SwipableView {
-                            card
+                    VStack {
+                        ZStack {
+                            ForEach(data, id: \.id) { person in
+                                SwipableView(swipeAction: store.state.swipeAction, id: person.id.uuidString) {
+                                    CardView(
+                                        person: person.toCardPerson,
+                                        likeHandler: { store.send(.likeButtonTapped) },
+                                        dislikeHandler: { store.send(.dislikeButtonTapped) },
+                                        onTapCenter: { store.send(.onTapCenter) }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+                .padding(.horizontal, 16)
+
+                Rectangle()
+                    .frame(height: 90)
+                    .foregroundStyle(.background)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .ignoresSafeArea(.all, edges: .bottom)
+        }
+        .onAppear() {
+            store.send(.onAppear)
         }
     }
 
@@ -86,6 +110,7 @@ private struct MainBarView: View {
 
 
             Image(.mainBarLogo)
+                .foregroundStyle(.pink)
                 .padding(.vertical, 10)
 
             Spacer()

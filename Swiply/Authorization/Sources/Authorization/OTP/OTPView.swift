@@ -24,7 +24,7 @@ public struct OTPView: View {
 
             Spacer()
 
-            VStack(spacing: 35) {
+            VStack(spacing: 24) {
                 switch store.isRetryButtonDisabled {
                 case .enabled:
                     SYStrokeButton(title: "Отправить код заново") {
@@ -33,7 +33,7 @@ public struct OTPView: View {
                     .tint(.black)
 
                 case let .disabled(remainingTime):
-                    SYStrokeButton(title: "Отправить код заново: \(remainingTime)") {
+                    SYStrokeButton(title: "Отправить код заново: 00:\(remainingTime)") {
                         store.send(.retryButtonTapped)
                     }
                     .tint(.black)

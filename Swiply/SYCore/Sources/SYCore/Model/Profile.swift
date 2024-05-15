@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Profile
 
-public struct Profile {
+public struct Profile: Equatable {
     public let id: UUID
     public var name: String
     public let age: Int
@@ -56,13 +56,17 @@ public enum Gender: Codable {
 // MARK: - LoadableImageCollection
 
 @Observable
-public class LoadableImageCollection {
+public class LoadableImageCollection: Equatable {
 
     public var images: [ImageState]
     public var task: Task<Void, Never>?
 
     public init(images: [ImageState] = [.loading]) {
         self.images = images
+    }
+
+    public static func == (lhs: LoadableImageCollection, rhs: LoadableImageCollection) -> Bool {
+        lhs.images == rhs.images
     }
 
 }
