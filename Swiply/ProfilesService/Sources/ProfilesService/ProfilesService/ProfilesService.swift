@@ -68,8 +68,8 @@ class LiveProfilesService: ProfilesService {
                 break
 
             case let .success(images):
-                let profileImages = images.content.compactMap { imageString in
-                    imageString.toImage()
+                let profileImages = images.photos.compactMap { imageString in
+                    imageString.content.toImage()
                 }
 
                 profile.images.images = profileImages.map { image in
@@ -108,7 +108,6 @@ class LiveProfilesService: ProfilesService {
             return .success(userId)
         }
         
-        // TODO: - все фотки оправлять
         let createPhotoResult = await profilesServiceNetworking.createPhoto(photo: photo)
         
         switch createPhotoResult {

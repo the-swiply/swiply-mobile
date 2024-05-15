@@ -11,6 +11,3 @@ public extension UIImage {
         return data?.base64EncodedString(options: .endLineWithLineFeed)
     }
 }
-
-
-

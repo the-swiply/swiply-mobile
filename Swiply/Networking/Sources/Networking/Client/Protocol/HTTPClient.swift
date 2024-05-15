@@ -57,9 +57,6 @@ public extension HTTPClient {
         }
         
         Logger.services.log("CURL: \n \(urlRequest.cURL())")
-//        print("-----------")
-//        print(urlRequest.cURL())
-//        print("-----------")
         do {
             let config = URLSessionConfiguration.default
             config.waitsForConnectivity = true
@@ -92,12 +89,7 @@ public extension HTTPClient {
                     return .success(emptyResponse)
                 }
                 
-
-                // Convert to a string and print
                 if let JSONString = String(data: data, encoding: String.Encoding.utf8) {
-//                    print("----JSONString-------")
-//                    print(JSONString)
-//                    print("----JSONString-------")
                     Logger.data.log("Response: \(JSONString)")
                 }
 
@@ -105,12 +97,6 @@ public extension HTTPClient {
                     Logger.data.log("EROR: decode")
                     return .failure(.decode)
                 }
-   
-
-//
-//                print("----ответ-------")
-//                print(decodedResponse)
-//                print("----ответ-------")
                 
                 return .success(decodedResponse)
 
