@@ -8,7 +8,8 @@ import SYKeychain
 protocol AppStateManager {
 
     func getState() -> AppState
-    func setState(_ state: AppState) -> Void
+    func setAuthComplete()
+    func setProfileCreationComplete()
 
 }
 
@@ -36,40 +37,36 @@ extension DependencyValues {
 class LiveAppStateManager: AppStateManager {
 
     @Dependency(\.keychain) var keychain
+    @Dependency(\.defaultAppStorage) var storage
 
     func getState() -> AppState {
         return .authorization
-        guard let refresh = keychain.getToken(type: .refresh) else {
+        if !storage.bool(forKey: "isAuthComplete") {
             return .authorization
         }
 
-        guard let access = keychain.getToken(type: .access) else {
+        guard let _ = keychain.getToken(type: .refresh) else {
             return .authorization
         }
 
-        let defaults = UserDefaults.standard
+        guard let _ = keychain.getToken(type: .access) else {
+            return .authorization
+        }
 
-        if defaults.bool(forKey: "wasProfileCreated") {
+        if storage.bool(forKey: "wasProfileCreated") {
             return .main
         }
         else {
             return .profileCreation
         }
     }
-    
-    func setState(_ state: AppState) {
-        let defaults = UserDefaults.standard
 
-        switch state {
-        case .authorization:
-            break
-
-        case .profileCreation:
-            defaults.setValue(false, forKey: "wasProfileCreated")
-
-        case .main:
-            defaults.setValue(true, forKey: "wasProfileCreated")
-        }
+    func setAuthComplete() {
+        storage.setValue(false, forKey: "isFirstRun")
     }
-    
+
+    func setProfileCreationComplete() {
+        storage.setValue(true, forKey: "wasProfileCreated")
+    }
+
 }

@@ -56,7 +56,6 @@ public struct EmailInput {
                     switch result {
                     case .success:
                         dataManager.setEmail(state.text)
-                        CrashManager.shared.addLog(message: "auth: Code send")
                         await send(.delegate(.receiveSuccessFromServer))
 
                     case .failure:

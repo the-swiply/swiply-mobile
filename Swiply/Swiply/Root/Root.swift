@@ -59,8 +59,7 @@ struct Root {
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
-                CrashManager.shared.setIsUserPremium(false)
-                CrashManager.shared.addLog(message: "profileCreation: Start")
+                appStateManager.setAuthComplete()
                 state.destination = .formCreation(.init())
                 let str: String? = nil
                 let str2 = str!

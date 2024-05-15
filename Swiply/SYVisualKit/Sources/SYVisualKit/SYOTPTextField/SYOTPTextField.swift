@@ -14,7 +14,7 @@ public struct SYOTPTextField: View {
 
     // MARK: - Internal Properties
 
-    @Binding var isDestructive: Bool
+    let isDestructive: Bool
     @Binding var isFullfilled: Bool
     @Binding var text: String
 
@@ -29,8 +29,8 @@ public struct SYOTPTextField: View {
 
     // MARK: - Init
 
-    public init(isDestructive: Binding<Bool>, isFullfilled: Binding<Bool>, text: Binding<String>) {
-        self._isDestructive = isDestructive
+    public init(isDestructive: Bool, isFullfilled: Binding<Bool>, text: Binding<String>) {
+        self.isDestructive = isDestructive
         self._isFullfilled = isFullfilled
         self._text = text
     }
@@ -46,6 +46,7 @@ public struct SYOTPTextField: View {
                     .onChange(of: cellOne) { _, newValue in
                         if newValue.count == 2 {
                             let index = newValue.index(newValue.startIndex, offsetBy: 1)
+
                             text = replace(text, 0, newValue[index])
 
                             focusCellState = .two
@@ -155,7 +156,7 @@ struct Preview: PreviewProvider {
 
     static var previews: some View {
         SYOTPTextField(
-            isDestructive: .constant(true),
+            isDestructive: true,
             isFullfilled: .constant(true),
             text: .constant("2222")
         )
