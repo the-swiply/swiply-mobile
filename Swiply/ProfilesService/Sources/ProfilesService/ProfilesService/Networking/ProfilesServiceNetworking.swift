@@ -8,9 +8,9 @@ public protocol ProfilesServiceNetworking {
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
-    func createProfile(profile: CreatedProfile) async -> Result<String, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
-
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
+    func createPhoto(photo: String) async -> Result<String, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -37,7 +37,7 @@ public extension DependencyValues {
 
 class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNetworking {
     
-    func createProfile(profile: CreatedProfile) async -> Result<String, Networking.RequestError> {
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, Networking.RequestError> {
         await sendRequest(.createProfile(profile: profile))
     }
 
@@ -57,6 +57,9 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
         await sendRequest(.whoAmI)
     }
 
+    func createPhoto(photo: String) async -> Result<String, Networking.RequestError> {
+        await sendRequest(.createPhoto(photoStr: photo))
+    }
 }
 
 // MARK: - Endpoint
@@ -67,6 +70,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case getPhotos(id: String)
     case getLikes
     case createProfile(CreatedProfile)
+    case createPhoto(String)
     case whoAmI
 
     var path: String {
@@ -85,6 +89,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .whoAmI:
             "/v1/profile/who-am-i"
+            
+        case .createPhoto:
+            "/v1/photo/create"
         }
     }
 
@@ -104,6 +111,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .whoAmI:
             []
+            
+        case .createPhoto:
+           []
         }
     }
 
@@ -114,7 +124,8 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getPhotos,
              .whoAmI:
             .get
-        case .createProfile:
+        case .createProfile,
+                .createPhoto:
                 .post
         }
     }
@@ -139,6 +150,8 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
                 "work": profile.work,
                 "education": profile.education
             ]
+        case let .createPhoto(photoStr):
+            return ["content": photoStr]
         }
     }
 
@@ -168,12 +181,16 @@ private extension Request {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getPhotos(id: id))
     }
     
+    static var whoAmI: Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.whoAmI)
+    }
+    
     static func createProfile(profile: CreatedProfile) -> Self {
         .init(endpoint: ProfilesServiceNetworkingEndpoint.createProfile(profile))
     }
     
-    static var whoAmI: Self {
-        .init(endpoint: ProfilesServiceNetworkingEndpoint.whoAmI)
+    static func createPhoto(photoStr: String) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.createPhoto(photoStr))
     }
 
 }

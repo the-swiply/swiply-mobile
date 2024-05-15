@@ -1,5 +1,6 @@
 import Dependencies
 import Networking
+import ProfilesService
 
 // MARK: - ProfilesServiceNetworking
 
@@ -90,10 +91,5 @@ private extension Request {
     static var whoAmI: Self {
         .init(endpoint: RootServiceNetworkingEndpoint.whoAmI)
     }
-
-}
-
-
-public struct UserID: Decodable {
-    let id: String
+    
 }

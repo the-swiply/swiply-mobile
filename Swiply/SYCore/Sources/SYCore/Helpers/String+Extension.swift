@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension String {
+public extension String {
 
     func toImage() -> UIImage? {
         if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters){

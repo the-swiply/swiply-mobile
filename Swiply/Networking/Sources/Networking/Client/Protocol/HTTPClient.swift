@@ -1,4 +1,23 @@
 import Foundation
+import OSLog
+
+public extension Logger {
+    /// Using your bundle identifier is a great way to ensure a unique identifier.
+    private static var subsystem = Bundle.main.bundleIdentifier ?? "Swiply"
+
+    /// Logs the view cycles like a view that appeared.
+    static let viewCycle = Logger(subsystem: subsystem, category: "viewcycle")
+    
+    /// All logs related to data such as decoding error, parsing issues, etc.
+    static let data = Logger(subsystem: subsystem, category: "data")
+    
+    /// All logs related to services such as network calls, location, etc.
+    static let services = Logger(subsystem: subsystem, category: "services")
+
+    /// All logs related to tracking and analytics.
+    static let statistics = Logger(subsystem: subsystem, category: "statistics")
+}
+
 
 public protocol HTTPClient {
     
@@ -37,9 +56,10 @@ public extension HTTPClient {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
         
-        print("-----------")
-        print(urlRequest.cURL())
-        print("-----------")
+        Logger.services.log("CURL: \n \(urlRequest.cURL())")
+//        print("-----------")
+//        print(urlRequest.cURL())
+//        print("-----------")
         do {
             let config = URLSessionConfiguration.default
             config.waitsForConnectivity = true
@@ -55,12 +75,11 @@ public extension HTTPClient {
             let (data, response) = try await URLSession(configuration: config).data(for: urlRequest, delegate: nil)
 
             guard let response = response as? HTTPURLResponse else {
+                Logger.services.log("EROR: noResponse")
                 return .failure(.noResponse)
             }
 
-            print("----statusCode-------")
-            print(response.statusCode)
-            print("----statusCode-------")
+            Logger.data.log("Status code: \(response.statusCode)")
             
             switch response.statusCode {
             case 200...299:
@@ -69,24 +88,29 @@ public extension HTTPClient {
                         return .failure(.unexpectedResponse)
                     }
 
+                    Logger.data.log("Success: emptyResponse")
                     return .success(emptyResponse)
                 }
                 
-//                let jsonData = try JSONSerialization.data(withJSONObject: data)
 
                 // Convert to a string and print
                 if let JSONString = String(data: data, encoding: String.Encoding.utf8) {
-                   print(JSONString)
+//                    print("----JSONString-------")
+//                    print(JSONString)
+//                    print("----JSONString-------")
+                    Logger.data.log("Response: \(JSONString)")
                 }
 
                 guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else {
+                    Logger.data.log("EROR: decode")
                     return .failure(.decode)
                 }
    
 
-                print("----ответ-------")
-                print(decodedResponse)
-                print("----ответ-------")
+//
+//                print("----ответ-------")
+//                print(decodedResponse)
+//                print("----ответ-------")
                 
                 return .success(decodedResponse)
 

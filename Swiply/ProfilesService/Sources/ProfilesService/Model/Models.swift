@@ -37,20 +37,57 @@ public struct Person: Identifiable, Equatable {
         self.description = description
         self.images = images
     }
-    
-    public init(profile: Profile) {
-        self.email = profile.email
-        self.name = profile.name
-        self.age = profile.age
-        self.gender = profile.gender
-        self.interests = profile.interests
-        self.town = "" //town profile.city
-        self.description = profile.description
-        self.images = []
-        self.education = "" //education
-        self.work = "work"
+//    
+//    public init(profile: Profile) {
+//        self.email = profile.email
+//        self.name = profile.name
+//        self.age = profile.age
+//        self.gender = profile.gender
+//        self.interests = profile.interests
+//        self.town = "" //town profile.city
+//        self.description = profile.description
+//        self.images = []
+//        self.education = "" //education
+//        self.work = "work"
+//    }
+}
+
+
+public struct UserID: Decodable {
+    public let id: String
+}
+
+public extension Person {
+    init(_ model: Profile) {
+        
+        var images = model.images.images.map {
+            switch $0 {
+            case let .image(image):
+                return image
+            case .loading:
+                return UIImage(resource: .noPhoto)
+            }
+        }
+        
+        if images.isEmpty {
+            images.append(UIImage(resource: .noPhoto))
+        }
+        
+        self.init(
+            email: model.email,
+            name: model.name,
+            age: model.age,
+            gender: model.gender,
+            interests: model.interests,
+            town: model.town,
+            description: model.description,
+            images: images,
+            education: model.education,
+            work: model.work
+        )
     }
 }
+
 
 public extension Person {
     static let ann = Person(
@@ -127,7 +164,7 @@ public extension Person {
 }
 
 public struct CreatedProfile: Equatable {
-    public let email: String
+    public var email: String
     public var name: String
     public var age: Date
     public var gender: Gender
@@ -166,6 +203,3 @@ public struct CreatedProfile: Equatable {
 }
 
 
-public struct UserID: Decodable {
-    public let id: String
-}

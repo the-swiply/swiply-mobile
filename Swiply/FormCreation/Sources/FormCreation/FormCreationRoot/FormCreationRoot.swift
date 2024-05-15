@@ -1,8 +1,8 @@
 import ComposableArchitecture
 import SwiftUI
+import ProfilesService
 
 @Reducer
-
 public struct FormCreationRoot {
     
     @Reducer(state: .equatable)
@@ -35,8 +35,6 @@ public struct FormCreationRoot {
         case path(StackAction<Path.State, Path.Action>)
         case welcome(InfoInputFeature.Action)
     }
-
-    @Dependency(\.profilesServiceNetworking) var profilesServiceNetworking
     
     public init() {}
 

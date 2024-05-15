@@ -17,7 +17,6 @@ public struct MainRoot {
 
     @ObservableState
     public struct State: Equatable {
-        @Shared(.inMemory("Person")) var user = Person.ann
         var selectedTab: Tab
         var features = Home.State()
         var profile = ProfileRoot.State()
@@ -57,7 +56,7 @@ public struct MainRoot {
             case .chat:
                 return .none
             case .loadProfile:
-                return .run { [state] send in
+                return .run { send in
                     await withTaskGroup(of: Void.self) { group in
                         group.addTask {
                             let response = await self.profilesService.getProfile(
@@ -67,8 +66,9 @@ public struct MainRoot {
                             switch response {
                             case let .success(user):
                                 //TODO:- сохранение профиля id и запрос данных
-                                state.user = .init(profile: user)
-//                                profileManager.setUserId(id: userId.id)
+//                                state.user = .init(user)
+                                
+                                profileManager.setProfileInfo(.init(user))
 //                                await send(.showMain)
                             case .failure:
                                 break

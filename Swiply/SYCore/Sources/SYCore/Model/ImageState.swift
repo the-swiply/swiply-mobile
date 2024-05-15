@@ -4,5 +4,5 @@ import SwiftUI
 
 public enum ImageState: Equatable {
     case loading
-    case image(Image)
+    case image(UIImage)
 }

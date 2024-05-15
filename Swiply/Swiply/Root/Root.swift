@@ -99,14 +99,13 @@ struct Root {
                 let userId = profileManager.getUserId()
                 if userId.isEmpty {
                     return .run { send in
-                        await withTaskGroup(of: Void.self) { group in
+                        Task {
                             let response = await self.rootServiceNetworking.whoAmI()
                             switch response {
                             case let .success(userId):
                                 profileManager.setUserId(id: userId.id)
                                 await send(.findProfile(id: userId.id))
                             case .failure:
-//                              TODO: - показ ошибки
                                 break
                             }
                         }
@@ -124,7 +123,7 @@ struct Root {
                             let responseProfile = await self.rootServiceNetworking.getProfile(id: id)
                             switch responseProfile {
                             case let .success(profile):
-                          //     profileManager.setProfileInfo(profile)
+                                profileManager.setProfileInfo(.init(profile))
                                 await send(.showMain)
                             case .failure:
                                 await send(.createProfile)

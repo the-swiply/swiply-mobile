@@ -5,7 +5,7 @@ import ProfilesService
 
 public struct InfoInputFeature: Reducer {
     
-    @Dependency(\.profilesServiceNetworking) var profilesServiceNetworking
+    @Dependency(\.profilesService) var profilesServiceNetworking
     
     @ObservableState
     public struct State: Equatable {
@@ -66,7 +66,6 @@ public struct InfoInputFeature: Reducer {
                                     break
                                 }
                             }
-                            
                         }
                     }
                 } else {

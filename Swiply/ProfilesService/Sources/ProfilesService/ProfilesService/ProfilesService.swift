@@ -9,8 +9,9 @@ import SwiftUI
 public protocol ProfilesService {
 
     func getProfile(id: String) async -> Result<Profile, RequestError>
-    func createProfile(profile: CreatedProfile) async -> Result<Profile, RequestError>
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
+    func createPhoto(photo: String) async -> Result<String, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -68,35 +69,15 @@ class LiveProfilesService: ProfilesService {
 
             case let .success(images):
                 let profileImages = images.content.compactMap { imageString in
-                    if let data = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters) {
-                        return UIImage(data: data)
-                    }
-
-                    return nil
+                    imageString.toImage()
                 }
 
                 profile.images.images = profileImages.map { image in
-                    return .image(Image(uiImage: image))
+                    return .image(image)
                 }
             }
         }
 
-        return .success(profile)
-    }
-
-    func createProfile(profile: CreatedProfile) async -> Result<Profile, Networking.RequestError> {
-        let createProfileResult = await profilesServiceNetworking.createProfile(profile: profile)
-        
-        let profile: Profile = Profile(id: UUID(), name: "", age: 1, gender: .female, interests: [], town: "", description: "", email: "", images: LoadableImageCollection())
-        
-        switch createProfileResult {
-        case let .failure(error):
-            return .failure(error)
-
-        case let .success(serverProfile):
-            print(serverProfile)
-        }
-        
         return .success(profile)
     }
     
@@ -110,4 +91,47 @@ class LiveProfilesService: ProfilesService {
             return .failure(error)
         }
     }
+    
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, Networking.RequestError> {
+        let createProfileResult = await profilesServiceNetworking.createProfile(profile: profile)
+        
+        let userId: UserID
+        switch createProfileResult {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            userId = userID
+        }
+        
+        guard let photo = profile.images.first??.toJpegString(compressionQuality: 0.0) else {
+            return .success(userId)
+        }
+        
+        // TODO: - все фотки оправлять
+        let createPhotoResult = await profilesServiceNetworking.createPhoto(photo: photo)
+        
+        switch createPhotoResult {
+        case let .failure(error):
+            break
+
+        case .success:
+            break
+        }
+        return .success(userId)
+    
+    }
+    
+    func createPhoto(photo: String) async -> Result<String, Networking.RequestError> {
+        let createPhoto = await profilesServiceNetworking.createPhoto(photo: photo)
+        
+        switch createPhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
 }
+

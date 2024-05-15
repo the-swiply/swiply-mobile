@@ -1,7 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import ProfilesService
-
+import SYCore
 
 public struct EditFeature: Reducer {
     

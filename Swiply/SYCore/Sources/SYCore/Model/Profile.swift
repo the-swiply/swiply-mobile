@@ -12,6 +12,8 @@ public struct Profile {
     public var town: String
     public var description: String
     public var images: LoadableImageCollection
+    public var education: String
+    public var work: String
 
     public init(id: UUID,
                 name: String,
@@ -21,7 +23,9 @@ public struct Profile {
                 town: String,
                 description: String,
                 email: String,
-                images: LoadableImageCollection){
+                images: LoadableImageCollection,
+                education: String,
+                work: String) {
         
         self.id = id
         self.name = name
@@ -32,6 +36,8 @@ public struct Profile {
         self.description = description
         self.email = email
         self.images = images
+        self.education = education
+        self.work = work
     }
 }
 
