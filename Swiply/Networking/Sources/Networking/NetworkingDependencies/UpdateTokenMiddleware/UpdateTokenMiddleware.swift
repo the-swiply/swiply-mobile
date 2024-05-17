@@ -67,6 +67,8 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware {
                     case .forbidden:
                         forbiddenErrorSubject.send(())
 
+                        return .failure(error)
+
                     default:
                         return .failure(error)
                     }

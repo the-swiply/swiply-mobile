@@ -11,7 +11,7 @@ public struct EventInfoView: View {
 
     public var body: some View {
         ScrollView {
-            ImageScrollingView(images: event.images, onTapCenter: nil)
+            ImageScrollingView(images: event.images.map { Image(uiImage: $0) }, onTapCenter: nil)
                 .frame(height: 435)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 

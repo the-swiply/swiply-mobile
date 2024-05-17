@@ -188,7 +188,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
                 .updateProfile,
                 .deletePhoto,
                 .reoderPhotos,
-                interactWithProfile:
+                .interactWithProfile:
                 .post
         }
     }
@@ -196,7 +196,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     var body: [String : Codable]? {
         switch self {
         case let .interactWithProfile(id, interactionType):
-            [
+            return [
                 "id": id.uuidString,
                 "type": interactionType.rawValue
             ]

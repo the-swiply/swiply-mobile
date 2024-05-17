@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Event {
+public struct Event {
     let id: UUID
     let name: String
     let description: String

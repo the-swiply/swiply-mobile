@@ -2,22 +2,24 @@ import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
 
-struct EventsView: View {
+public struct EventsView: View {
     
     @State var events: [Event] = [
-        .init(name: "Выставка-реконструкция «Терракотовая армия. Бессмертные воины Китая»", 
-              description: "Реконструкция сенсационной археологической находки XX века — многотысячного глиняного войска китайского императора Цинь Шихуанди, правившего в III веке до н. э., — не оставит равнодушным ни одного зрителя. Посетители выставки на ВДНХ перенесутся в мистическую атмосферу Древнего Китая и ощутят реальный масштаб грандиозной армии.",
-              images: [Image(.army), Image(.army2)]
+        .init(id: UUID(),
+            name: "Выставка-реконструкция «Терракотовая армия. Бессмертные воины Китая»",
+              description: "Реконструкция сенсационной археологической находки XX века — многотысячного глиняного войска китайского императора Цинь Шихуанди, правившего в III веке до н. э., — не оставит равнодушным ни одного зрителя. Посетители выставки на ВДНХ перенесутся в мистическую атмосферу Древнего Китая и ощутят реальный масштаб грандиозной армии.", date: Date(),
+              images: [UIImage(resource: .army), UIImage(resource: .army2)]
              ),
-        .init(name: "Выставка бездомных животных «Надо брать! Летом!»",
+        .init(id: UUID(), name: "Выставка бездомных животных «Надо брать! Летом!»",
               description: "Давно собираетесь завести домашнее животное? В начале лета самое время это сделать! Благотворительный фонд «Вирта» проводит выставку бездомных животных, откуда можно будет уйти с новым преданным другом.",
-              images: [Image(.animal), Image(.animal2), Image(.animal3)]),
-        .init(name: "Выставка «Сальвадор Дали & Пабло Пикассо»",
-              description: "Добро пожаловать в мир сюрреализма! На выставке в Путевом дворце Василия III вы увидите подлинные работы Дали и Пикассо, узнаете о творческом пути великих художников и откроете для себя новые грани искусства.",
-              images: [Image(.picasso)]),
-        .init(name: "Выступление Елены Блиновской",
-              description: "Марафон желаний Елены Блиновской облетел уже весь мир, а теперь собрался и до СИЗО!",
-              images: [Image(.blin)])
+              date: Date(),
+              images: [UIImage(resource: .animal), UIImage(resource: .animal2), UIImage(resource: .animal3)]),
+        .init(id: UUID(), name: "Выставка «Сальвадор Дали & Пабло Пикассо»",
+              description: "Добро пожаловать в мир сюрреализма! На выставке в Путевом дворце Василия III вы увидите подлинные работы Дали и Пикассо, узнаете о творческом пути великих художников и откроете для себя новые грани искусства.", date: Date(),
+              images: [UIImage(resource: .picasso)]),
+        .init(id: UUID(), name: "Выступление Елены Блиновской",
+              description: "Марафон желаний Елены Блиновской облетел уже весь мир, а теперь собрался и до СИЗО!", date: Date(),
+              images: [UIImage(resource: .blin)])
     ]
 
     @State var category: Int = 0
@@ -165,7 +167,7 @@ struct EventsView: View {
 //                        destination: EventInfoView(event: firstEvent),
                                    destination: ChangeInformation(),
                         label: {
-                            ImageScrollingView(images: [firstEvent.images.first!], onTapCenter: nil)
+                            ImageScrollingView(images: [Image(uiImage: firstEvent.images.first!)], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -187,7 +189,7 @@ struct EventsView: View {
                     NavigationLink(
                         destination: EventInfoView(event: secondEvent),
                         label: {
-                            ImageScrollingView(images: [secondEvent.images.first!], onTapCenter: nil)
+                            ImageScrollingView(images: [Image(uiImage: secondEvent.images.first!)], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -212,7 +214,7 @@ struct EventsView: View {
                     NavigationLink(
                         destination: EventInfoView(event: firstEvent),
                         label: {
-                            ImageScrollingView(images: [firstEvent.images.first!], onTapCenter: nil)
+                            ImageScrollingView(images: [Image(uiImage: firstEvent.images.first!)], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -230,9 +232,9 @@ struct EventsView: View {
                 }
                 
                 VStack {
-                    ImageScrollingView(images: firstEvent.images, onTapCenter: nil)
+                    ImageScrollingView(images: firstEvent.images.map { Image(uiImage: $0)}, onTapCenter: nil)
                         .frame(width: 156, height: 200)
-                    
+
                     HStack {
                         Text(firstEvent.name)
                             .font(.footnote)

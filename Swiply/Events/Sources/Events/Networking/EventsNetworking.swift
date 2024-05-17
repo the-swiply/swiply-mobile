@@ -78,7 +78,7 @@ class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
 
 // MARK: - Endpoint
 
-enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
+enum EventsNetworkingEndpoint: TokenizedEndpoint {
 
     case create(event: Event)
     case joinEvent(id: UUID)
@@ -127,7 +127,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
         }
     }
 
-    var body: [String : String]? {
+    var body: [String : Codable]? {
         switch self {
         case .create(event: let event):
             return [
@@ -173,35 +173,35 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 private extension Request {
 
     static func create(event: Event) async -> Self {
-        .init(endpoint: RecommendationsNetworkingEndpoint.create(event: event))
+        .init(endpoint: EventsNetworkingEndpoint.create(event: event))
     }
 
     static func joinEvent(id: UUID) async -> Self {
-        .init(endpoint: RecommendationsNetworkingEndpoint.joinEvent(id: id))
+        .init(endpoint: EventsNetworkingEndpoint.joinEvent(id: id))
     }
 
     static func eventMembers(id: UUID) async -> Self {
-        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.eventMembers(id: id))
+        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.eventMembers(id: id))
     }
 
     static func updateEvent(info: Event) async -> Self {
-        .init(endpoint: RecommendationsNetworkingEndpoint.updateEvent(info: info))
+        .init(endpoint: EventsNetworkingEndpoint.updateEvent(info: info))
     }
 
     static func getEvents() async -> Self {
-        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.getEvents)
+        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.getEvents)
     }
 
     static func acceptUser(eventId: UUID, userId: UUID) async -> Self {
-        .init(endpoint: RecommendationsNetworkingEndpoint.acceptUser(eventId: eventId, userId: userId))
+        .init(endpoint: EventsNetworkingEndpoint.acceptUser(eventId: eventId, userId: userId))
     }
 
     static func myEvents() async -> Self {
-        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.myEvents)
+        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.myEvents)
     }
 
     static func membership(number: Int) async -> Self {
-        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.membership(number: number))
+        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.membership(number: number))
     }
 
 }

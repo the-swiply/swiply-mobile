@@ -84,7 +84,7 @@ class LiveProfilesService: ProfilesService {
                 }
 
                 imagesReferense.images = profileImages.map { image in
-                    return .image(Image(uiImage: image))
+                    return .image(image)
                 }
             }
         }
