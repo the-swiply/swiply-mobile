@@ -167,7 +167,7 @@ public struct EventsView: View {
 //                        destination: EventInfoView(event: firstEvent),
                                    destination: ChangeInformation(),
                         label: {
-                            ImageScrollingView(images: [Image(uiImage: firstEvent.images.first!)], onTapCenter: nil)
+                            ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -189,7 +189,7 @@ public struct EventsView: View {
                     NavigationLink(
                         destination: EventInfoView(event: secondEvent),
                         label: {
-                            ImageScrollingView(images: [Image(uiImage: secondEvent.images.first!)], onTapCenter: nil)
+                            ImageScrollingView(images: [.image(Image(uiImage: secondEvent.images.first!))], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -214,7 +214,7 @@ public struct EventsView: View {
                     NavigationLink(
                         destination: EventInfoView(event: firstEvent),
                         label: {
-                            ImageScrollingView(images: [Image(uiImage: firstEvent.images.first!)], onTapCenter: nil)
+                            ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
                                 .frame(width: 156, height: 200)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -232,7 +232,7 @@ public struct EventsView: View {
                 }
                 
                 VStack {
-                    ImageScrollingView(images: firstEvent.images.map { Image(uiImage: $0)}, onTapCenter: nil)
+                    ImageScrollingView(images: firstEvent.images.map { .image(Image(uiImage: $0)) }, onTapCenter: nil)
                         .frame(width: 156, height: 200)
 
                     HStack {
