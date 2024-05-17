@@ -60,6 +60,15 @@ private extension SwipableView {
         }
     }
 
+    func swipeToCenter() {
+        withAnimation {
+            opacity = 1
+            xOffset = 0
+            degrees = 0
+        } completion: {
+        }
+    }
+
     func handleSwipeAction(swipeAction: SwipeAction<ID>?) {
         guard id == swipeAction?.id else {
             return
@@ -67,10 +76,13 @@ private extension SwipableView {
         
         switch swipeAction {
         case .left:
-            swipeLeft()
+            swipeRight()
 
         case .right:
-            swipeRight()
+            swipeLeft()
+
+        case .toCenter:
+            swipeToCenter()
 
         case .none:
             break

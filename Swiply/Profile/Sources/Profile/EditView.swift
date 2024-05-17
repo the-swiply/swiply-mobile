@@ -38,6 +38,9 @@ public struct EditFeature: Reducer {
             case let .show(index):
                 state.isPresented = true
                 state.imageIndex = index
+                if state.info.images.count > index {
+                    state.info.images[index].uuid = ""
+                }
                 state.info.images[index].uuid = ""
                 return .none
             case .onSaveTap:

@@ -8,6 +8,7 @@ import SYCore
 protocol NotificationsNetworking {
 
     func subscribe(token: String) async -> Result<EmptyResponse, RequestError>
+    func unsubscribe() async -> Result<EmptyResponse, RequestError>
 
 }
 
@@ -39,6 +40,10 @@ class LiveNotificationsNetworking: LiveTokenUpdatableClient, NotificationsNetwor
         await sendRequest(.subscribe(token: token))
     }
 
+    func unsubscribe() async -> Result<EmptyResponse, RequestError> {
+        await sendRequest(.unsubscribe())
+    }
+
 }
 
 // MARK: - Endpoint
@@ -46,6 +51,7 @@ class LiveNotificationsNetworking: LiveTokenUpdatableClient, NotificationsNetwor
 enum NotificationsNetworkingEndpoint: TokenizedEndpoint {
 
     case subscribe(token: String)
+    case unsubscribe
 
     var pathPrefix: String {
         #if DEBUG
@@ -62,12 +68,32 @@ enum NotificationsNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .subscribe:
             "/v1/notification/subscribe"
+
+        case .unsubscribe:
+            "/v1/notification/unsubscribe"
+        }
+    }
+
+//    var pathComponents: [String] {
+//        switch self {
+//        case let .subscribe(token):
+//            [token.description]
+//        }
+//    }
+
+    var queryItems: [URLQueryItem]? {
+        switch self {
+        case let .subscribe(token):
+            [.init(name: "device_token", value: token.description)]
+
+        case .unsubscribe:
+            nil
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .subscribe:
+        case .subscribe, .unsubscribe:
             return .post
         }
     }
@@ -92,6 +118,10 @@ private extension Request {
 
     static func subscribe(token: String) -> Self {
         .init(requestTimeout: .infinite, endpoint: NotificationsNetworkingEndpoint.subscribe(token: token))
+    }
+
+    static func unsubscribe() -> Self {
+        .init(requestTimeout: .infinite, endpoint: NotificationsNetworkingEndpoint.unsubscribe)
     }
 
 }

@@ -29,21 +29,23 @@ public struct CardView: View {
     let likeHandler: () -> Void
     let dislikeHandler: () -> Void
     let onTapCenter: () -> Void
+    let info: [(Image, String)]
 
     var person: CardPerson
 
-    public init(person: CardPerson, likeHandler: @escaping () -> Void, dislikeHandler: @escaping () -> Void, onTapCenter: @escaping () -> Void) {
+    public init(person: CardPerson, likeHandler: @escaping () -> Void, dislikeHandler: @escaping () -> Void, onTapCenter: @escaping () -> Void, info: [(Image, String)]) {
         self.likeHandler = likeHandler
         self.dislikeHandler = dislikeHandler
         self.onTapCenter = onTapCenter
         self.person = person
+        self.info = info
     }
 
     public var body: some View {
         ZStack {
             ImageScrollingView(images: person.images, onTapCenter: onTapCenter)
                 .overlay(alignment: .bottomLeading) {
-                    BiographyOverlay(person: person, likeHandler: likeHandler, dislikeHandler: dislikeHandler)
+                    BiographyOverlay(person: person, likeHandler: likeHandler, dislikeHandler: dislikeHandler, info: info)
                 }
         }
         .background(.white)

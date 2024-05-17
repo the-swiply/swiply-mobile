@@ -6,7 +6,7 @@ struct PaywallView: View {
 
     @Bindable var store: StoreOf<PaywallFeature>
 
-    @State private var selectedId = "Swiply.monthly"
+//    @State private var selectedId = "Swiply.monthly"
 
     var body: some View {
         VStack {
@@ -53,23 +53,23 @@ struct PaywallView: View {
                 ForEach(store.products) { product in
                     if product.id == "Swiply.monthly" {
                         Button {
-                            selectedId = "Swiply.monthly"
+                            store.send(.changeId("Swiply.monthly"))
                         } label : {
-                            SubscriptionOptionView(number: "1", title: "месяц", price: "499 ₽", isSelected: selectedId == "Swiply.monthly", id: "Swiply.monthly")
+                            SubscriptionOptionView(number: "1", title: "месяц", price: "499 ₽", isSelected: store.selectedId == "Swiply.monthly", id: "Swiply.monthly")
                         }
                     }
                     else if product.id == "Swiply.3monthly" {
                         Button {
-                            selectedId = "Swiply.3monthly"
+                            store.send(.changeId("Swiply.3monthly"))
                         } label : {
-                            SubscriptionOptionView(number: "3", title: "месяца", price: "1290 ₽", isSelected: selectedId == "Swiply.3monthly", id: "Swiply.3monthly")
+                            SubscriptionOptionView(number: "3", title: "месяца", price: "1290 ₽", isSelected: store.selectedId == "Swiply.3monthly", id: "Swiply.3monthly")
                         }
                     }
                     else if product.id == "Swiply.yearly" {
                         Button {
-                            selectedId = "Swiply.yearly"
+                            store.send(.changeId("Swiply.yearly"))
                         } label : {
-                            SubscriptionOptionView(number: "1", title: "год", price: "3990 ₽", isSelected: selectedId == "Swiply.yearly", id: "Swiply.yearly")
+                            SubscriptionOptionView(number: "1", title: "год", price: "3990 ₽", isSelected: store.selectedId == "Swiply.yearly", id: "Swiply.yearly")
                         }
                     }
                 }
@@ -78,7 +78,7 @@ struct PaywallView: View {
 
 
             SYButton(title: "Продолжить") {
-                store.send(.continueTapped(selectedId))
+                store.send(.continueTapped(store.selectedId))
             }.padding(.all, 24)
         }
         .alert($store.scope(state: \.alert, action: \.alert))

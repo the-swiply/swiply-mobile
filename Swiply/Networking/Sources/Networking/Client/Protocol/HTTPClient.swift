@@ -38,6 +38,7 @@ public extension HTTPClient {
         urlComponents.host = endpoint.host
         urlComponents.path = "/\(endpoint.pathPrefix)\(endpoint.path)"
         urlComponents.port = endpoint.port
+        urlComponents.queryItems = endpoint.queryItems
 
         print(urlComponents.path)
 
@@ -81,8 +82,8 @@ public extension HTTPClient {
             
 
 
-            Logger.services.log("Status code: \(response.statusCode)")
-            
+            Logger.services.log("Status code: \(response.statusCode) response: \(endpoint.path)")
+
             switch response.statusCode {
             case 200...299:
                 if T.self == EmptyResponse.self {

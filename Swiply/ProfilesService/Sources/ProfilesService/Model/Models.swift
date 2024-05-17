@@ -155,7 +155,7 @@ public extension Person {
     static let ann = Person(
         email: "userTestAna@",
         name: "Аня",
-        age: Date(),
+        age: Date(timeIntervalSinceNow: -800000000),
         gender: .female,
         interests: [],
         town: "Москва",
@@ -166,7 +166,7 @@ public extension Person {
     static let kate = Person(
         email: "userTestKate@",
         name: "Екатерина",
-        age: Date(),
+        age: Date(timeIntervalSinceNow: -700000000),
         gender: .female,
         interests: [],
         town: "Москва",
@@ -177,19 +177,19 @@ public extension Person {
     static let maria = Person(
         email: "userTestMaria@",
         name: "Мария",
-        age: Date(),
+        age: Date(timeIntervalSinceNow: -703434000),
         gender: .female,
         interests: [],
         town: "Москва",
         description: "Я мобильный разработчик! Обычно всех удивляет этот факт, а если этого мало, то я разрабатываю приложения как под iOS, так и под Android. Под Android только начинаю учиться, но мне нравится. \n\nСтараюсь вести здоровый образ жизни и часто езжу на велосипеде, это успокаивает. Если ты не готов кататься со мной на велосипеде или провести весь день на IT конференции, то даже не пиши)",
-        images: [.init(image: UIImage(resource: .maria), uuid: ""), .init(image: UIImage(resource: .night), uuid: "")]
+        images: [.init(image: UIImage(resource: .maria), uuid: "")]
     )
 
 
     static let daria = Person(
         email: "userTestDaria@",
         name: "Дарья",
-        age: Date(),
+        age: Date(timeIntervalSinceNow: -609909900),
         gender: .female,
         interests: [],
         town: "Москва",
@@ -201,7 +201,7 @@ public extension Person {
     static let vera = Person(
         email: "userTestVera@",
         name: "Вероника",
-        age: Date(),
+        age: Date(timeIntervalSinceNow: -709909900),
         gender: .female,
         interests: [],
         town: "Москва",

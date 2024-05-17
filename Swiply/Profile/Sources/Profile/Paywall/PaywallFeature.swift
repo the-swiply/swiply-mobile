@@ -9,6 +9,7 @@ public struct PaywallFeature {
     public struct State: Equatable {
         let num: Int = 0
         var products: [Product] = []
+        var selectedId = "Swiply.monthly"
         @Presents var alert: AlertState<Action.Alert>?
         @Shared(.inMemory("hasSubscription")) var hasSubscription = false
     }
@@ -22,6 +23,7 @@ public struct PaywallFeature {
         case cancelTapped
         case alert(PresentationAction<Alert>)
         case backTapped
+        case changeId(String)
 
         public enum Alert: Equatable {
           case confirm
@@ -56,6 +58,10 @@ public struct PaywallFeature {
                     await send(.update(products: products))
                 }
 
+            case .changeId(let id):
+                state.selectedId = id
+                return .none
+
             case let .update(products):
                 let sorted = products.sorted(by: { $0.price < $1.price })
                 state.products = sorted
@@ -65,7 +71,7 @@ public struct PaywallFeature {
                 return .publisher {
                     return purchaseManager
                         .purchasePublisher
-                        .removeDuplicates()
+//                        .removeDuplicates()
                         .dropFirst()
                         .map { _ in Action.handlePurchase }
                 }

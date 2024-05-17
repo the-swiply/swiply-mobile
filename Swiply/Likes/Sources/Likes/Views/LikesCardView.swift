@@ -2,10 +2,11 @@ import SwiftUI
 import SYVisualKit
 import CardInformation
 import ProfilesService
+import SYCore
 
 public struct LikesCardView: View {
 
-    @State var person: Person
+    @State var person: Profile
     var isBlured: Bool
     var action: () -> Void
 
@@ -13,11 +14,17 @@ public struct LikesCardView: View {
         NavigationLink(
             destination: CardInformationView(person: person),
             label: {
-                Image(uiImage: person.getFirstImage())
-                    .centerCropped()
-                    .overlay(.ultraThinMaterial)
-                    .opacity(isBlured ? 1 : 0)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                if isBlured {
+                    Image(uiImage: person.images.getFirstImage())
+                        .centerCropped()
+                        .overlay(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
+                else {
+                    Image(uiImage: person.images.getFirstImage())
+                        .centerCropped()
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
             }
         )
         .overlay {
@@ -25,7 +32,7 @@ public struct LikesCardView: View {
                 VStack(alignment: .leading) {
                     Spacer()
 
-                    Text(person.name + "," + person.age.description)
+                    Text(person.name + "," + person.age.getAge().description)
                         .foregroundStyle(.white)
                         .font(.headline)
                         .fontWeight(.semibold)

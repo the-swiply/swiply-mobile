@@ -53,7 +53,6 @@ struct Root {
             case .appDelegate(.didFinishLaunching):
                 return .run { send in
                     await send(.handleforbiddenError)
-                    
                     let appState = await appStateManager.getState()
 
                     switch appState {
@@ -165,8 +164,10 @@ struct Root {
             case .registerForNotification:
                 return .run { send in
                     if let token = appStorage.string(forKey: "DeviceToken"),
+                       token != "",
                        let _ = keychain.getToken(type: .refresh)
                     {
+                        let _ = await notificationsNetworking.unsubscribe()
                         let _  = await notificationsNetworking.subscribe(token: token)
                     }
                 }

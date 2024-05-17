@@ -2,35 +2,46 @@ import ComposableArchitecture
 import SYCore
 import SYVisualKit
 import Foundation
+import CardInformation
 
 @Reducer
 public struct Recommendations {
+
+    @Reducer(state: .equatable)
+    public enum Path {
+        case info(CardInformation)
+    }
 
     @ObservableState
     public struct State: Equatable {
         var profiles: [Profile] = []
         var swipeAction: SwipeAction<String>?
 
+        var path = StackState<Path.State>()
+
         public init() { }
 
     }
 
-    public enum Action: Equatable {
+    public enum Action {
         case onAppear
         case backButtonTapped
         case likeButtonTapped(UUID)
         case dislikeButtonTapped(UUID)
         case nextPhotoButtonTapped
-        case onTapCenter
+        case onTapCenter(Profile)
         case updateProfiles([Profile])
         case loadProfiles
         case filter(age: ClosedRange<Int>, gender: ProfileGender)
         case handleMatch
+        case makeBackSwipe(UUID)
+        case path(StackAction<Path.State, Path.Action>)
     }
 
     @Dependency(\.recommendationsService) var recommendationsService
     @Dependency(\.profilesService) var profilesService
     @Dependency(\.matchesService) var matchesService
+
 
     public init() { }
 
@@ -69,7 +80,16 @@ public struct Recommendations {
                 }
 
             case .backButtonTapped:
+                return .run { send in
+                    if let id = await recommendationsService.lastProfile()?.id {
+                        await send(.makeBackSwipe(id))
+                    }
+                }
+
+            case .makeBackSwipe(let id):
+                state.swipeAction = .toCenter(id: id.uuidString.lowercased())
                 return .none
+
 
             case let .likeButtonTapped(id):
                 state.swipeAction = .right(id: id.uuidString.lowercased())
@@ -88,17 +108,24 @@ public struct Recommendations {
             case .nextPhotoButtonTapped:
                 return .none
 
-            case .onTapCenter:
+            case let .onTapCenter(profile):
+                state.path.append(.info(.init(profile: profile)))
                 return .none
 
             case let .filter(age, gender):
-                return .none
+                return .run { send in
+                    await recommendationsService.filterProfiles(age: age, gender: gender)
+                }
 
             case .handleMatch:
                 print("New Match")
                 return .none
+
+            case .path(_):
+                return .none
             }
         }
+        .forEach(\.path, action: \.path)
     }
 
 }

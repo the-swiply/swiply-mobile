@@ -7,9 +7,7 @@ struct BiographyOverlay: View {
     let likeHandler: () -> Void
     let dislikeHandler: () -> Void
 
-    var info: [(Image, String)] {
-        [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
-    }
+    var info: [(Image, String)]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

@@ -13,6 +13,15 @@ public struct ImageView: View {
         case .loading:
             Rectangle()
                 .foregroundStyle(.gray)
+                .overlay {
+                    VStack {
+                        Spacer()
+
+                        ProgressView()
+
+                        Spacer()
+                    }
+                }
         }
     }
 

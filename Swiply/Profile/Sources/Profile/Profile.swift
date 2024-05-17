@@ -135,6 +135,15 @@ struct ProfileView: View {
                             store.send(.onSubscriptionTap)
                         }
                 }
+                else {
+                    Image(.subscriptionPremium)
+                        .resizable()
+                        .frame(width: 340, height: 250)
+                        .padding(.top, 5)
+                        .onTapGesture {
+                            store.send(.onSubscriptionTap)
+                        }
+                }
 
                 
                 Spacer()

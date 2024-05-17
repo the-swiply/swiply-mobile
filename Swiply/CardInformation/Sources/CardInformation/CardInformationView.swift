@@ -1,28 +1,35 @@
 import SwiftUI
 import SYVisualKit
 import ProfilesService
+import SYCore
 
 public struct CardInformationView: View {
 
-    var info: [(Image, String)] {
-        [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
-    }
 
-    var person: Person
 
-    public init(person: Person) {
+    var person: Profile
+
+    public init(person: Profile) {
         self.person = person
     }
 
     public var body: some View {
         ScrollView {
-            ImageScrollingView(images: person.images.map { .image(Image(uiImage: $0.image!)) }, onTapCenter: nil)
+            ImageScrollingView(images: person.images.images.map { image in
+                switch image {
+                case let .image(image):
+                    return .image(Image(uiImage: image.image))
+
+                case .loading:
+                    return .loading
+                }
+            }, onTapCenter: nil)
                 .frame(height: 435)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
             HStack {
                 VStack(alignment: .leading) {
-                    Text("\(person.name), \(person.age.description)")
+                    Text("\(person.name), \(person.age.getAge())")
                         .font(.largeTitle)
                         .fontWeight(.bold)
 
@@ -43,7 +50,7 @@ public struct CardInformationView: View {
             }
 
             SYFlowView(
-                content: info.map {
+                content: [person.name.count >= 4 ? (Image(.heart), "Отношения") : (Image(.message), "Общение"), (Image(.ruler), "\(person.age.getAge() + 145)") ,(Image(.pets), person.images.images.count <= 1 ? "Нет" : "Да") , person.name.count > 4 ? (Image(.aquarius), "Водолей") : (Image(.gemini), "Близнецы") ,(Image(.study), person.images.images.count > 1 ? "Высшее" : "Колледж")].map {
                     SYPinkChip(text: $0.1, image: $0.0)
                 }
             )
@@ -72,7 +79,7 @@ public struct CardInformationView: View {
         }
         .scrollIndicators(.hidden)
         .padding(.horizontal, 16)
-        .navigationTitle("\(person.name), \(person.age)")
+        .navigationTitle("\(person.name), \(person.age.getAge())")
     }
 
 }
@@ -90,6 +97,7 @@ struct SYPinkChip: View {
     var body: some View {
         HStack(spacing: 8) {
             image
+                .foregroundStyle(.white)
 
             Text(text)
                 .font(.headline)

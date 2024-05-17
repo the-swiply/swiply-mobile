@@ -38,10 +38,25 @@ public struct ImageScrollingView: View {
                 }
             }
         }
+        else if !images.isEmpty, images[0] != .loading {
+            Rectangle()
+                .foregroundStyle(.gray)
+                .overlay {
+                    VStack {
+                        Spacer()
+
+                        ProgressView()
+                            .controlSize(.large)
+                            .foregroundStyle(.white)
+                            .tint(.white)
+
+                        Spacer()
+                    }
+                }
+        }
         else {
             Rectangle()
                 .foregroundStyle(.gray)
-                .overlay(.ultraThinMaterial)
         }
     }
 

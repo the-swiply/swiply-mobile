@@ -57,12 +57,14 @@ class LiveAppStateManager: AppStateManager {
             return .authorization
         }
 
-        if storage.bool(forKey: "wasProfileCreated") {
-            return .main
-        }
-        else {
-            return .profileCreation
-        }
+        return .main
+
+//        if storage.bool(forKey: "wasProfileCreated") {
+//            return .main
+//        }
+//        else {
+//            return .profileCreation
+//        }
     }
 
     func setProfileCreationComplete() {

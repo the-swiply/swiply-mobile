@@ -13,6 +13,8 @@ public struct SYBlurChip: View {
     public var body: some View {
         HStack(spacing: 8) {
             image
+                .foregroundStyle(.white)
+                .tint(.white)
 
             Text(text)
                 .font(.headline)

@@ -17,7 +17,7 @@ struct HomeView: View {
             VStack {
                 Image(.logo)
                     .padding(.top, 10)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 16)
 
                 HStack {
                     Text("Главная")

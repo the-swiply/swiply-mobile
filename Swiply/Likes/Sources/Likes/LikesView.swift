@@ -3,19 +3,33 @@ import SYVisualKit
 import CardInformation
 import ProfilesService
 import ComposableArchitecture
+import SYCore
 
 public struct LikesView: View {
 
     @Bindable var store: StoreOf<LikesFeature>
 
-    @State private var data: [Person] =
+    @State private var data: [Profile] =
     [
         Person.ann,
         Person.daria,
         Person.kate,
         Person.maria,
         Person.vera,
-    ]
+    ].map {
+        .init(id: $0.id,
+              name: $0.name,
+              age: $0.age,
+              gender: $0.gender,
+              interests: $0.interests,
+              town: $0.town,
+              description: $0.description,
+              email: $0.email,
+              images: .init(images: $0.images.map { .image(.init(image: $0.image ?? UIImage(resource: .girl1), uuid: $0.uuid)) }),
+              education: $0.education,
+              work: $0.work,
+              corporateMail: [])
+    }
 
     public init(store: StoreOf<LikesFeature>) {
         self.store = store
@@ -53,18 +67,20 @@ public struct LikesView: View {
                     .padding(.bottom, 24)
                     .scrollIndicators(.hidden)
 
-                    SYButton(title: "Узнай, кто тебя лайкнул") {
-                        store.send(.buyTapped)
+                    if !store.hasSubscription {
+                        SYButton(title: "Узнай, кто тебя лайкнул") {
+                            store.send(.buyTapped)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 24)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
                 }
             }
         }
     }
 
     @ViewBuilder
-    private func row(firstCard: Person, secondCard: Person? = nil) -> some View {
+    private func row(firstCard: Profile, secondCard: Profile? = nil) -> some View {
         if let secondCard {
             HStack(spacing: 12) {
                 LikesCardView(person: firstCard, isBlured: !store.hasSubscription) {

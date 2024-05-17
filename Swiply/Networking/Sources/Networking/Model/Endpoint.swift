@@ -1,3 +1,4 @@
+import Foundation
 
 public protocol Endpoint {
 
@@ -6,7 +7,7 @@ public protocol Endpoint {
     var port: Int? { get }
     var pathPrefix: String { get }
     var path: String { get }
-    var queryItems: [String]? { get }
+    var queryItems: [URLQueryItem]? { get }
     var pathComponents: [String] { get }
     var method: HTTPMethod { get }
     var header: [String: String]? { get }
@@ -35,7 +36,7 @@ public extension Endpoint {
         nil
     }
 
-    var queryItems: [String]? {
+    var queryItems: [URLQueryItem]?  {
         nil
     }
 

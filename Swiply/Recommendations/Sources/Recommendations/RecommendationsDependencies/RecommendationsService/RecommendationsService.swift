@@ -16,6 +16,7 @@ public protocol RecommendationsService {
     func dislikeProfile(id: UUID) async
     func likeProfile(id: UUID) async
     func filterProfiles(age: ClosedRange<Int>, gender: ProfileGender) async
+    func lastProfile() async -> Profile?
 
 }
 
@@ -65,10 +66,18 @@ actor LiveRecommendationsService: RecommendationsService {
 
     func dislikeProfile(id: UUID) async {
         let _ = await profilesService.dislikeProfile(id: id)
+
+        if let profile = profiles.first(where: { $0.id == id }) {
+            buffer.append(profile)
+        }
     }
     
     func likeProfile(id: UUID) async {
         let _ = await profilesService.likeProfile(id: id)
+
+        if let profile = profiles.first(where:  { $0.id == id }) {
+            buffer.append(profile)
+        }
     }
 
     func returnToLastProfile() async {
@@ -76,6 +85,10 @@ actor LiveRecommendationsService: RecommendationsService {
             buffer.removeLast()
             profiles.append(profile)
         }
+    }
+
+    func lastProfile() async -> Profile? {
+        buffer.last
     }
 
     func removeProfile(with id: UUID) async {
@@ -125,7 +138,12 @@ actor LiveRecommendationsService: RecommendationsService {
     }
 
     func updateProfiles(newProfile: Profile) async {
-        profiles.append(newProfile)
+        if profiles.isEmpty {
+            profiles.append(newProfile)
+        }
+        else {
+            profiles.insert(newProfile, at: profiles.count - 1)
+        }
     }
 
     func filterProfiles(age: ClosedRange<Int>, gender: ProfileGender) async {

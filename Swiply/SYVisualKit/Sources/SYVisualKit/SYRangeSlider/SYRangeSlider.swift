@@ -1,10 +1,10 @@
 import SwiftUI
 
 public struct RangedSliderView: View {
-    let currentValue: Binding<ClosedRange<Int>>
+    let currentValue: Binding<ClosedRange<CGFloat>>
     let sliderBounds: ClosedRange<Int>
 
-    public init(value: Binding<ClosedRange<Int>>, bounds: ClosedRange<Int>) {
+    public init(value: Binding<ClosedRange<CGFloat>>, bounds: ClosedRange<Int>) {
         self.currentValue = value
         self.sliderBounds = bounds
     }
@@ -28,9 +28,9 @@ public struct RangedSliderView: View {
                 let stepWidthInPixel = CGFloat(sliderSize.width) / CGFloat(sliderBoundDifference)
 
                 // Calculate Left Thumb initial position
-                let leftThumbLocation: CGFloat = currentValue.wrappedValue.lowerBound == sliderBounds.lowerBound
+                let leftThumbLocation: CGFloat = currentValue.wrappedValue.lowerBound == CGFloat(sliderBounds.lowerBound)
                     ? 0
-                    : CGFloat(currentValue.wrappedValue.lowerBound - sliderBounds.lowerBound) * stepWidthInPixel
+                    : CGFloat(currentValue.wrappedValue.lowerBound - CGFloat(sliderBounds.lowerBound)) * stepWidthInPixel
 
                 // Calculate right thumb initial position
                 let rightThumbLocation = CGFloat(currentValue.wrappedValue.upperBound) * stepWidthInPixel
@@ -46,10 +46,10 @@ public struct RangedSliderView: View {
                         let dragLocation = dragValue.location
                         let xThumbOffset = min(max(0, dragLocation.x), sliderSize.width)
 
-                        let newValue = sliderBounds.lowerBound + Int(xThumbOffset / stepWidthInPixel)
+                        let newValue = CGFloat(sliderBounds.lowerBound) + xThumbOffset / stepWidthInPixel
 
                         // Stop the range thumbs from colliding each other
-                        if newValue < currentValue.wrappedValue.upperBound {
+                        if newValue < CGFloat(currentValue.wrappedValue.upperBound) {
                             currentValue.wrappedValue = newValue...currentValue.wrappedValue.upperBound
                         }
                     })
@@ -64,8 +64,8 @@ public struct RangedSliderView: View {
                         newValue = min(newValue, sliderBounds.upperBound)
 
                         // Stop the range thumbs from colliding each other
-                        if newValue > currentValue.wrappedValue.lowerBound {
-                            currentValue.wrappedValue = currentValue.wrappedValue.lowerBound...newValue
+                        if CGFloat(newValue) > currentValue.wrappedValue.lowerBound {
+                            currentValue.wrappedValue = currentValue.wrappedValue.lowerBound...CGFloat(newValue)
                         }
                     })
             }
@@ -79,7 +79,7 @@ public struct RangedSliderView: View {
         }.stroke(.pink, lineWidth: 4)
     }
 
-    @ViewBuilder func thumbView(position: CGPoint, value: Int) -> some View {
+    @ViewBuilder func thumbView(position: CGPoint, value: CGFloat) -> some View {
         ZStack {
 //            Text(String(value))
 //                .font(.caption)
