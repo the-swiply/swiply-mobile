@@ -1,11 +1,12 @@
 import ComposableArchitecture
+import ProfilesService
 
 @Reducer
 public struct OTP {
 
     @ObservableState
     public struct State: Equatable {
-
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         enum RetryButtonState: Equatable {
             case enabled
             case disabled(remainingTime: Int)
@@ -21,7 +22,6 @@ public struct OTP {
     }
 
     public enum Action {
-
         case binding(Bool)
         case textChanged(String)
         case continueButtonTapped
@@ -33,6 +33,7 @@ public struct OTP {
         @CasePathable
         public enum Delegate {
             case finishAuthorization
+            
         }
         
     }
@@ -49,6 +50,7 @@ public struct OTP {
     public init() { }
 
     public var body: some ReducerOf<Self> {
+
         Reduce { state, action in
             switch action {
             case .continueButtonTapped:
@@ -61,7 +63,7 @@ public struct OTP {
                             case let .success(tokens):
                                 keychain.setToken(token: tokens.accessToken, type: .access)
                                 keychain.setToken(token: tokens.refreshToken, type: .refresh)
-
+                                state.profile.email = dataManager.getEmail()
                                 await send(.delegate(.finishAuthorization))
 
                             case .failure:

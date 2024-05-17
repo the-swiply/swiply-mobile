@@ -1,4 +1,5 @@
 import SwiftUI
+import SYCore
 
 struct MultiUserChatRow: View {
     
@@ -66,17 +67,5 @@ struct MultiUserChatRow: View {
                 .padding(.trailing)
         }
         
-    }
-}
-
-extension View {
-    public func gradientForeground(colors: [Color]) -> some View {
-        self.overlay(
-            LinearGradient(
-                colors: colors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing)
-        )
-        .mask(self)
     }
 }

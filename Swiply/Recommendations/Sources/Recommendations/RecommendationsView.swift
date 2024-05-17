@@ -131,7 +131,7 @@ private struct MainBarView: View {
 extension Person {
 
     var toCardPerson: CardPerson {
-        .init(name: name, age: age, interests: interests, town: town, description: description, images: images.map { Image(uiImage: $0!) })
+        .init(name: name, age: age.getAge(), interests: interests.map { $0.definition }, town: town, description: description, images: images.map { Image(uiImage: $0!) })
     }
 
 }

@@ -1,11 +1,13 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
+import ProfilesService
 
 public struct BirthdayFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var selectedDate = Date()
    
     }
@@ -17,20 +19,27 @@ public struct BirthdayFeature: Reducer {
     
     public var body: some ReducerOf<Self> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .binding:
+                return .none
+            case .continueButtonTapped:
+                state.profile.age = state.selectedDate
+                return .none
+            }
+        }
     }
 }
 
 struct BirthdayView: View {
     
-    var title: String
-    var description: String
     @Bindable var store: StoreOf<BirthdayFeature>
     
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(
-                title: title,
-                desription: description
+                title: "Мой день рождения",
+                desription: "Ваш возраст будет указан в профиле"
             )
             
             DatePicker(
@@ -55,8 +64,6 @@ struct BirthdayView: View {
 
 #Preview {
     BirthdayView(
-        title: "Мой День рождения",
-        description: "Ваш возраст будет указан в профиле", 
         store: Store(initialState: BirthdayFeature.State(), reducer: {
             BirthdayFeature()._printChanges()
         })

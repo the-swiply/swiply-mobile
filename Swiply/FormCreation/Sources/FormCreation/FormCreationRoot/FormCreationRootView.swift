@@ -14,18 +14,14 @@ public struct FormCreationRootView: View {
             path: $store.scope(state: \.path, action: \.path)
         ) {
             InfoInputView(
-                title: "Моё имя",
-                placeHolder: "Введите имя",
-                description: "Ваше имя будет отображаться в профиле Swiply, и у вас будет возможность его изменить",
+                type: .name,
                 store: store.scope(state: \.welcome, action: \.welcome)
             )
         } destination: { store in
             switch store.case {
             case let .cityInput(store):
                 InfoInputView(
-                    title: "Мой город",
-                    placeHolder: "Укажи свой город",
-                    description: "Напиши свой город, чтобы знакомиться с людьми, которые живут рядом",
+                    type: .town,
                     store: store
                 )
             case let .interestsInput(store):
@@ -33,21 +29,15 @@ public struct FormCreationRootView: View {
                 
             case let .birthdayView(store):
                 BirthdayView(
-                    title: "Мой день рождения",
-                    description: "Ваш возраст будет указан в профиле",
                     store: store
                 )
             case let .genderView(store):
                 GenderView(
-                    title: "Мой пол",
-                    description: "Выберите свой пол",
                     store: store
                 )
             case let .biographyView(store):
                 InfoInputView(
-                    title: "Моя биография",
-                    placeHolder: "Напиши немного о себе",
-                    description: "Напиши о себе, биография будет отображаться в твоём профиле",
+                    type: .info,
                     isMultiLine: true,
                     store: store
                 )
@@ -55,17 +45,13 @@ public struct FormCreationRootView: View {
                 ImageView(store: store)
             case let .education(store):
                 InfoInputView(
-                    title: "Моё образование", 
-                    placeHolder: "Институт, курсы ...",
-                    description: "Напиши о своём образование",
+                    type: .education,
                     isOptional: true ,
                     store: store
                 )
             case let .work(store):
                 InfoInputView(
-                    title: "Моя работа",
-                    placeHolder: "Название компании, род деятельности ...",
-                    description: "Напиши где тв работаешь или чем занимаешься",
+                    type: .work, 
                     isOptional: true ,
                     store: store
                 )

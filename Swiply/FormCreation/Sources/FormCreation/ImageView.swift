@@ -1,11 +1,13 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
+import ProfilesService
 
 public struct ImageFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
+        @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
         var images: [UIImage?] = Array(repeating: nil, count: 6)
         var isButtonDisabled = true
         var isPresented: Bool = false
@@ -25,6 +27,7 @@ public struct ImageFeature: Reducer {
         Reduce { state, action in
             switch action {
             case .continueButtonTapped:
+                state.profile.images = state.images
                 return .none
             case .binding:
                 state.isButtonDisabled = !(state.images.filter {  $0 != nil }.count >= 1)
@@ -39,7 +42,9 @@ public struct ImageFeature: Reducer {
 }
 
 struct ImageView: View {
+    
     @Bindable var store: StoreOf<ImageFeature>
+    
     var body: some View {
         VStack(alignment: .leading) {
             SYHeaderView(

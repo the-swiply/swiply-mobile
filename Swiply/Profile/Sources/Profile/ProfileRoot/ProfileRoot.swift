@@ -26,9 +26,13 @@ public struct ProfileRoot {
     public enum Action {
         case path(StackAction<Path.State, Path.Action>)
         case profile(ProfileFeature.Action)
+        case showError
     }
     
     public init() {}
+    
+    @Dependency(\.profileManager) var profileManager
+    @Dependency(\.profilesService) var profileNetworking
     
     public var body: some ReducerOf<Self> {
         
@@ -42,43 +46,38 @@ public struct ProfileRoot {
                 case let .showEdit(user):
                     state.path.append(.edit(EditFeature.State(info: user)))
                 case .onSettingsTap:
-                    state.path.append(.settings(SettingsFeature.State()))
+                    state.path.append(.settings(SettingsFeature.State(
+                        match: profileManager.isMatchOn(),
+                        messages: profileManager.isMessageOn(),
+                        likes: profileManager.isLikeOn(),
+                        meeting: profileManager.isMeetingOn()
+                    )))
                 default:
                     break
                 }
                 return .none
             case .path(.element(_, let .edit(.saveChanges(person)))):
-                state.profile.user = person
-                return .none
+                let profile = person.toProfile(state.profile.user)
+                return .run { [state] send in
+                    let response = await profileNetworking.updateProfile(profile: profile)
+                    switch response {
+                    case .success:
+                        state.profile.user = person.toProfile(state.profile.user)
+                    case .failure:
+                        await send(.showError)
+                    }
+                }
                 
             case .path(.element(_, .settings(.exitButtonTapped))):
                 state.path.append(.emailConformation(AuthorizationRoot.State()))
                 return .none
             case .path:
                 return .none
+            case .showError:
+                state.profile.showError = true
+                return .none
                 
             }
-//            switch action {
-//            case let .chats(action):
-//                switch action {
-//                case let .showChat(chat):
-//                    state.path.append(.personalChat(EditFeature.State()))
-//                default:
-//                    break
-//                }
-//                
-//                return .none
-//            case .path(.element(_, let .personalChat(.update(chat)))):
-//                
-//                if let index = state.chats.chat.firstIndex(where: { $0.id == chat.id }) {
-//                    state.chats.chat[index] = chat
-//                } else {
-//                    state.chats.chat.append(chat)
-//                }
-//                return .none
-//            case .path:
-//                return .none
-//            }
         }
         .forEach(\.path, action: \.path)
     }

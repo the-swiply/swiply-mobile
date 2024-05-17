@@ -1,6 +1,10 @@
 // MARK: - PhotosResponse
 
 public struct PhotosResponse: Codable {
-    let id: String
-    let content: [String]
+    let photos: [Photo]
+}
+
+// MARK: - Photo
+public struct Photo: Codable {
+    let id, content: String
 }

@@ -60,7 +60,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
         }
     }
 
-    var body: [String : String]? {
+    var body: [String : Codable]? {
         switch self {
         case .getProfiles(let number):
             ["limit": number.description]
@@ -69,7 +69,7 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 
     #if DEBUG
 
-    var port: Int {
+    var port: Int? {
         18083
     }
 

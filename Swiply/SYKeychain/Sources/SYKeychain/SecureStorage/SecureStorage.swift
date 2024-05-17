@@ -83,7 +83,7 @@ extension SecureStorage {
     }
 
     static func updateToken(_ token: String, for key: String) {
-        guard let _ = getToken(for: token) else {
+        guard let _ = getToken(for: key) else {
             addToken(token, for: key)
             return
         }

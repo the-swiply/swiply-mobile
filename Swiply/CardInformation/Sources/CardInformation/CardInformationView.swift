@@ -63,7 +63,7 @@ public struct CardInformationView: View {
 
             SYFlowView(
                 content: person.interests.map { interest in
-                    SYChip(text: interest) { _ in }
+                    SYChip(text: interest.definition) { _ in }
                 }
             )
             .frame(minHeight: 150)

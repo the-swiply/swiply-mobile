@@ -1,76 +1,13 @@
 import SwiftUI
 import ComposableArchitecture
 import SYVisualKit
-
-@Reducer
-public struct RandomCoffeeFeature {
-    
-    @ObservableState
-    public struct State: Equatable {
-        var selectedDate = Date()
-        var startTime = Date()
-        var endTime = Date()
-        var town = ""
-        var time: TimeInterval = 10000
-        var timeString: String = ""
-        var isON = false
-        var isButtonDisabled = true
-
-        public init() {}
-    }
-    @Dependency(\.dismiss) var dismiss
-    @Dependency(\.continuousClock) var clock
-
-    public enum Action: BindableAction, Equatable {
-        case binding(BindingAction<State>)
-        case continueButtonTapped
-        case timerTick
-        case startTimer
-        case dismiss
-    }
-    
-    public var body: some ReducerOf<Self> {
-        BindingReducer()
-        Reduce { state, action in
-            switch action {
-            case .dismiss:
-                return .run { _ in
-                    await self.dismiss()
-                }
-            case .binding:
-                state.isButtonDisabled = false
-                return .none
-
-            case .continueButtonTapped:
-                state.isON = true
-                return .none
-
-            case .startTimer:
-                return .run { send in
-                    await self.startTimer(send: send)
-                }
-
-            case .timerTick:
-                state.time -= 1
-                state.timeString = state.time.format()
-                return .none
-            }
-        }
-    }
-    
-    public init() {}
-
-    private func startTimer(send: Send<Action>) async {
-      for await _ in self.clock.timer(interval: .seconds(1)) {
-        await send(.timerTick)
-      }
-    }
-}
+import SYCore
 
 public struct RandomCoffeeView: View {
     
     @Bindable var store: StoreOf<RandomCoffeeFeature>
     
+//    private let org = ["НИУ ВШЭ", "Яндекс"]
     public init(store: StoreOf<RandomCoffeeFeature>) {
         self.store = store
     }
@@ -103,16 +40,36 @@ public struct RandomCoffeeView: View {
                 Text("Выберите удобное время для встречи завтра. А мы найдём вам компанию с вашей работы или института.")
                     .bold()
                     .foregroundStyle(.white)
+                    .padding()
                 
             }
             .padding(.top, 10)
+            .padding(.bottom, 30)
+            
+            HStack(spacing: 0) {
+                HStack {
+                    Text("Организация")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                    Picker("Организация",
+                           selection: $store.organization) {
+                        ForEach(store.user.corporateMail, id: \.self) {
+                            Text($0.name).tag($0)
+                        }
+                    }
+                }
+                
+            }
+            .padding(.horizontal, 15)
             HStack(spacing: 0) {
                 Text("Время начала встречи")
                     .font(.callout)
                     .fontWeight(.semibold)
                 Spacer()
                 DatePicker(
-                    selection: $store.startTime,
+                    selection: $store.meeting.start,
                     displayedComponents: [.hourAndMinute], label: {
                         
                     })
@@ -132,7 +89,7 @@ public struct RandomCoffeeView: View {
                     .fontWeight(.semibold)
                 Spacer()
                 DatePicker(
-                    selection: $store.endTime,
+                    selection: $store.meeting.end,
                     displayedComponents: [.hourAndMinute], label: {
                         
                     })
@@ -143,14 +100,6 @@ public struct RandomCoffeeView: View {
             .background(.thickMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.top, 10)
-            
-//            VStack(alignment: .leading) {
-//                TextField("Город встречи", text: $store.town)
-//                    .padding(10)
-//                    .background(.thickMaterial)
-//                    .clipShape(RoundedRectangle(cornerRadius: 16))
-//            }
-//            .padding(.top, 10)
             
             if store.isON {
                 
@@ -164,10 +113,10 @@ public struct RandomCoffeeView: View {
                     }
                     .padding(.top, 15)
                 
-                    
+                
             } else {
                 
-                Text("store.timeString")
+                Text(store.timeString)
                     .fontWeight(.semibold)
                     .font(.title3)
                     .gradientForeground(colors: [.pink, .purple])
@@ -177,7 +126,7 @@ public struct RandomCoffeeView: View {
                     }
                     .padding(.top, 15)
                     .hidden()
-                    
+                
             }
             
             Spacer()
@@ -185,76 +134,24 @@ public struct RandomCoffeeView: View {
                 store.send(.continueButtonTapped)
             }.disabled(store.isButtonDisabled)
             
-            .padding(.top, 20)
+                .padding(.top, 20)
             
         }
         .padding(.horizontal, 24)
-        .task {
-            store.send(.startTimer)
+//        .task {
+//            store.send(.startTimer)
+//        }
+        .alert(store.state.error.description, isPresented: $store.state.showError) {
+            Button("OK", role: .cancel) { }
         }
-
+        
     }
 }
-
-#Preview {
-    RandomCoffeeView(
-        store: Store(initialState: RandomCoffeeFeature.State(), reducer: {
-            RandomCoffeeFeature()._printChanges()
-        })
-    )
-}
-
-extension View {
-    public func gradientForeground(colors: [Color]) -> some View {
-        self.overlay(
-            LinearGradient(
-                colors: colors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing)
-        )
-        .mask(self)
-    }
-}
-
-extension TimeInterval {
-
-    var days: Int { Int(self) / (3600 * 24) }
-    var hours: Int { (Int(self) / 3600) % 24 }
-    var minutes: Int { Int(self) / 60 % 60 }
-    var seconds: Int { Int(self) % 60 }
-
-    var isLongerThanDay: Bool { days > 0 }
-
-    func format() -> String {
-        guard self >= 0 else { return "" }
-
-        if isLongerThanDay {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "d MMMM HH:mm"
-            return String.from(Date().addingTimeInterval(self))
-        }
-
-        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
-    }
-
-}
-
-private func convert(timeInterval: Double) -> String {
-        let hours = Int(timeInterval) / 60
-        let minutes = Int(timeInterval) % 60
-        return String(format: "%02i:%02i", hours, minutes)
-}
-
-extension String {
-
-    static func from(_ date: Date, timeZone: TimeZone? = nil) -> String {
-        var calendar = Calendar.current
-        calendar.timeZone = timeZone ?? TimeZone(secondsFromGMT: 0) ?? .current
-
-        let hour = calendar.component(.hour, from: date)
-        let minute = calendar.component(.minute, from: date)
-
-        return String(format: "%02i:%02i", hour, minute)
-    }
-
-}
+//
+//#Preview {
+//    RandomCoffeeView(
+//        store: Store(initialState: RandomCoffeeFeature.State(), reducer: {
+//            RandomCoffeeFeature()._printChanges()
+//        })
+//    )
+//}

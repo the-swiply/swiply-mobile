@@ -4,12 +4,18 @@ import Networking
 import SYCore
 import SwiftUI
 
-// MARK: - ProfilesService
+// MARK: - ProfilesService 
 
 public protocol ProfilesService {
 
     func getProfile(id: String) async -> Result<Profile, RequestError>
-
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
+    func whoAmI() async -> Result<UserID, RequestError>
+    func createPhoto(photo: String) async -> Result<String, RequestError>
+    func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError>
+    func deletePhoto(id: String) async -> Result<Bool, RequestError>
+    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -48,7 +54,7 @@ class LiveProfilesService: ProfilesService {
     func getProfile(id: String) async -> Result<Profile, RequestError> {
         let getProfileResult = await profilesServiceNetworking.getProfile(id: id)
 
-        let profile: Profile
+        var profile: Profile
 
         switch getProfileResult {
         case let .failure(error):
@@ -58,6 +64,9 @@ class LiveProfilesService: ProfilesService {
             profile = serverProfile.userProfile.toProfile
         }
 
+        let imagesReferense = LoadableImageCollection()
+        profile.images = imagesReferense
+
         Task { [profilesServiceNetworking] in
             let getPhotosResult = await profilesServiceNetworking.getPhotos(id: id)
 
@@ -66,21 +75,124 @@ class LiveProfilesService: ProfilesService {
                 break
 
             case let .success(images):
-                let profileImages = images.content.compactMap { imageString in
-                    if let data = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters) {
+                let profileImages = images.photos.compactMap { imageString in
+                    if let data = Data(base64Encoded: imageString.content, options: .ignoreUnknownCharacters) {
                         return UIImage(data: data)
                     }
 
                     return nil
                 }
 
-                profile.images.images = profileImages.map { image in
-                    return .image(Image(uiImage: image))
+                imagesReferense.images = profileImages.map { image in
+                    return .image(image)
                 }
             }
         }
-
+        
         return .success(profile)
     }
+    
+    func whoAmI() async -> Result<UserID, Networking.RequestError> {
+        let findProfileResult = await profilesServiceNetworking.whoAmI()
+        
+        switch findProfileResult {
+        case let .success(userId):
+            return .success(userId)
+        case let .failure(error):
+            return .failure(error)
+        }
+    }
+    
+    func createProfile(profile: CreatedProfile) async -> Result<UserID, Networking.RequestError> {
+        let createProfileResult = await profilesServiceNetworking.createProfile(profile: profile)
+        
+        let userId: UserID
+        switch createProfileResult {
+        case let .failure(error):
+            return .failure(error)
 
+        case let .success(userID):
+            userId = userID
+        }
+        
+        guard let photo = profile.images.first??.toJpegString(compressionQuality: 0.0) else {
+            return .success(userId)
+        }
+        
+        let createPhotoResult = await profilesServiceNetworking.createPhoto(photo: photo)
+        
+        switch createPhotoResult {
+        case .failure:
+            break
+
+        case .success:
+            break
+        }
+        return .success(userId)
+    
+    }
+    
+    func createPhoto(photo: String) async -> Result<String, Networking.RequestError> {
+        let createPhoto = await profilesServiceNetworking.createPhoto(photo: photo)
+        
+        switch createPhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func getInterestsLists() async -> Result<ListInterestResponse, Networking.RequestError> {
+        let createPhoto = await profilesServiceNetworking.getInterestsLists()
+        
+        switch createPhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(list):
+            var listNew = [Interest]()
+            for i in 0..<list.interests.count {
+                if i < 25 {
+                    listNew.append(list.interests[i])
+                }
+            }
+            return .success(ListInterestResponse(interests: listNew))
+        }
+    }
+    
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError> {
+        let updateProfile = await profilesServiceNetworking.updateProfile(profile: profile)
+        switch updateProfile {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func deletePhoto(id: String) async -> Result<Bool, Networking.RequestError> {
+        let deletePhoto = await profilesServiceNetworking.deletePhoto(id: id)
+        switch deletePhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func reoderPhotos(ids: [String]) async -> Result<Bool, Networking.RequestError> {
+        let reoderPhotos = await profilesServiceNetworking.reoderPhotos(ids: ids)
+        switch reoderPhotos {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
 }
+

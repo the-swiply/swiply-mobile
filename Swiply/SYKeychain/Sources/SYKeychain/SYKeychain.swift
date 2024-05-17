@@ -17,7 +17,7 @@ extension SYKeychain: DependencyKey {
     public static var liveValue: SYKeychain {
         return SYKeychain(
             setToken: { token, type in
-                SecureStorage.addToken(token, for: type.rawValue)
+                SecureStorage.updateToken(token, for: type.rawValue)
             },
             getToken: { type in
                 SecureStorage.getToken(for: type.rawValue)
