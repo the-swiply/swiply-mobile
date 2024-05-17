@@ -5,21 +5,29 @@ import SwiftUI
 public struct Profile: Equatable {
     public let id: UUID
     public var name: String
-    public let age: Int
+    public let age: Date
+    public let email: String
     public let gender: Gender
-    public var interests: [String]
+    public var interests: [Interest]
     public var town: String
     public var description: String
     public var images: LoadableImageCollection
+    public var education: String
+    public var work: String
+    public let corporateMail: [UserOrganization]
 
     public init(id: UUID,
                 name: String,
-                age: Int,
+                age: Date,
                 gender: Gender,
-                interests: [String],
+                interests: [Interest],
                 town: String,
                 description: String,
-                images: LoadableImageCollection){
+                email: String,
+                images: LoadableImageCollection,
+                education: String,
+                work: String,
+                corporateMail: [UserOrganization]) {
         
         self.id = id
         self.name = name
@@ -28,16 +36,35 @@ public struct Profile: Equatable {
         self.interests = interests
         self.town = town
         self.description = description
+        self.email = email
         self.images = images
+        self.education = education
+        self.work = work
+        self.corporateMail = corporateMail
+    }
+    
+    public init() {
+        self.id = UUID()
+        self.name = ""
+        self.age = Date()
+        self.gender = .none
+        self.interests = []
+        self.town = ""
+        self.description = ""
+        self.email = ""
+        self.images = .init()
+        self.education = ""
+        self.work = ""
+        self.corporateMail = []
     }
 }
 
 // MARK: - Gender
 
-public enum Gender: Codable {
-    case male
-    case female
-    case none
+public enum Gender: String, Codable {
+    case male = "MALE"
+    case female = "FEMALE"
+    case none = "GENDER_UNSPECIFIED"
 
     public var name: String {
         switch self {
@@ -68,5 +95,32 @@ public class LoadableImageCollection: Equatable {
     public static func == (lhs: LoadableImageCollection, rhs: LoadableImageCollection) -> Bool {
         lhs.images == rhs.images
     }
+    
+    public func getFirstImage() -> UIImage {
+        var firstImage: UIImage?
+        self.images.forEach { image in
+            switch image {
+            case .loading:
+                break
+            case let .image(uIImage):
+                firstImage = uIImage
+            }
+        }
+        
+        return firstImage ?? UIImage(resource: .noPhoto)
+    }
+}
 
+// MARK: - Interest
+
+public struct Interest: Codable, Hashable {
+    public let id: String
+    public let definition: String
+}
+
+
+public struct UserOrganization: Codable, Hashable {
+    public let id, organization_id : Int
+    public let name, email: String
+    public let is_valid: Bool
 }

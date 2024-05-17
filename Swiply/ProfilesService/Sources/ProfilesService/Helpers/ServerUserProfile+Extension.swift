@@ -5,14 +5,18 @@ extension ServerUserProfile {
 
     var toProfile: Profile {
         Profile(
-            id: UUID(uuidString: self.id) ?? UUID(),
+            id:  UUID(uuidString: self.id) ?? UUID(), 
             name: self.name,
-            age: 22,
-            gender: .male,
-            interests: self.interests.map { $0.id },
-            town: "Moscow",
+            age: DateFormatter.server.date(from: self.birthDay) ?? Date(),
+            gender: .init(rawValue: self.gender) ?? .none,
+            interests: self.interests,
+            town: self.city,
             description: self.info,
-            images: .init()
+            email: self.email,
+            images: .init(),
+            education: self.education,
+            work: self.work, 
+            corporateMail: []
         )
     }
 

@@ -8,6 +8,7 @@ public struct ChatRoot {
     @Reducer(state: .equatable)
     public enum Path {
         case personalChat(PersonalChatFeature)
+        case multiUserChat(MultiUserChatFeature)
     }
     
     @ObservableState
@@ -39,17 +40,27 @@ public struct ChatRoot {
                 switch action {
                 case let .showChat(chat):
                     state.path.append(.personalChat(PersonalChatFeature.State(chat: chat)))
+                case let .showMultiUserChat(chat):
+                    state.path.append(.multiUserChat(MultiUserChatFeature.State(chat: chat)))
                 default:
                     break
                 }
                 
                 return .none
+        
             case .path(.element(_, let .personalChat(.update(chat)))):
                 
                 if let index = state.chats.chat.firstIndex(where: { $0.id == chat.id }) {
                     state.chats.chat[index] = chat
                 } else {
                     state.chats.chat.append(chat)
+                }
+                return .none
+            case .path(.element(_, let .multiUserChat(.update(chat)))):
+                if let index = state.chats.multiUserChat.firstIndex(where: { $0.id == chat.id }) {
+                    state.chats.multiUserChat[index] = chat
+                } else {
+                    state.chats.multiUserChat.append(chat)
                 }
                 return .none
             case .path:

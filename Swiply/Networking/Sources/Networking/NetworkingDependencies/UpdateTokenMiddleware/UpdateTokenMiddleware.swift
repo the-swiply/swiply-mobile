@@ -70,8 +70,6 @@ class LiveUpdateTokenMiddleware: UpdateTokenMiddleware {
                     default:
                         return .failure(error)
                     }
-
-                    return .failure(error)
                 }
 
             case .forbidden:

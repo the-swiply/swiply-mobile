@@ -3,6 +3,8 @@ import SwiftUI
 import Profile
 import Chat
 import Recommendations
+import ProfilesService
+import OSLog
 
 @Reducer
 public struct MainRoot {
@@ -34,16 +36,22 @@ public struct MainRoot {
         case profile(ProfileRoot.Action)
         case chat(ChatRoot.Action)
         case recommendations(Recommendations.Action)
+        case loadProfile
     }
 
     public init() {}
+    
+    @Dependency(\.profilesService) var profilesService
+    @Dependency(\.profileManager) var profileManager
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case let .tabSelected(tab):
                 state.selectedTab = tab
-                return .none
+                return .run { send in
+                    await send(.loadProfile)
+                }
 
             case .features:
                 return .none
@@ -56,6 +64,20 @@ public struct MainRoot {
 
             case .recommendations:
                 return .none
+
+            case .loadProfile:
+                return .run { send in
+                    let response = await self.profilesService.getProfile(
+                        id: profileManager.getUserId()
+                    )
+
+                    switch response {
+                    case let .success(user):
+                        profileManager.setProfileInfo(user)
+                    case .failure:
+                        break
+                    }
+                }
             }
         }
         Scope(state: \.features, action: \.features) {

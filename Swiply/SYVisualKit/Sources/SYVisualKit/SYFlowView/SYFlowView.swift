@@ -6,10 +6,12 @@ public struct SYFlowView<ContentView: View>: View {
 
     private var content: [ContentView]
     private var padding: CGFloat
-
+    private var geometry: GeometryProxy?
+    
     public init(
         content: [ContentView],
-        padding: CGFloat = 8
+        padding: CGFloat = 8,
+        geometry: GeometryProxy? = nil
     ) {
 
         self.content = content
@@ -20,7 +22,8 @@ public struct SYFlowView<ContentView: View>: View {
         SYFlowContainerView(
             content: content,
             padding: padding,
-            size: $containerSize
+            size: $containerSize,
+            geometry: geometry
         )
         .frame(maxHeight: containerSize.height)
     }

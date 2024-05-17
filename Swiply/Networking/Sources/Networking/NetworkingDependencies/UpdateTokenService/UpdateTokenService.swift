@@ -51,7 +51,7 @@ enum UpdateTokenEndpoint: Endpoint {
 
     var header: [String : String]? { [:] }
 
-    var body: [String : String]? {
+    var body: [String : Codable]? {
         switch self {
         case let .refresh(token):
             ["refreshToken": token]

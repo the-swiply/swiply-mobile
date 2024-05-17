@@ -66,7 +66,7 @@ enum AuthEndpoint: Endpoint {
 
     var header: [String : String]? { [:] }
 
-    var body: [String : String]? {
+    var body: [String : Codable]? {
         switch self {
         case let .sendCode(email):
             ["email": email]

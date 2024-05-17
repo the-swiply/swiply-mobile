@@ -9,7 +9,7 @@ public protocol Endpoint {
     var pathComponents: [String] { get }
     var method: HTTPMethod { get }
     var header: [String: String]? { get }
-    var body: [String: String]? { get }
+    var body: [String: Codable]? { get }
 
 }
 

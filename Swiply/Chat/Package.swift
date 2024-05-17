@@ -18,7 +18,8 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.10.2"),
         .package(path: "../SYVisualKit"),
         .package(path: "../Networking"),
-        .package(path: "../ProfilesService")
+        .package(path: "../ProfilesService"),
+        .package(path: "../SYCore")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,7 +30,8 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "SYVisualKit",
                 "Networking",
-                "ProfilesService"
+                "ProfilesService",
+                "SYCore"
             ],
             resources: [.process("Resources/Assets.xcassets")]
         ),

@@ -7,9 +7,9 @@ final class ProfileCreationTests: XCTestCase {
     @MainActor
     func test_changeInterests() async {
         let store = TestStore(
-          initialState: InterestsReducer.State()
+          initialState: InterestsFeature.State()
         ) {
-            InterestsReducer()
+            InterestsFeature()
         }
         
         // Пользователь выбрал интерес "ios". Он добавлен в сет.

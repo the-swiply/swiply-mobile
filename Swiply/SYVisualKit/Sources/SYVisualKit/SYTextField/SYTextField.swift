@@ -6,6 +6,7 @@ public struct SYTextField: View {
 
     private let placeholder: String
     private let footerText: String?
+    private let isMultiLine: Bool
 
     @Binding private var text: String
 
@@ -21,10 +22,11 @@ public struct SYTextField: View {
 
     // MARK: - Init
 
-    public init(placeholder: String, footerText: String?, text: Binding<String>) {
+    public init(placeholder: String, footerText: String?, text: Binding<String>, isMultiLine: Bool = false) {
         self.placeholder = placeholder
         self.footerText = footerText
         self._text = text
+        self.isMultiLine = isMultiLine
     }
 
     //MARK: - Subviews
@@ -32,6 +34,7 @@ public struct SYTextField: View {
     private var textField: some View {
         TextField(placeholder, text: $text, axis: .vertical)
             .font(.title3)
+            .lineLimit(isMultiLine ? 1...10 : 1...1)
     }
 
     private var underlineView: some View {

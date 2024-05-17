@@ -8,9 +8,9 @@ struct MatchesRow: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-            Text("Метчи")
+            Text("Симпатии")
                 .bold()
-                .font(.subheadline)
+                .font(.headline)
                 .foregroundStyle(.pink)
                 .padding(.leading)
             ScrollView(.horizontal, showsIndicators: false) {

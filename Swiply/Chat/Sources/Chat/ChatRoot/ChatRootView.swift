@@ -17,6 +17,8 @@ public struct ChatRootView: View {
             switch store.case {
             case let .personalChat(store):
                 PersonalChat(store: store)
+            case let .multiUserChat(store):
+                MultiUserChat(store: store)
             }
         }
     }

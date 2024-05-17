@@ -6,7 +6,7 @@ public struct PersonalChatFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        var chat = ChatModel.chatSample[0]
+        var chat = PersonalChatModel.chatSample[0]
         var text = ""
         var messageIDScroll: UUID?
     }
@@ -14,7 +14,7 @@ public struct PersonalChatFeature: Reducer {
     public enum Action: BindableAction, Equatable  {
         case binding(BindingAction<State>)
         case sendMessage(String)
-        case update(ChatModel)
+        case update(PersonalChatModel)
     }
     
     public var body: some ReducerOf<Self> {
@@ -24,7 +24,7 @@ public struct PersonalChatFeature: Reducer {
             case .binding:
                 return .none
             case let .sendMessage(message):
-                let mess = Message(message, type: .sent, isViewed: true)
+                let mess = Message(message, type: .sent, isViewed: true, person: .tima)
                 state.chat.messages.append(mess)
                 state.text = ""
                 state.messageIDScroll = mess.id

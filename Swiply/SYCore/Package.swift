@@ -26,7 +26,8 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "Networking"
-            ]
+            ],
+            resources: [.process("Resources/Assets.xcassets")]
         ),
         .testTarget(
             name: "SYCoreTests",

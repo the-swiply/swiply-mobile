@@ -10,6 +10,7 @@ protocol AppStateManager {
     func getState() -> AppState
     func setAuthComplete()
     func setProfileCreationComplete()
+    func setUserId(id: String)
 
 }
 
@@ -67,5 +68,12 @@ class LiveAppStateManager: AppStateManager {
     func setProfileCreationComplete() {
         storage.setValue(true, forKey: "wasProfileCreated")
     }
+    
+    func setUserId(id: String) {
+        storage.setValue(id, forKey: "userId")
+    }
 
 }
+
+ 
+

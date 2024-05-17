@@ -17,6 +17,7 @@ struct HomeView: View {
             VStack {
                 Image(.logo)
                     .padding(.top, 10)
+                    .padding(.bottom, 40)
 
                 HStack {
                     Text("Главная")
@@ -130,6 +131,9 @@ struct HomeView: View {
 
             case let .events(store):
                 EventsView()
+                
+            case let .randomCoffeeInfo(store):
+                RCInfoView(store: store)
             }
         }
     }

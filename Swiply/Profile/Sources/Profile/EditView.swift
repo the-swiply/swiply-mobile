@@ -1,7 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import ProfilesService
-
+import SYCore
 
 public struct EditFeature: Reducer {
     
@@ -21,7 +21,7 @@ public struct EditFeature: Reducer {
         case show(Int)
         case changeInterests
         case saveChanges(Person)
-        case addInterest(String)
+        case addInterest(Interest)
     }
     
     @Dependency(\.dismiss) var dismiss
@@ -76,7 +76,7 @@ struct EditView: View {
                         HStack {
                             Text("Возраст")
                             Spacer()
-                            Text(String(store.info.age))
+                            Text(String(store.info.age.getAge()))
                                 .foregroundStyle(.gray)
                         }
                         
@@ -91,8 +91,12 @@ struct EditView: View {
                     Section(header: Text("Данные")) {
                         TextField("Имя", text: $store.info.name)
                         TextField("Город", text: $store.info.town)
+                        TextField("Образование", text: $store.info.education, axis: .vertical)
+                        TextField("Работа", text: $store.info.work, axis: .vertical)
                         TextField("Описание", text: $store.info.description, axis: .vertical)
                             .lineLimit(1...10)
+                       
+                       
                         Button(
                             action: {
                                 store.send(.changeInterests)
