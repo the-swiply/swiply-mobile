@@ -42,6 +42,7 @@
 		3E171AA92B7EB36500D4E016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E171AAC2B7EB36500D4E016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E171AB52B7EB45700D4E016 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
+		3E1D0D1F2BF7F1B300684703 /* CorporateEmailConfirmation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CorporateEmailConfirmation; sourceTree = "<group>"; };
 		3E27EB9A2BB34E89007BB9CB /* Likes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Likes; sourceTree = "<group>"; };
 		3E27EB9D2BB386F5007BB9CB /* CardInformation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CardInformation; sourceTree = "<group>"; };
 		3E4714C32BE158C4002FB0CE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3E1D0D1F2BF7F1B300684703 /* CorporateEmailConfirmation */,
 				3EA72FAE2BE950A7003919EA /* SYCore */,
 				3E79FB642BD86CF900749E6B /* Events */,
 				5E09F48D2BB5DB760030F785 /* RandomCoffee */,

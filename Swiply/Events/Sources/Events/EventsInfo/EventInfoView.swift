@@ -12,15 +12,32 @@ public struct EventInfoView: View {
     public var body: some View {
         ScrollView {
             ImageScrollingView(images: event.images, onTapCenter: nil)
-                .frame(height: 640)
+                .frame(height: 435)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
             HStack {
-                VStack {
-                    Text(event.name)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 24)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(event.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 24)
+
+                        Spacer()
+                    }
+
+                    HStack {
+                        Image(.date)
+                            .foregroundStyle(.pink)
+                            .padding(.trailing, 12)
+
+                        Text("24 Мая 2024")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+
+                        Spacer()
+                    }
+                    .padding(.bottom, 14)
 
                     HStack {
                         Text("Описание")
@@ -36,28 +53,24 @@ public struct EventInfoView: View {
             }
 
             HStack {
-                Spacer()
-
                 Text(
                     event.description
                 )
-                .font(.title2)
+                .font(.subheadline)
                 .multilineTextAlignment(.leading)
 
                 Spacer()
             }
-            .padding(.all, 16)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(.white)
-                    .shadow(radius: 2)
-            }
-            .padding(.horizontal, 1)
-            .padding(.bottom, 24)
+            .padding(.top, 2)
+            .padding(.bottom, 35)
 
+            SYButton(title: "Я хочу посетить") {
+
+            }
         }
         .scrollIndicators(.hidden)
         .padding(.horizontal, 24)
+        .padding(.bottom, 16)
         .navigationTitle("Информация")
     }
 

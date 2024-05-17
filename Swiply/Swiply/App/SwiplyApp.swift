@@ -13,6 +13,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         UIView.appearance().tintColor = .systemPink
+        UISegmentedControl.appearance().selectedSegmentTintColor = .systemPink
+        UISegmentedControl.appearance().backgroundColor = .systemGray6
+
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
 
         store.send(.appDelegate(.didFinishLaunching))
         return true

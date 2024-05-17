@@ -97,6 +97,9 @@ private struct MainBarView: View {
 
     @State var isPresented: Bool = false
     @Binding var value: Double
+    @State var sliderPosition: ClosedRange<Int> = 3...8
+    @State var secondSliderPosition: ClosedRange<Int> = 3...99
+    @State private var gender = 0
 
     var body: some View {
         HStack {
@@ -125,28 +128,65 @@ private struct MainBarView: View {
             )
             .sheet(isPresented: $isPresented) {
                 VStack {
-                    Text("Фильтр")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 48)
+                    RoundedRectangle(cornerRadius: 100)
+                        .frame(width: 64, height: 3)
+                        .foregroundStyle(.gray)
+                        .brightness(0.3)
+                        .padding(.top, 7)
+                        .padding(.bottom, 20)
 
-                    Slider(value: $value,
-                           in: 18...99,
-                           step: 1,
-                           minimumValueLabel: Text("18"),
-                           maximumValueLabel: Text(Int(value).description),
-                           label: {
-                        Text("Возраст")
+                    HStack {
+                        Text("Фильтр")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 24)
+
+                        Spacer()
                     }
-                    )
+
+                    Picker("", selection: $gender) {
+                        Text("Парни").tag(0)
+                        Text("Девушки").tag(1)
+                        Text("Все").tag(2)
+                    }
+                    .pickerStyle(.segmented)
                     .padding(.bottom, 24)
+
+                    HStack {
+                        Text("Возраст")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 8)
+
+                        Spacer()
+
+                        Text("18-26")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                    }
+
+                    RangedSliderView(value: $sliderPosition, bounds: 1...10)
+                        .padding(.bottom, 24)
+            
+
+//                    Slider(value: $value,
+//                           in: 18...99,
+//                           step: 1,
+//                           minimumValueLabel: Text("18"),
+//                           maximumValueLabel: Text(Int(value).description),
+//                           label: {
+//                        Text("Возраст")
+//                    }
+//                    )
+//                    .padding(.bottom, 24)
 
                     SYButton(title: "Применить") {
                         onOptions?()
                     }
                 }
                 .padding(.horizontal, 24)
-                .presentationDetents([.medium])
+                .padding(.bottom, 24)
+                .presentationDetents([.height(400)])
             }
         }
     }

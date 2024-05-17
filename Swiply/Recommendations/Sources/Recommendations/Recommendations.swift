@@ -33,7 +33,7 @@ public struct Recommendations {
             switch action {
             case .onAppear:
                 return .run { send in
-//                    await recommendationsService.loadProfiles(number: 10)
+                    await recommendationsService.loadProfiles(number: 10)
                 }
 
             case .backButtonTapped:
