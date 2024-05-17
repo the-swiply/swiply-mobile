@@ -7,6 +7,7 @@ public struct OTP {
     @ObservableState
     public struct State: Equatable {
         @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
+        @Shared(.appStorage("Email")) var email = ""
         enum RetryButtonState: Equatable {
             case enabled
             case disabled(remainingTime: Int)

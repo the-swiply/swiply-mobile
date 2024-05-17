@@ -4,6 +4,7 @@ public protocol Endpoint {
     var scheme: String { get }
     var host: String { get }
     var port: Int? { get }
+    var pathPrefix: String { get }
     var path: String { get }
     var queryItems: [String]? { get }
     var pathComponents: [String] { get }

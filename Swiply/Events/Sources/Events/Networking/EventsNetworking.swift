@@ -89,6 +89,17 @@ enum EventsNetworkingEndpoint: TokenizedEndpoint {
     case myEvents
     case membership(number: Int)
 
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "event"
+    }
+
+
     var path: String {
         switch self {
         case .create:

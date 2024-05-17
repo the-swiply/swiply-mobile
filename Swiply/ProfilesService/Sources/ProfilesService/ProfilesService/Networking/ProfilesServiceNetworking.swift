@@ -106,7 +106,16 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case updateProfile(Profile)
     case deletePhoto(String)
     case reoderPhotos(ids: [String])
-    
+
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "profile"
+    }
 
     var path: String {
         switch self {

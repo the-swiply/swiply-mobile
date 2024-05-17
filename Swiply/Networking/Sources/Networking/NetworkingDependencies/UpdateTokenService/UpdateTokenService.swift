@@ -40,10 +40,20 @@ enum UpdateTokenEndpoint: Endpoint {
 
     case refresh(token: String)
 
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "user"
+    }
+
     var path: String {
         switch self {
         case .refresh:
-            "/v1/refresh"
+            "v1/refresh"
         }
     }
 

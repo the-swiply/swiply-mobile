@@ -51,13 +51,23 @@ enum AuthEndpoint: Endpoint {
     case sendCode(email: String)
     case login(email: String, code: String)
 
-    var path: String { 
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "user"
+    }
+
+    var path: String {
         switch self {
         case .sendCode:
-            "/v1/send-authorization-code"
+            return "/v1/send-authorization-code"
 
         case .login:
-            "/v1/login"
+            return "/v1/login"
         }
 
     }

@@ -65,7 +65,18 @@ enum CoffeeServiceNetworkingEndpoint: TokenizedEndpoint {
     case createMeeting(info: CreateMeeting)
     case deleteMeeting(id: String)
     case updateMeeting(id: String, info: CreateMeeting)
-    
+
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "randomcoffee"
+    }
+
+
     var path: String {
         switch self {
    

@@ -100,15 +100,16 @@ struct Root {
             case .didChangeScenePhase:
                 return .none
 
-            case .destination:
-                return .none
-
             case .createProfile:
                 state.destination = .profileCreation(.init())
                 return .none
 
             case .showMain:
                 state.destination = .main(.init(selectedTab: .profile))
+                return .none
+
+            case .destination(.presented(.main(.profile(.path(.element(_, .settings(.exitButtonTapped))))))):
+                state.destination = .authorization(AuthorizationRoot.State())
                 return .none
 
             case .getUserId:
@@ -129,7 +130,10 @@ struct Root {
                         await send(.findProfile(id: userId))
                     }
                 }
-                
+
+            case .destination:
+                return .none
+
             case let .findProfile(id):
                 return .run { send in
                     let responseProfile = await self.rootServiceNetworking.getProfile(id: id)

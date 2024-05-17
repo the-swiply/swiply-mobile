@@ -36,8 +36,10 @@ public extension HTTPClient {
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
-        urlComponents.path = endpoint.path
+        urlComponents.path = "/\(endpoint.pathPrefix)\(endpoint.path)"
         urlComponents.port = endpoint.port
+
+        print(urlComponents.path)
 
         guard var url = urlComponents.url else {
             return .failure(.invalidURL)
@@ -54,7 +56,7 @@ public extension HTTPClient {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [.withoutEscapingSlashes])
         }
         
-        Logger.services.log("curk: \(urlRequest.cURL())")
+        Logger.services.log("curl: \(urlRequest.cURL())")
         Logger.services.log("Send request: \(endpoint.path)")
         
         do {

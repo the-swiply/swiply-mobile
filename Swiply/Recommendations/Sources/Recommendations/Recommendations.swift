@@ -28,6 +28,7 @@ public struct Recommendations {
 
     @Dependency(\.recommendationsService) var recommendationsService
     @Dependency(\.profilesService) var profilesService
+    @Dependency(\.matchesService) var matchesService
 
     public init() { }
 

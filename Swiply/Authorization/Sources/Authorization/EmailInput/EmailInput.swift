@@ -6,6 +6,7 @@ public struct EmailInput {
     @ObservableState
     public struct State: Equatable {
 
+        @Shared(.appStorage("Email")) var email = ""
         var text: String
         var isContinueButtonDisabled: Bool
         var childState: ChildState = .init()
@@ -56,6 +57,7 @@ public struct EmailInput {
                     switch result {
                     case .success:
                         dataManager.setEmail(state.text)
+                        state.email = state.text
                         await send(.delegate(.receiveSuccessFromServer))
 
                     case .failure:

@@ -74,6 +74,16 @@ enum ChatServiceNetworkingEndpoint: TokenizedEndpoint {
     case createChat([String])
     case leaveChat(id: Int)
 
+    var pathPrefix: String {
+        #if DEBUG
+
+        return ""
+
+        #endif
+
+        return "chat"
+    }
+
     var path: String {
         switch self {
    
