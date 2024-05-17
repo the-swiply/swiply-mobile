@@ -19,6 +19,7 @@ public protocol ProfilesService {
     func likeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
     func dislikeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
     func updatePhoto(old: Profile, new: Profile) async -> Result<EmptyResponse, BaseError>
+    func getMatches() async -> Result<[String], RequestError>
 
 }
 
@@ -95,8 +96,20 @@ class LiveProfilesService: ProfilesService {
         
         return .success(profile)
     }
-    
-    func whoAmI() async -> Result<UserID, Networking.RequestError> {
+
+    func getMatches() async -> Result<[String], RequestError> {
+        let response = await profilesServiceNetworking.getMatches()
+
+        switch response {
+        case let .success(profiles):
+            return .success(profiles.userIDs)
+
+        case let .failure(error):
+            return .failure(error)
+        }
+    }
+
+    func whoAmI() async -> Result<UserID, RequestError> {
         let findProfileResult = await profilesServiceNetworking.whoAmI()
         
         switch findProfileResult {

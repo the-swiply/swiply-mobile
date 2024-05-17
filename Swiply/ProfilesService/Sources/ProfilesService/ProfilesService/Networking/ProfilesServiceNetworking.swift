@@ -20,6 +20,8 @@ public protocol ProfilesServiceNetworking {
     func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
     func deletePhoto(id: String) async -> Result<Bool, RequestError>
     func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, RequestError>
+    func getMatches() async -> Result<MatchesResponse, RequestError>
+
 }
 
 // MARK: - DependencyKey
@@ -89,6 +91,11 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
     func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, Networking.RequestError> {
         await sendRequest(.reoderPhotos(ids: ids))
     }
+
+    func getMatches() async -> Result<MatchesResponse, RequestError> {
+        await sendRequest(.getMatches)
+    }
+
 }
 
 // MARK: - Endpoint
@@ -106,6 +113,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case updateProfile(Profile)
     case deletePhoto(String)
     case reoderPhotos(ids: [String])
+    case getMatches
 
     var pathPrefix: String {
         #if DEBUG
@@ -151,6 +159,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .reoderPhotos:
             "/v1/photo/reorder"
+            
+        case .getMatches:
+            "/v1/profile/list-matches"
         }
     }
 
@@ -180,6 +191,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             []
         case .reoderPhotos:
             []
+
+        case .getMatches:
+            []
         }
     }
 
@@ -189,6 +203,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getLikes,
              .getPhotos,
              .whoAmI,
+             .getMatches,
              .getInterestsLists:
             .get
 
@@ -214,6 +229,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .getPhotos,
              .whoAmI,
              .getProfile,
+             .getMatches,
              .getInterestsLists:
             return nil
             
@@ -314,7 +330,11 @@ private extension Request {
     static func reoderPhotos(ids: [String]) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.reoderPhotos(ids: ids))
     }
-    
+
+    static var getMatches: Self {
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getMatches)
+    }
+
 }
 
 

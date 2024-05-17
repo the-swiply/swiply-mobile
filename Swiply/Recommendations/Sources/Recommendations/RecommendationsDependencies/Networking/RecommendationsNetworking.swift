@@ -6,7 +6,6 @@ import SYCore
 
 protocol RecommendationsNetworking {
 
-    func getMatches() async -> Result<RecommendationsResponse, RequestError>
     func getProfiles(number: Int) async -> Result<RecommendationsResponse, RequestError>
 
 }
@@ -35,10 +34,6 @@ extension DependencyValues {
 
 class LiveRecommendationsNetworking: LiveTokenUpdatableClient, RecommendationsNetworking {
 
-    func getMatches() async -> Result<RecommendationsResponse, RequestError> {
-        await sendRequest(.getMatches)
-    }
-
     func getProfiles(number: Int) async -> Result<RecommendationsResponse, RequestError> {
         await sendRequest(.getProfiles(number: number))
     }
@@ -50,7 +45,6 @@ class LiveRecommendationsNetworking: LiveTokenUpdatableClient, RecommendationsNe
 enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 
     case getProfiles(number: Int)
-    case getMatches
 
     var pathPrefix: String {
         #if DEBUG
@@ -66,9 +60,6 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .getProfiles:
             "/v1/get-recommendations"
-
-        case .getMatches:
-            "/v1/profile/list-matches"
         }
     }
 
@@ -76,9 +67,6 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .getProfiles:
             .post
-
-        case .getMatches:
-            .get
         }
     }
 
@@ -86,9 +74,6 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .getProfiles(let number):
             ["limit": number.description]
-
-        case .getMatches:
-            nil
         }
     }
 
@@ -105,10 +90,6 @@ enum RecommendationsNetworkingEndpoint: TokenizedEndpoint {
 // MARK: - Extension Request
 
 private extension Request {
-
-    static var getMatches: Self {
-        .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.getMatches)
-    }
 
     static func getProfiles(number: Int) -> Self {
         .init(requestTimeout: .infinite, endpoint: RecommendationsNetworkingEndpoint.getProfiles(number: number))

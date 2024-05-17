@@ -52,11 +52,11 @@ actor LiveMatchesService: MatchesService {
     }
 
     func getMatches() async {
-        let response = await recommendationsNetworking.getMatches()
+        let response = await profilesService.getMatches()
 
         switch response {
         case let .success(response):
-            let profilesResponse = await getProfiles(ids: response.userIDs)
+            let profilesResponse = await getProfiles(ids: response)
 
             switch profilesResponse {
             case let .success(profiles):
@@ -74,7 +74,7 @@ actor LiveMatchesService: MatchesService {
             break
         }
 
-        try? await Task.sleep(nanoseconds: 5000000)
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
 
         await getMatches()
     }

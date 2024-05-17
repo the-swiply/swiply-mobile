@@ -232,3 +232,8 @@ public struct ImageOptional: Equatable {
         self.uuid = uuid
     }
 }
+
+
+public struct MatchesResponse: Codable {
+    let userIDs: [String]
+}
