@@ -50,7 +50,7 @@ public struct Recommendations {
                         .map { _ in .handleMatch }
                 },
                 .run { send in
-                    await matchesService.getMatches()
+                    await matchesService.loadMatches()
                 }
                 )
 

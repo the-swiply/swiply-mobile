@@ -54,14 +54,14 @@ enum NotificationsNetworkingEndpoint: TokenizedEndpoint {
 
         #endif
 
-        return "event"
+        return "notification"
     }
 
 
     var path: String {
         switch self {
         case .subscribe:
-            "v1/notification/subscribe"
+            "/v1/notification/subscribe"
         }
     }
 

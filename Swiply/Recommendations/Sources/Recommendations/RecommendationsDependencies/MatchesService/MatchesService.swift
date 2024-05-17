@@ -10,6 +10,7 @@ public protocol MatchesService {
 
     var matchesPublisher: AnyPublisher<Profile, Never> { get }
 
+    func loadMatches() async
     func getMatches() async
 
 }
@@ -39,6 +40,7 @@ actor LiveMatchesService: MatchesService {
 
     @Dependency(\.recommendationsNetworking) var recommendationsNetworking
     @Dependency(\.profilesService) var profilesService
+    @Dependency(\.keychain) var keychain
 
     let matchesPublisher: AnyPublisher<Profile, Never>
 
@@ -46,37 +48,64 @@ actor LiveMatchesService: MatchesService {
 
     private var matches: [Profile] = []
 
+    private var task: Bool = false
+    private var isActive: Bool = false
+
     init() {
         matchesSubject = CurrentValueSubject<Profile, Never>(.init())
         matchesPublisher = matchesSubject.eraseToAnyPublisher()
     }
 
-    func getMatches() async {
-        let response = await profilesService.getMatches()
-
-        switch response {
-        case let .success(response):
-            let profilesResponse = await getProfiles(ids: response)
-
-            switch profilesResponse {
-            case let .success(profiles):
-                let newMatch = profiles.first(where: { !matches.contains($0) })
-
-                if let newMatch {
-                    matchesSubject.send(newMatch)
-                }
-
-            case .failure:
-                break
-            }
-
-        case .failure:
-            break
+    func loadMatches() async {
+        guard !task else {
+            return
         }
 
-        try? await Task.sleep(nanoseconds: 5_000_000_000)
+        task = true
 
-        await getMatches()
+        if let _ = keychain.getToken(type: .refresh) {
+            await getMatches()
+        }
+    }
+
+    func getMatches() async {
+        if let _ = keychain.getToken(type: .refresh) {
+            if !isActive {
+                isActive = true
+                let response = await profilesService.getMatches()
+
+                switch response {
+                case let .success(response):
+                    let profilesResponse = await getProfiles(ids: response)
+
+                    switch profilesResponse {
+                    case let .success(profiles):
+                        let newMatch = profiles.first(where: { !matches.contains($0) })
+
+                        if let newMatch {
+                            matchesSubject.send(newMatch)
+                        }
+
+                    case .failure:
+                        break
+                    }
+
+                    isActive = false
+                    try? await Task.sleep(nanoseconds: 5_000_000_000)
+                    await getMatches()
+
+                case .failure:
+                    isActive = false
+                    try? await Task.sleep(nanoseconds: 5_000_000_000)
+                    await getMatches()
+                }
+            }
+        }
+        else {
+            isActive = false
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            await getMatches()
+        }
     }
 
     private func getProfiles(ids: [String]) async -> Result<[Profile], BaseError> {

@@ -332,7 +332,7 @@ private extension Request {
     }
 
     static var getMatches: Self {
-        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getMatches)
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.getMatches)
     }
 
 }
