@@ -1,4 +1,4 @@
-// MARK: - Protocol
+// MARK: - Protocol Middleware
 
 public protocol Middleware {
 

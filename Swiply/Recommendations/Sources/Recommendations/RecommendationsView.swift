@@ -6,61 +6,51 @@ import ProfilesService
 
 public struct RecommendationsView: View {
 
-//    @Bindable var store: StoreOf<Recommendations>
+    @Bindable var store: StoreOf<Recommendations>
 
-    @State var lastIndex = 0
-
-    @State private var data: [Person] =
-    [
-        Person.daria,
-        Person.kate,
-        Person.maria,
-        Person.vera,
-        Person.ann
-    ]
-
-    @State var initialCards: [CardView] = [
-        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
-        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
-        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
-        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
-        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
-    ]
-
-    @State var cards: [CardView] = [
-        CardView(index: 0, person: Person.daria.toCardPerson, navigateTo: { CardInformationView(person: Person.daria) }),
-        CardView(index: 1, person: Person.kate.toCardPerson, navigateTo: { CardInformationView(person: Person.kate) }),
-        CardView(index: 2, person: Person.maria.toCardPerson, navigateTo: { CardInformationView(person: Person.maria) }),
-        CardView(index: 3, person: Person.vera.toCardPerson, navigateTo: { CardInformationView(person: Person.vera) }),
-        CardView(index: 4, person: Person.ann.toCardPerson, navigateTo: { CardInformationView(person: Person.ann) })
-    ]
-
-    @State var value: Double = 30
-
-    public init() { }
+    public init(store: StoreOf<Recommendations>) {
+        self.store = store
+    }
 
     // MARK: - View
 
     public var body: some View {
         NavigationStack {
             VStack {
-                MainBarView(onBack: { 
-                    cards.append(.init(index: cards.count - 1, person: data[lastIndex].toCardPerson, navigateTo: { CardInformationView(person: data[lastIndex]) }))
-                },
-                            onOptions:  { cards = initialCards.filter( { $0.person.age < Int(value) }) }, value: $value)
+                VStack {
+                    MainBarView(onBack: {
+                        store.send(.backButtonTapped)
+                    }, onConfirm:  { age, gender in
+                        store.send(.filter(age: age, gender: gender))
+                    })
 
-                Spacer()
+                    Spacer()
 
-                ZStack {
-                    ForEach(cards, id: \.person.id) { card in
-                        SwipableView {
-                            card
+                    VStack {
+                        ZStack {
+                            ForEach(store.profiles, id: \.id) { profile in
+                                SwipableView(swipeAction: store.state.swipeAction, id: profile.id.uuidString) {
+                                    CardView(
+                                        person: profile.cardPerson,
+                                        likeHandler: { store.send(.likeButtonTapped) },
+                                        dislikeHandler: { store.send(.dislikeButtonTapped) },
+                                        onTapCenter: { store.send(.onTapCenter) }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+                .padding(.horizontal, 16)
+
+                Rectangle()
+                    .frame(height: 90)
+                    .foregroundStyle(.background)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .ignoresSafeArea(.all, edges: .bottom)
+        }
+        .onAppear() {
+            store.send(.onAppear)
         }
     }
 
@@ -69,10 +59,11 @@ public struct RecommendationsView: View {
 private struct MainBarView: View {
 
     var onBack: (() -> Void)?
-    var onOptions: (() -> Void)?
+    var onConfirm: ((ClosedRange<Int>, ProfileGender) -> Void)?
 
     @State var isPresented: Bool = false
-    @Binding var value: Double
+    @State var sliderPosition: ClosedRange<Int> = 3...8
+    @State private var gender: ProfileGender = .any
 
     var body: some View {
         HStack {
@@ -86,6 +77,7 @@ private struct MainBarView: View {
 
 
             Image(.mainBarLogo)
+                .foregroundStyle(.pink)
                 .padding(.vertical, 10)
 
             Spacer()
@@ -100,38 +92,56 @@ private struct MainBarView: View {
             )
             .sheet(isPresented: $isPresented) {
                 VStack {
-                    Text("Фильтр")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 48)
+                    RoundedRectangle(cornerRadius: 100)
+                        .frame(width: 64, height: 3)
+                        .foregroundStyle(.gray)
+                        .brightness(0.3)
+                        .padding(.top, 7)
+                        .padding(.bottom, 20)
 
-                    Slider(value: $value,
-                           in: 18...99,
-                           step: 1,
-                           minimumValueLabel: Text("18"),
-                           maximumValueLabel: Text(Int(value).description),
-                           label: {
-                        Text("Возраст")
+                    HStack {
+                        Text("Фильтр")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 24)
+
+                        Spacer()
                     }
-                    )
+
+                    Picker("", selection: $gender) {
+                        Text("Парни").tag(ProfileGender.male)
+                        Text("Девушки").tag(ProfileGender.female)
+                        Text("Все").tag(ProfileGender.any)
+                    }
+                    .pickerStyle(.segmented)
                     .padding(.bottom, 24)
 
+                    HStack {
+                        Text("Возраст")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 8)
+
+                        Spacer()
+
+                        Text("18-26")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                    }
+
+                    RangedSliderView(value: $sliderPosition, bounds: 1...10)
+                        .padding(.bottom, 24)
+            
+
                     SYButton(title: "Применить") {
-                        onOptions?()
+                        onConfirm?(sliderPosition, gender)
                     }
                 }
                 .padding(.horizontal, 24)
-                .presentationDetents([.medium])
+                .padding(.bottom, 24)
+                .presentationDetents([.height(400)])
             }
         }
-    }
-
-}
-
-extension Person {
-
-    var toCardPerson: CardPerson {
-        .init(name: name, age: age.getAge(), interests: interests.map { $0.definition }, town: town, description: description, images: images.map { Image(uiImage: $0!) })
     }
 
 }

@@ -2,8 +2,10 @@ import ComposableArchitecture
 import SwiftUI
 import Profile
 import Chat
+import Recommendations
 import ProfilesService
 import OSLog
+
 @Reducer
 public struct MainRoot {
 
@@ -19,6 +21,7 @@ public struct MainRoot {
     public struct State: Equatable {
         var selectedTab: Tab
         var features = Home.State()
+        var recommendations = Recommendations.State()
         var profile = ProfileRoot.State()
         var chat = ChatRoot.State()
 
@@ -32,6 +35,7 @@ public struct MainRoot {
         case features(Home.Action)
         case profile(ProfileRoot.Action)
         case chat(ChatRoot.Action)
+        case recommendations(Recommendations.Action)
         case loadProfile
     }
 
@@ -51,10 +55,16 @@ public struct MainRoot {
 
             case .features:
                 return .none
+
             case .profile:
                 return .none
+
             case .chat:
                 return .none
+
+            case .recommendations:
+                return .none
+
             case .loadProfile:
                 return .run { send in
                     let response = await self.profilesService.getProfile(
@@ -80,6 +90,9 @@ public struct MainRoot {
         
         Scope(state: \.chat, action: \.chat) {
             ChatRoot()
+        }
+        Scope(state: \.recommendations, action: \.recommendations) {
+            Recommendations()
         }
     }
 

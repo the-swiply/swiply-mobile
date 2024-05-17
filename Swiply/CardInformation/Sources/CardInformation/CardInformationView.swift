@@ -17,7 +17,7 @@ public struct CardInformationView: View {
     public var body: some View {
         ScrollView {
             ImageScrollingView(images: person.images.map { Image(uiImage: $0!) }, onTapCenter: nil)
-                .frame(height: 640)
+                .frame(height: 435)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
 
             HStack {
@@ -32,11 +32,11 @@ public struct CardInformationView: View {
                         Text(person.town)
                     }
 
-                    HStack(spacing: 8) {
-                        Image(.planet)
-
-                        Text("5 км")
-                    }
+//                    HStack(spacing: 8) {
+//                        Image(.planet)
+//
+//                        Text("5 км")
+//                    }
                 }
 
                 Spacer()
@@ -71,7 +71,7 @@ public struct CardInformationView: View {
             .padding(.top, 8)
         }
         .scrollIndicators(.hidden)
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 16)
         .navigationTitle("\(person.name), \(person.age)")
     }
 

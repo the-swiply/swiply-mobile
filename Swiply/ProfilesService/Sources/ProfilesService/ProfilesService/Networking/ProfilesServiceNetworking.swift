@@ -1,3 +1,4 @@
+import Foundation
 import Dependencies
 import Networking
 import SYCore
@@ -11,6 +12,7 @@ public protocol ProfilesServiceNetworking {
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
+    func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) async -> Result<EmptyResponse, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
     func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
     func createPhoto(photo: String) async -> Result<String, RequestError>
@@ -46,6 +48,10 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
     
     func createProfile(profile: CreatedProfile) async -> Result<UserID, Networking.RequestError> {
         await sendRequest(.createProfile(profile: profile))
+    }
+
+    func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) async -> Result<EmptyResponse, RequestError> {
+        await sendRequest(.interactWithProfile(id, interactionType: interactionType))
     }
 
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError> {
@@ -89,6 +95,7 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
 
 enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
+    case interactWithProfile(_ id: UUID, interactionType: ProfileInteraction)
     case getProfile(id: String)
     case getPhotos(id: String)
     case getLikes
@@ -103,6 +110,9 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 
     var path: String {
         switch self {
+        case .interactWithProfile:
+            "/v1/interaction/create"
+
         case .getProfile:
             "/v1/profile"
 
@@ -143,7 +153,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         case .getPhotos(let id):
             [id]
 
-        case .getLikes:
+        case .getLikes, .interactWithProfile:
             []
             
         case .createProfile:
@@ -172,17 +182,25 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
              .whoAmI,
              .getInterestsLists:
             .get
+
         case .createProfile,
                 .createPhoto,
                 .updateProfile,
                 .deletePhoto,
-                .reoderPhotos:
+                .reoderPhotos,
+                .interactWithProfile:
                 .post
         }
     }
 
     var body: [String : Codable]? {
         switch self {
+        case let .interactWithProfile(id, interactionType):
+            return [
+                "id": id.uuidString,
+                "type": interactionType.rawValue
+            ]
+
         case .getLikes,
              .getPhotos,
              .whoAmI,
@@ -247,7 +265,11 @@ private extension Request {
     static var getLikes: Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
     }
-    
+
+    static func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.interactWithProfile(id, interactionType: interactionType))
+    }
+
     static func getProfile(id: String) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getProfile(id: id))
     }
@@ -283,6 +305,7 @@ private extension Request {
     static func reoderPhotos(ids: [String]) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.reoderPhotos(ids: ids))
     }
+    
 }
 
 

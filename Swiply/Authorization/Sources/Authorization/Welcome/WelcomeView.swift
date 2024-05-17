@@ -13,6 +13,7 @@ public struct WelcomeView: View {
             Spacer()
 
             Image(.logo)
+                .foregroundStyle(.pink)
 
             Text("Добро пожаловать в Swiply!")
                 .font(.title3)

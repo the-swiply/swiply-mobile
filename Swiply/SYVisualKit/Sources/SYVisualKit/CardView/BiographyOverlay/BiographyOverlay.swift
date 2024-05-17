@@ -4,6 +4,9 @@ struct BiographyOverlay: View {
 
     let person: CardPerson
 
+    let likeHandler: () -> Void
+    let dislikeHandler: () -> Void
+
     var info: [(Image, String)] {
         [(Image(.heart), "Отношения") ,(Image(.ruler), "172") ,(Image(.pets), "Нет") ,(Image(.aquarius), "Водолей") ,(Image(.study), "Высшее")]
     }
@@ -33,7 +36,7 @@ struct BiographyOverlay: View {
 
             HStack {
                 Button {
-
+                    likeHandler()
                 } label: {
                     Image(.dislike)
                 }
@@ -41,7 +44,7 @@ struct BiographyOverlay: View {
                 Spacer()
 
                 Button {
-
+                    dislikeHandler()
                 } label: {
                     Image(.like)
                 }

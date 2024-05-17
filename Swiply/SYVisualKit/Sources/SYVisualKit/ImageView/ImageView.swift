@@ -2,11 +2,18 @@ import SwiftUI
 
 public struct ImageView: View {
 
-    let image: Image
+    let image: CardLoadableImage
 
     public var body: some View {
-        image
-            .centerCropped()
+        switch image {
+        case let .image(image):
+            image
+                .centerCropped()
+
+        case .loading:
+            Rectangle()
+                .foregroundStyle(.gray)
+        }
     }
 
 }

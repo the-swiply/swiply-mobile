@@ -1,6 +1,7 @@
 import SwiftUI
 
 public extension UIImage {
+
     func toPngString() -> String? {
         let data = self.pngData()
         return data?.base64EncodedString()
@@ -10,4 +11,5 @@ public extension UIImage {
         let data = self.jpegData(compressionQuality: cq)
         return data?.base64EncodedString(options: .endLineWithLineFeed)
     }
+
 }

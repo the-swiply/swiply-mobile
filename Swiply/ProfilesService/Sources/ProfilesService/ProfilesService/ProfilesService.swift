@@ -13,9 +13,12 @@ public protocol ProfilesService {
     func whoAmI() async -> Result<UserID, RequestError>
     func createPhoto(photo: String) async -> Result<String, RequestError>
     func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
-    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError>
+    func updateProfile(profile: Profile) async -> Result<UserID, RequestError>
     func deletePhoto(id: String) async -> Result<Bool, RequestError>
     func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
+    func likeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
+    func dislikeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
+
 }
 
 // MARK: - DependencyKey
@@ -184,7 +187,7 @@ class LiveProfilesService: ProfilesService {
         }
     }
     
-    func reoderPhotos(ids: [String]) async -> Result<Bool, Networking.RequestError> {
+    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError> {
         let reoderPhotos = await profilesServiceNetworking.reoderPhotos(ids: ids)
         switch reoderPhotos {
         case let .failure(error):
@@ -192,6 +195,30 @@ class LiveProfilesService: ProfilesService {
 
         case let .success(userID):
             return .success(userID)
+        }
+    }
+
+    func likeProfile(id: UUID) async -> Result<EmptyResponse, BaseError> {
+        let response = await profilesServiceNetworking.interactWithProfile(id, interactionType: .like)
+
+        switch response {
+        case .success:
+            return .success(.init())
+
+        case .failure:
+            return .failure(.error)
+        }
+    }
+
+    func dislikeProfile(id: UUID) async -> Result<EmptyResponse, BaseError> {
+        let response = await profilesServiceNetworking.interactWithProfile(id, interactionType: .dislike)
+
+        switch response {
+        case .success:
+            return .success(.init())
+
+        case .failure:
+            return .failure(.error)
         }
     }
 }

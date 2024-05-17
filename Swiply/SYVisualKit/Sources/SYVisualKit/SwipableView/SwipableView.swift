@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct SwipableView<WrappedView: View>: View {
+public struct SwipableView<WrappedView: View, ID: Equatable>: View {
 
     private var wrappedView: WrappedView
 
@@ -8,15 +8,17 @@ public struct SwipableView<WrappedView: View>: View {
     @State private var degrees: Double = 0
     @State private var opacity: CGFloat = 1
 
-    public init(@ViewBuilder wrappedView: () -> WrappedView) {
+    private var swipeAction: SwipeAction<ID>?
+    private var id: ID
+
+    public init(swipeAction: SwipeAction<ID>?, id: ID, @ViewBuilder wrappedView: () -> WrappedView) {
         self.wrappedView = wrappedView()
+        self.id = id
+        self.swipeAction = swipeAction
     }
 
     public var body: some View {
         wrappedView
-//            .onReceive(, perform: { _ in
-//
-//            })
             .offset(x: xOffset)
             .rotationEffect(.degrees(degrees))
             .animation(.bouncy(extraBounce: 0.1), value: xOffset)
@@ -25,6 +27,9 @@ public struct SwipableView<WrappedView: View>: View {
                     .onChanged(onDragChanged)
                     .onEnded(onDragEnded)
             )
+            .onChange(of: swipeAction) { _, newValue in
+                handleSwipeAction(swipeAction: newValue)
+            }
             .opacity(opacity)
     }
     
@@ -52,6 +57,23 @@ private extension SwipableView {
             degrees = -12
         } completion: {
             opacity = 0
+        }
+    }
+
+    func handleSwipeAction(swipeAction: SwipeAction<ID>?) {
+        guard id == swipeAction?.id else {
+            return
+        }
+        
+        switch swipeAction {
+        case .left:
+            swipeLeft()
+
+        case .right:
+            swipeRight()
+
+        case .none:
+            break
         }
     }
 

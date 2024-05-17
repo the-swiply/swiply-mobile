@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
-import FormCreation
+import ProfileCreation
 import Networking
 import MainScreen
 import Chat
@@ -14,7 +14,7 @@ struct Root {
     @Reducer(state: .equatable)
     enum Destination {
         case authorization(AuthorizationRoot)
-        case formCreation(FormCreationRoot)
+        case profileCreation(ProfileCreationRoot)
         case main(MainRoot)
         case chat(ChatRoot)
         case profile(ProfileRoot)
@@ -34,6 +34,7 @@ struct Root {
         case findProfile(id: String)
         case createProfile
         case showMain
+        case handleforbiddenError
     }
 
     @Dependency(\.updateTokenMiddleware) var forbiddenErrorNotifier
@@ -45,23 +46,29 @@ struct Root {
         Reduce { state, action in
             switch action {
             case .appDelegate(.didFinishLaunching):
-                let appState = appStateManager.getState()
+                return .run { send in
+                    await send(.handleforbiddenError)
+                    
+                    let appState = await appStateManager.getState()
 
-                state.destination = .authorization(.init())
-                switch appState {
-                case .authorization:
-                    state.destination = .authorization(.init())
-                case .main:
-                    state.destination = .main(.init())
-
-                case .profileCreation:
-                    state.destination = .formCreation(.init())
-                }
-                
-                return .run { [forbiddenErrorNotifier] send in
-                    forbiddenErrorNotifier.add { [send] in
+                    switch appState {
+                    case .authorization:
                         await send(.requestAuthorization)
-                    }
+
+                    case .main:
+                        await send(.showMain)
+
+                    case .profileCreation:
+                        await send(.createProfile)
+                   }
+                }
+
+            case .handleforbiddenError:
+                return .publisher {
+                    return forbiddenErrorNotifier.publisher
+                        .dropFirst()
+                        .receive(on: DispatchQueue.main)
+                        .map { Action.requestAuthorization }
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
@@ -70,7 +77,7 @@ struct Root {
                     await send(.getUserId)
                 }
 
-            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(let .delegate(.finishProfile(user)))))))):
+            case .destination(.presented(.profileCreation(.path(.element(id: _, action: .work(let .delegate(.finishProfile(user)))))))):
                 return .run { send in
                         let response = await self.rootServiceNetworking.createProfile(profile: user)
                     
@@ -96,12 +103,15 @@ struct Root {
 
             case .destination:
                 return .none
+
             case .createProfile:
-                state.destination = .formCreation(.init())
+                state.destination = .profileCreation(.init())
                 return .none
+
             case .showMain:
                 state.destination = .main(.init(selectedTab: .profile))
                 return .none
+
             case .getUserId:
                 let userId = profileManager.getUserId()
                 if userId.isEmpty {

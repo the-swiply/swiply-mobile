@@ -2,13 +2,13 @@ import SwiftUI
 
 public struct ImageScrollingView: View {
 
-    let images: [Image]
+    let images: [CardLoadableImage]
     let onTapCenter: (() -> Void)?
 
     @State var currentIndex = 0
     @State var viewSize: CGSize = .zero
 
-    public init(images: [Image], onTapCenter: (() -> Void)?) {
+    public init(images: [CardLoadableImage], onTapCenter: (() -> Void)?) {
         self.images = images
         self.onTapCenter = onTapCenter
     }

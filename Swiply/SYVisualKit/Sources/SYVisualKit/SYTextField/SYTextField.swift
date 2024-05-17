@@ -32,7 +32,7 @@ public struct SYTextField: View {
     //MARK: - Subviews
 
     private var textField: some View {
-        TextField(placeholder, text: $text)
+        TextField(placeholder, text: $text, axis: .vertical)
             .font(.title3)
             .lineLimit(isMultiLine ? 1...10 : 1...1)
     }

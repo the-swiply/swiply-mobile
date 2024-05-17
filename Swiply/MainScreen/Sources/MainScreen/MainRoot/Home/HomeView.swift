@@ -19,14 +19,15 @@ struct HomeView: View {
                     .padding(.top, 10)
                     .padding(.bottom, 40)
 
-//                HStack {
-//                    Text("Главная")
-//                        .font(.largeTitle)
-//                        .fontWeight(.bold)
-//
-//                    Spacer()
-//                }
-//                .padding(.all, 30)
+                HStack {
+                    Text("Главная")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+
+                    Spacer()
+                }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 20)
 
                 Button {
                     store.send(.emailConfirmationTapped)
@@ -46,6 +47,7 @@ struct HomeView: View {
                             .foregroundColor(.pink)
                             .frame(width: 40)
                     }
+                    .frame(height: 100)
                     .padding(.all, 24)
                     .background {
                         RoundedRectangle(cornerRadius: 20)
@@ -75,6 +77,7 @@ struct HomeView: View {
                             .foregroundColor(.pink)
                             .frame(width: 40)
                     }
+                    .frame(height: 100)
                     .padding(.all, 24)
                     .background {
                         RoundedRectangle(cornerRadius: 20)
@@ -89,7 +92,7 @@ struct HomeView: View {
                     store.send(.eventsTapped)
                 } label: {
                     HStack {
-                        Text("Events")
+                        Text("Мероприятия")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundStyle(.black)
@@ -103,11 +106,12 @@ struct HomeView: View {
                             .foregroundColor(.pink)
                             .frame(width: 40)
                     }
+                    .frame(height: 100)
                     .padding(.all, 24)
                     .background {
                         RoundedRectangle(cornerRadius: 20)
                             .foregroundStyle(.white)
-                            .shadow(radius: 8)
+                            .shadow(radius: 5)
                     }
                     .padding(.horizontal, 24)
                 }

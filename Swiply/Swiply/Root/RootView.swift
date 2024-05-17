@@ -1,7 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Authorization
-import FormCreation
+import ProfileCreation
 import MainScreen
 import Chat
 import Profile
@@ -17,8 +17,8 @@ struct RootView: View {
         IfLetStore(store.scope(state: \.destination?.authorization, action: \.destination.authorization)) { store in
             AuthorizationRootView(store: store)
         }
-        IfLetStore(store.scope(state: \.destination?.formCreation, action: \.destination.formCreation)) { store in
-            FormCreationRootView(store: store)
+        IfLetStore(store.scope(state: \.destination?.profileCreation, action: \.destination.profileCreation)) { store in
+            ProfileCreationRootView(store: store)
         }
         IfLetStore(store.scope(state: \.destination?.main, action: \.destination.main)) { store in
             MainRootView(store: store)

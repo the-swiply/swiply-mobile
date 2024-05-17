@@ -91,11 +91,10 @@ public class LoadableImageCollection: Equatable {
     public init(images: [ImageState] = [.loading]) {
         self.images = images
     }
-    
+
     public static func == (lhs: LoadableImageCollection, rhs: LoadableImageCollection) -> Bool {
-          lhs.images == rhs.images
-      }
-    
+        lhs.images == rhs.images
+    }
     
     public func getFirstImage() -> UIImage {
         var firstImage: UIImage?
@@ -124,5 +123,4 @@ public struct UserOrganization: Codable, Hashable {
     public let id, organization_id : Int
     public let name, email: String
     public let is_valid: Bool
-    
 }

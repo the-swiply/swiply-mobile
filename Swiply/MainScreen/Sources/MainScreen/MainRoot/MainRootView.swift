@@ -31,7 +31,7 @@ public struct MainRootView: View {
 //                    Text("Лайки")
                 }.tag(MainRoot.Tab.likes)
 
-            RecommendationsView()
+            RecommendationsView(store: store.scope(state: \.recommendations, action: \.recommendations))
                 .tabItem {
                     Image(.recommendationsTab)
 //                    Text("Swiply")
