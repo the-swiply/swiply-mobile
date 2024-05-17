@@ -5,6 +5,7 @@ import Chat
 import Recommendations
 import ProfilesService
 import OSLog
+import Likes
 
 @Reducer
 public struct MainRoot {
@@ -24,6 +25,7 @@ public struct MainRoot {
         var recommendations = Recommendations.State()
         var profile = ProfileRoot.State()
         var chat = ChatRoot.State()
+        var likes = LikesFeature.State()
 
         public init(selectedTab: Tab = Tab.recommendations) {
             self.selectedTab = selectedTab
@@ -36,6 +38,7 @@ public struct MainRoot {
         case profile(ProfileRoot.Action)
         case chat(ChatRoot.Action)
         case recommendations(Recommendations.Action)
+        case likes(LikesFeature.Action)
         case loadProfile
     }
 
@@ -78,6 +81,9 @@ public struct MainRoot {
                         break
                     }
                 }
+
+            case .likes:
+                return .none
             }
         }
         Scope(state: \.features, action: \.features) {
@@ -93,6 +99,9 @@ public struct MainRoot {
         }
         Scope(state: \.recommendations, action: \.recommendations) {
             Recommendations()
+        }
+        Scope(state: \.likes, action: \.likes) {
+            LikesFeature()
         }
     }
 

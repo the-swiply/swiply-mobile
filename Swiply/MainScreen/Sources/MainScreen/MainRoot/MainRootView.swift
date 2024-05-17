@@ -25,7 +25,7 @@ public struct MainRootView: View {
 //                    Text("Активности")
                 }.tag(MainRoot.Tab.features)
 
-            LikesView()
+            LikesView(store: store.scope(state: \.likes, action: \.likes))
                 .tabItem {
                     Image(.likesTab)
 //                    Text("Лайки")

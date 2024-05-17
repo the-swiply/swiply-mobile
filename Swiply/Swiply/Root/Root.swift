@@ -90,6 +90,11 @@ struct Root {
                         }
                 }
                 appStateManager.setProfileCreationComplete()
+
+            case .destination(.presented(.main(.likes(.buyTapped)))):
+                state.destination = .main(.init(selectedTab: .profile))
+                return .none
+
             case .appDelegate:
                 return .none
 
@@ -105,7 +110,7 @@ struct Root {
                 return .none
 
             case .showMain:
-                state.destination = .main(.init(selectedTab: .profile))
+                state.destination = .main(.init(selectedTab: .recommendations))
                 return .none
 
             case .destination(.presented(.main(.profile(.path(.element(_, .settings(.exitButtonTapped))))))):

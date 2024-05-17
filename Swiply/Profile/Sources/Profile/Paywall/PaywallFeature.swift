@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import StoreKit
+import OSLog
 
 @Reducer
 public struct PaywallFeature {
@@ -8,30 +9,40 @@ public struct PaywallFeature {
     public struct State: Equatable {
         let num: Int = 0
         var products: [Product] = []
+        @Presents var alert: AlertState<Action.Alert>?
+        @Shared(.inMemory("hasSubscription")) var hasSubscription = false
     }
 
     public enum Action: Equatable {
-        case tapped
+        case continueTapped(String)
         case onAppear
         case update(products: [Product])
         case registerPublisher
         case handlePurchase
+        case cancelTapped
+        case alert(PresentationAction<Alert>)
+        case backTapped
+
+        public enum Alert: Equatable {
+          case confirm
+        }
     }
 
 
     public init() { }
 
     @Dependency(\.purchaseManager) var purchaseManager
+    @Dependency(\.dismiss) var dismiss
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .tapped:
+            case let .continueTapped(id):
                 return .run { send in
                     let products = await purchaseManager.getProducts()
 
-                    if products.count > 0 {
-                        try await purchaseManager.purchase(products[2])
+                    if let product = products.first(where: { $0.id == id }) {
+                        try await purchaseManager.purchase(product)
                     }
                 }
 
@@ -40,24 +51,58 @@ public struct PaywallFeature {
                     await send(.registerPublisher)
                     await purchaseManager.observeTransactionUpdates()
                     try await purchaseManager.loadProducts()
+                    let products = await purchaseManager.getProducts()
+                    Logger.services.debug("\(products.description)")
+                    await send(.update(products: products))
                 }
 
             case let .update(products):
-                state.products = products
+                let sorted = products.sorted(by: { $0.price < $1.price })
+                state.products = sorted
                 return .none
 
             case .registerPublisher:
                 return .publisher {
                     return purchaseManager
                         .purchasePublisher
-                        .map { Action.handlePurchase }
+                        .removeDuplicates()
+                        .dropFirst()
+                        .map { _ in Action.handlePurchase }
                 }
 
             case .handlePurchase:
-                print("222222222222222")
+                state.alert = AlertState(
+                    title: TextState("Подписка получена!"),
+                    message: TextState("Теперь вам доступны все функции приложения!"),
+                    buttons: [.cancel(TextState("ОК"), action: .send(.confirm))]
+                )
+                
+                state.hasSubscription = true
+
                 return .none
+
+            case .cancelTapped:
+                state.alert = nil
+                return .run { _ in
+                    await self.dismiss()
+                }
+
+            case .alert(.presented(.confirm)):
+                state.alert = nil
+                return .run { _ in
+                    await self.dismiss()
+                }
+
+            case .alert(.dismiss):
+                return .none
+
+            case .backTapped:
+                return .run { _ in
+                    await self.dismiss()
+                }
             }
         }
+        .ifLet(\.$alert, action: \.alert)
     }
 
 }

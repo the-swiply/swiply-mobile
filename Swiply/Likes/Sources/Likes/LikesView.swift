@@ -2,8 +2,11 @@ import SwiftUI
 import SYVisualKit
 import CardInformation
 import ProfilesService
+import ComposableArchitecture
 
 public struct LikesView: View {
+
+    @Bindable var store: StoreOf<LikesFeature>
 
     @State private var data: [Person] =
     [
@@ -14,7 +17,9 @@ public struct LikesView: View {
         Person.vera,
     ]
 
-    public init() { }
+    public init(store: StoreOf<LikesFeature>) {
+        self.store = store
+    }
 
     public var body: some View {
         NavigationStack {
@@ -29,23 +34,32 @@ public struct LikesView: View {
                 }
                 .padding(.bottom, 16)
 
-                ScrollView {
-                    if !data.isEmpty {
-                        ForEach(Array(stride(from: 0, to: data.count - 1, by: 2)), id: \.self) { index in
-                            if data.indices.contains(index + 1) {
-                                row(firstCard: data[index], secondCard: data[index + 1])
-                                    .padding(.vertical, 2)
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        if !data.isEmpty {
+                            ForEach(Array(stride(from: 0, to: data.count - 1, by: 2)), id: \.self) { index in
+                                if data.indices.contains(index + 1) {
+                                    row(firstCard: data[index], secondCard: data[index + 1])
+                                        .padding(.vertical, 2)
+                                }
                             }
                         }
-                    }
 
-                    if data.count % 2 != 0 {
-                        row(firstCard: data[data.count - 1])
+                        if data.count % 2 != 0 {
+                            row(firstCard: data[data.count - 1])
+                        }
                     }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 24)
+                    .scrollIndicators(.hidden)
+
+                    SYButton(title: "Узнай, кто тебя лайкнул") {
+                        store.send(.buyTapped)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 24)
                 }
-                .padding(.horizontal, 24)
             }
-            .scrollIndicators(.hidden)
         }
     }
 
@@ -53,12 +67,12 @@ public struct LikesView: View {
     private func row(firstCard: Person, secondCard: Person? = nil) -> some View {
         if let secondCard {
             HStack(spacing: 12) {
-                LikesCardView(person: firstCard) {
+                LikesCardView(person: firstCard, isBlured: !store.hasSubscription) {
                     removePersonWithId(firstCard.id)
                 }
                     .frame(width: 156, height: 200)
 
-                LikesCardView(person: secondCard) {
+                LikesCardView(person: secondCard, isBlured: !store.hasSubscription) {
                     removePersonWithId(secondCard.id)
                 }
                     .frame(width: 156, height: 200)
@@ -66,12 +80,12 @@ public struct LikesView: View {
         }
         else {
             HStack(spacing: 12) {
-                LikesCardView(person: firstCard) {
+                LikesCardView(person: firstCard, isBlured: !store.hasSubscription) {
                     removePersonWithId(firstCard.id)
                 }
                     .frame(width: 156, height: 200)
 
-                LikesCardView(person: firstCard) {
+                LikesCardView(person: firstCard, isBlured: !store.hasSubscription) {
                     removePersonWithId(firstCard.id)
                 }
                     .frame(width: 156, height: 200)
@@ -91,6 +105,6 @@ public struct LikesView: View {
 
 }
 
-#Preview {
-    LikesView()
-}
+//#Preview {
+//    LikesView()
+//}

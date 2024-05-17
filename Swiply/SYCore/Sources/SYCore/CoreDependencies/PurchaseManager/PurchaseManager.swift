@@ -14,7 +14,7 @@ public protocol PurchaseManager {
     func observeTransactionUpdates() async
     func getProducts() async -> [Product]
     
-    var purchasePublisher: AnyPublisher<Void, Never> { get }
+    var purchasePublisher: AnyPublisher<String, Never> { get }
 
 }
 
@@ -41,9 +41,9 @@ public extension DependencyValues {
 
 public actor LivePurchaseManager: PurchaseManager {
 
-    public let purchasePublisher: AnyPublisher<Void, Never>
+    public let purchasePublisher: AnyPublisher<String, Never>
 
-    var purchaseSubject: CurrentValueSubject<Void, Never>
+    var purchaseSubject: CurrentValueSubject<String, Never>
 
     private let productIds = ["Swiply.3monthly", "Swiply.monthly", "Swiply.yearly"]
 
@@ -54,7 +54,7 @@ public actor LivePurchaseManager: PurchaseManager {
     private var updates: Task<Void, Never>? = nil
 
     init() {
-        purchaseSubject = CurrentValueSubject<Void, Never>(())
+        purchaseSubject = CurrentValueSubject<String, Never>("")
         purchasePublisher = purchaseSubject.eraseToAnyPublisher()
     }
 
@@ -73,7 +73,7 @@ public actor LivePurchaseManager: PurchaseManager {
 
         switch result {
         case let .success(.verified(transaction)):
-            purchaseSubject.send()
+            purchaseSubject.send(transaction.productID)
             await transaction.finish()
             await self.updatePurchasedProducts()
 
@@ -99,7 +99,7 @@ public actor LivePurchaseManager: PurchaseManager {
 
             if transaction.revocationDate == nil {
                 self.purchasedProductIDs.insert(transaction.productID)
-                self.purchaseSubject.send()
+                self.purchaseSubject.send(transaction.productID)
             } else {
                 self.purchasedProductIDs.remove(transaction.productID)
             }
