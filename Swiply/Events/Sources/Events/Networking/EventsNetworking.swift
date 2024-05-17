@@ -14,7 +14,7 @@ protocol EventsNetworking {
     func getEvents() async -> Result<GetEventsResponse, RequestError>
     func acceptUser(eventId: UUID, userId: UUID) async -> Result<EmptyResponse, RequestError>
     func myEvents() async -> Result<GetUserOwnEventsResponse, RequestError>
-    func membership(number: Int) async -> Result<GetUserMembershipEventsResponse, RequestError>
+    func membership() async -> Result<GetUserMembershipEventsResponse, RequestError>
 
 }
 
@@ -70,8 +70,8 @@ class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
         await sendRequest(.myEvents())
     }
 
-    func membership(number: Int) async -> Result<GetUserMembershipEventsResponse, RequestError> {
-        await sendRequest(.membership(number: number))
+    func membership() async -> Result<GetUserMembershipEventsResponse, RequestError> {
+        await sendRequest(.membership)
     }
 
 }
@@ -87,7 +87,7 @@ enum EventsNetworkingEndpoint: TokenizedEndpoint {
     case getEvents
     case acceptUser(eventId: UUID, userId: UUID)
     case myEvents
-    case membership(number: Int)
+    case membership
 
     var pathPrefix: String {
         #if DEBUG
@@ -142,10 +142,10 @@ enum EventsNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case .create(event: let event):
             return [
-                "id": event.id.uuidString,
+                "id": event.id,
                 "title": event.name,
                 "description": event.description,
-                "photos": "\(event.images.map { $0.jpegData(compressionQuality: 1) })",
+                "photos": "\(event.images.map { $0.jpegData(compressionQuality: 0) })",
                 "date": event.date.timeIntervalSince1970.description
             ]
 
@@ -154,17 +154,17 @@ enum EventsNetworkingEndpoint: TokenizedEndpoint {
 
         case .updateEvent(info: let info):
             return [
-                "id": info.id.uuidString,
+                "id": info.id,
                 "title": info.name,
                 "description": info.description,
-                "photos": "\(info.images.map { $0.jpegData(compressionQuality: 1) })",
+                "photos": "\(info.images.map { $0.jpegData(compressionQuality: 0) })",
                 "date": info.date.timeIntervalSince1970.description
             ]
 
         case .acceptUser(eventId: let eventId, userId: let userId):
             return [
-                "event": eventId.uuidString,
-                "userId": userId.uuidString
+                "event": eventId.uuidString.lowercased(),
+                "userId": userId.uuidString.lowercased()
             ]
         }
     }
@@ -183,36 +183,36 @@ enum EventsNetworkingEndpoint: TokenizedEndpoint {
 
 private extension Request {
 
-    static func create(event: Event) async -> Self {
+    static var membership: Self {
+        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.membership)
+    }
+
+    static func create(event: Event) -> Self {
         .init(endpoint: EventsNetworkingEndpoint.create(event: event))
     }
 
-    static func joinEvent(id: UUID) async -> Self {
+    static func joinEvent(id: UUID) -> Self {
         .init(endpoint: EventsNetworkingEndpoint.joinEvent(id: id))
     }
 
-    static func eventMembers(id: UUID) async -> Self {
+    static func eventMembers(id: UUID) -> Self {
         .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.eventMembers(id: id))
     }
 
-    static func updateEvent(info: Event) async -> Self {
+    static func updateEvent(info: Event) -> Self {
         .init(endpoint: EventsNetworkingEndpoint.updateEvent(info: info))
     }
 
-    static func getEvents() async -> Self {
+    static func getEvents() -> Self {
         .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.getEvents)
     }
 
-    static func acceptUser(eventId: UUID, userId: UUID) async -> Self {
+    static func acceptUser(eventId: UUID, userId: UUID) -> Self {
         .init(endpoint: EventsNetworkingEndpoint.acceptUser(eventId: eventId, userId: userId))
     }
 
-    static func myEvents() async -> Self {
+    static func myEvents() -> Self {
         .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.myEvents)
-    }
-
-    static func membership(number: Int) async -> Self {
-        .init(requestTimeout: .infinite, endpoint: EventsNetworkingEndpoint.membership(number: number))
     }
 
 }

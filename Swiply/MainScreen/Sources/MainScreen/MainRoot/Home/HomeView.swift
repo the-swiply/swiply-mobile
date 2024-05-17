@@ -130,8 +130,11 @@ struct HomeView: View {
                 RandomCoffeeView(store: store)
 
             case let .events(store):
-                EventsView()
-                
+                EventsView(store: store)
+
+            case let .eventCreation(store):
+                AddEventView()
+
             case let .randomCoffeeInfo(store):
                 RCInfoView(store: store)
             }

@@ -13,6 +13,7 @@ public struct Home {
         case randomCoffeeInfo(RCInfo)
         case randomCoffee(RandomCoffeeFeature)
         case events(EventsFeature)
+        case eventCreation(AddEventFeature)
     }
 
     @ObservableState
@@ -46,6 +47,10 @@ public struct Home {
                 
             case .path(.element(id: _, action: .emailConformation(.delegate(.receiveSuccessFromServer)))):
                 state.path.append(.otp(.init()))
+                return .none
+
+            case .path(.element(id: _, action: .events(.openEventCreation))):
+                state.path.append(.eventCreation(.init()))
                 return .none
 
             case .path:

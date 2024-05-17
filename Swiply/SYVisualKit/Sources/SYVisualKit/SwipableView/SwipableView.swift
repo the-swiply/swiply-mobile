@@ -97,10 +97,10 @@ private extension SwipableView {
         }
 
         if width >= swipeBorderValue {
-            swipeRight()
+            swipeLeft()
         }
         else {
-            swipeLeft()
+            swipeRight()
         }
     }
 

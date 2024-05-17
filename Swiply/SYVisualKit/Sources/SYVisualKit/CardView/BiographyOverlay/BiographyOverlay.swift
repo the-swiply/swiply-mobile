@@ -36,7 +36,7 @@ struct BiographyOverlay: View {
 
             HStack {
                 Button {
-                    likeHandler()
+                    dislikeHandler()
                 } label: {
                     Image(.dislike)
                 }
@@ -44,7 +44,7 @@ struct BiographyOverlay: View {
                 Spacer()
 
                 Button {
-                    dislikeHandler()
+                    likeHandler()
                 } label: {
                     Image(.like)
                 }

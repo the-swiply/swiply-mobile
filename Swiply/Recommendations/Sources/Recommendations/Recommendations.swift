@@ -61,14 +61,14 @@ public struct Recommendations {
                 return .none
 
             case let .likeButtonTapped(id):
-                state.swipeAction = .right(id: id.uuidString)
-                
+                state.swipeAction = .right(id: id.uuidString.lowercased())
+
                 return .run { send in
                     await recommendationsService.likeProfile(id: id)
                 }
 
             case let .dislikeButtonTapped(id):
-                state.swipeAction = .left(id: id.uuidString)
+                state.swipeAction = .left(id: id.uuidString.lowercased())
 
                 return .run { send in
                     await recommendationsService.dislikeProfile(id: id)

@@ -29,7 +29,7 @@ public struct RecommendationsView: View {
                     VStack {
                         ZStack {
                             ForEach(store.profiles, id: \.id) { profile in
-                                SwipableView(swipeAction: store.state.swipeAction, id: profile.id.uuidString) {
+                                SwipableView(swipeAction: store.state.swipeAction, id: profile.id.uuidString.lowercased()) {
                                     CardView(
                                         person: profile.cardPerson,
                                         likeHandler: { store.send(.likeButtonTapped(profile.id)) },

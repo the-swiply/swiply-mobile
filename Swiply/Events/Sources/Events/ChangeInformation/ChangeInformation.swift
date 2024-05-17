@@ -1,7 +1,7 @@
 import SwiftUI
 import SYVisualKit
 
-struct ChangeInformation: View {
+struct ChangeInformationView: View {
 
     @State var name: String = "Выставка бездомных животных «Надо брать! Летом!»"
     @State var info: String = "Давно собираетесь завести домашнее животное? В начале лета самое время это сделать! Благотворительный фонд «Вирта» проводит выставку бездомных животных, откуда можно будет уйти с новым преданным другом."

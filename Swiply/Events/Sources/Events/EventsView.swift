@@ -3,21 +3,23 @@ import ComposableArchitecture
 import SYVisualKit
 
 public struct EventsView: View {
-    
+
+    @Bindable var store: StoreOf<EventsFeature>
+
     @State var events: [Event] = [
-        .init(id: UUID(),
+        .init(id: UUID().uuidString.lowercased(),
             name: "Выставка-реконструкция «Терракотовая армия. Бессмертные воины Китая»",
               description: "Реконструкция сенсационной археологической находки XX века — многотысячного глиняного войска китайского императора Цинь Шихуанди, правившего в III веке до н. э., — не оставит равнодушным ни одного зрителя. Посетители выставки на ВДНХ перенесутся в мистическую атмосферу Древнего Китая и ощутят реальный масштаб грандиозной армии.", date: Date(),
               images: [UIImage(resource: .army), UIImage(resource: .army2)]
              ),
-        .init(id: UUID(), name: "Выставка бездомных животных «Надо брать! Летом!»",
+        .init(id: UUID().uuidString.lowercased(), name: "Выставка бездомных животных «Надо брать! Летом!»",
               description: "Давно собираетесь завести домашнее животное? В начале лета самое время это сделать! Благотворительный фонд «Вирта» проводит выставку бездомных животных, откуда можно будет уйти с новым преданным другом.",
               date: Date(),
               images: [UIImage(resource: .animal), UIImage(resource: .animal2), UIImage(resource: .animal3)]),
-        .init(id: UUID(), name: "Выставка «Сальвадор Дали & Пабло Пикассо»",
+        .init(id: UUID().uuidString.lowercased(), name: "Выставка «Сальвадор Дали & Пабло Пикассо»",
               description: "Добро пожаловать в мир сюрреализма! На выставке в Путевом дворце Василия III вы увидите подлинные работы Дали и Пикассо, узнаете о творческом пути великих художников и откроете для себя новые грани искусства.", date: Date(),
               images: [UIImage(resource: .picasso)]),
-        .init(id: UUID(), name: "Выступление Елены Блиновской",
+        .init(id: UUID().uuidString.lowercased(), name: "Выступление Елены Блиновской",
               description: "Марафон желаний Елены Блиновской облетел уже весь мир, а теперь собрался и до СИЗО!", date: Date(),
               images: [UIImage(resource: .blin)])
     ]
@@ -28,14 +30,16 @@ public struct EventsView: View {
     @State var showDatePicker: Bool = false
     @State var savedDate: Date? = nil
 
-    public init() { }
-    
+    public init(store: StoreOf<EventsFeature>) {
+        self.store = store
+    }
+
     public var body: some View {
         VStack {
             Picker("", selection: $category) {
                 Text("Все").tag(0)
                 Text("Избранное").tag(1)
-                Text("Мои").tag(1)
+                Text("Мои").tag(2)
             }
             .pickerStyle(.segmented)
             .padding(.bottom, 24)
@@ -65,7 +69,7 @@ public struct EventsView: View {
 //                }
 
                 Button {
-
+                    store.send(.openEventCreation)
                 } label : {
                     RoundedRectangle(cornerRadius: 32)
                         .frame(width: 64, height: 64, alignment: .bottom)
@@ -142,14 +146,18 @@ public struct EventsView: View {
                             }
                             .padding(.bottom, 24)
 
+//                            Spacer()
+
                             DatePickerWithButtons(showDatePicker: $showDatePicker, savedDate: $savedDate, selectedDate: savedDate ?? Date())
                                 .animation(.linear)
                                 .transition(.opacity)
 
+                            Spacer()
+
                         }
                         .padding(.horizontal, 24)
                     }
-                    .presentationDetents([.height(600)])
+                    .presentationDetents([.height(400)])
                 })
         .onAppear() {
             
@@ -165,15 +173,28 @@ public struct EventsView: View {
                 Spacer()
                 
                 VStack(alignment: .leading) {
-                    NavigationLink(
-//                        destination: EventInfoView(event: firstEvent),
-                                   destination: ChangeInformation(),
-                        label: {
-                            ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
-                                .frame(width: 156, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                        }
-                    )
+                    if category == 2 {
+                        NavigationLink(
+                            destination: ChangeInformationView(),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
+                    else {
+                        NavigationLink(
+                            destination: EventInfoView(event: firstEvent),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
                     
                     HStack {
                         Text(firstEvent.name)
@@ -188,14 +209,28 @@ public struct EventsView: View {
                 }
                 
                 VStack(alignment: .leading)  {
-                    NavigationLink(
-                        destination: EventInfoView(event: secondEvent),
-                        label: {
-                            ImageScrollingView(images: [.image(Image(uiImage: secondEvent.images.first!))], onTapCenter: nil)
-                                .frame(width: 156, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                        }
-                    )
+                    if category == 2 {
+                        NavigationLink(
+                            destination: ChangeInformationView(),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: secondEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
+                    else {
+                        NavigationLink(
+                            destination: EventInfoView(event: secondEvent),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: secondEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
                     HStack {
                         Text(secondEvent.name)
                             .font(.footnote)
@@ -213,15 +248,29 @@ public struct EventsView: View {
         else {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading) {
-                    NavigationLink(
-                        destination: EventInfoView(event: firstEvent),
-                        label: {
-                            ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
-                                .frame(width: 156, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                        }
-                    )
-                    
+                    if category == 2 {
+                        NavigationLink(
+                            destination: ChangeInformationView(),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
+                    else {
+                        NavigationLink(
+                            destination: EventInfoView(event: firstEvent),
+                            label: {
+                                ImageScrollingView(images: [.image(Image(uiImage: firstEvent.images.first!))], onTapCenter: nil)
+                                    .frame(width: 156, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .allowsHitTesting(false)
+                            }
+                        )
+                    }
+
                     HStack {
                         Text(firstEvent.name)
                             .font(.footnote)
@@ -236,6 +285,7 @@ public struct EventsView: View {
                 VStack {
                     ImageScrollingView(images: firstEvent.images.map { .image(Image(uiImage: $0)) }, onTapCenter: nil)
                         .frame(width: 156, height: 200)
+                        .allowsHitTesting(false)
 
                     HStack {
                         Text(firstEvent.name)
@@ -306,7 +356,7 @@ struct DatePickerWithButtons: View {
                     Button(action: {
                         showDatePicker = false
                     }, label: {
-                        Text("Cancel")
+                        Text("Отмена")
                     })
 
                     Spacer()
@@ -315,7 +365,7 @@ struct DatePickerWithButtons: View {
                         savedDate = selectedDate
                         showDatePicker = false
                     }, label: {
-                        Text("Save")
+                        Text("Сохранить")
                             .bold()
                     })
 
@@ -336,6 +386,6 @@ struct DatePickerWithButtons: View {
     }
 }
 
-#Preview {
-    EventsView()
-}
+//#Preview {
+//    EventsView()
+//}

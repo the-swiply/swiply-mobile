@@ -35,12 +35,17 @@ struct Root {
         case createProfile
         case showMain
         case handleforbiddenError
+        case saveDeviceToken(Data)
+        case registerForNotification
     }
 
     @Dependency(\.updateTokenMiddleware) var forbiddenErrorNotifier
     @Dependency(\.appStateManager) var appStateManager
     @Dependency(\.profilesService) var rootServiceNetworking
     @Dependency(\.profileManager) var profileManager
+    @Dependency(\.defaultAppStorage) var appStorage
+    @Dependency(\.notificationsNetworking) var notificationsNetworking
+    @Dependency(\.keychain) var keychain
 
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -73,6 +78,7 @@ struct Root {
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
                 return .run { send in
+                    await send(.registerForNotification)
                     await send(.getUserId)
                 }
 
@@ -149,6 +155,19 @@ struct Root {
                         await send(.showMain)
                     case .failure:
                         await send(.createProfile)
+                    }
+                }
+            case let .saveDeviceToken(token):
+                let formattedToken = token.map { String(format: "%02.2hhx", $0) }.joined()
+                appStorage.set(formattedToken, forKey: "DeviceToken")
+                return .send(.registerForNotification)
+
+            case .registerForNotification:
+                return .run { send in
+                    if let token = appStorage.string(forKey: "DeviceToken"),
+                       let _ = keychain.getToken(type: .refresh)
+                    {
+                        let _  = await notificationsNetworking.subscribe(token: token)
                     }
                 }
             }

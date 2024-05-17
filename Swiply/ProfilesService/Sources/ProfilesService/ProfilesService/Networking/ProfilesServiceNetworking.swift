@@ -206,7 +206,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         switch self {
         case let .interactWithProfile(id, interactionType):
             return [
-                "id": id.uuidString,
+                "id": id.uuidString.lowercased(),
                 "type": interactionType.rawValue
             ]
 
