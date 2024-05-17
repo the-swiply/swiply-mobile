@@ -1,8 +1,8 @@
 // MARK: - UpdateTokenResponse
 
-struct UpdateTokenResponse: Codable {
+public struct UpdateTokenResponse: Codable {
 
-  let accessToken: String
-  let refreshToken: String
+  public let accessToken: String
+  public let refreshToken: String
 
 }

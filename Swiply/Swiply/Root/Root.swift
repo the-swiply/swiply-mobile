@@ -72,7 +72,6 @@ struct Root {
                 }
 
             case .destination(.presented(.authorization(.path(.element(id: _, action: .otp(.delegate(.finishAuthorization))))))):
-                appStateManager.setAuthComplete()
                 return .run { send in
                     await send(.getUserId)
                 }

@@ -133,7 +133,6 @@
 		3E171AA42B7EB36200D4E016 /* Swiply */ = {
 			isa = PBXGroup;
 			children = (
-				5ECADDE72BF0DDDE00B3FB4E /* Networking */,
 				3EEB60B12C0227BD00EB6C94 /* Swiply.entitlements */,
 				3EFA20202BE151DC00E6DC1B /* RootDependencies */,
 				3EDBE7702B9E0F1C00DDC677 /* AppDelegate */,
@@ -220,13 +219,6 @@
 				3EFA20222BE151FE00E6DC1B /* AppStateManager.swift */,
 			);
 			path = AppStateManager;
-			sourceTree = "<group>";
-		};
-		5ECADDE72BF0DDDE00B3FB4E /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

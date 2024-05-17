@@ -35,6 +35,22 @@ public struct Recommendations {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                return .publisher {
+                    return recommendationsService
+                        .publisher
+                        .map { .updateProfiles($0) }
+                }
+
+            case let .updateProfiles(profiles):
+                state.profiles = profiles
+
+                if profiles.count <= 5 {
+                    return .send(.loadProfiles)
+                }
+
+                return .none
+
+            case .loadProfiles:
                 return .run { send in
                     await recommendationsService.loadProfiles(number: 10)
                 }

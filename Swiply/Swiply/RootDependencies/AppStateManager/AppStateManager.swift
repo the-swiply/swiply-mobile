@@ -7,8 +7,7 @@ import SYKeychain
 
 protocol AppStateManager {
 
-    func getState() -> AppState
-    func setAuthComplete()
+    func getState() async -> AppState
     func setProfileCreationComplete()
     func setUserId(id: String)
 
@@ -39,17 +38,21 @@ class LiveAppStateManager: AppStateManager {
 
     @Dependency(\.keychain) var keychain
     @Dependency(\.defaultAppStorage) var storage
+    @Dependency(\.updateTokenService.refresh) var refresh
 
-    func getState() -> AppState {
-        if !storage.bool(forKey: "isAuthComplete") {
+    func getState() async -> AppState {
+        guard let token = keychain.getToken(type: .refresh) else {
             return .authorization
         }
 
-        guard let _ = keychain.getToken(type: .refresh) else {
-            return .authorization
-        }
+        let refreshResponse = await refresh(token)
 
-        guard let _ = keychain.getToken(type: .access) else {
+        switch refreshResponse {
+        case let .success(response):
+            keychain.setToken(token: response.accessToken, type: .access)
+            keychain.setToken(token: response.refreshToken, type: .refresh)
+
+        case .failure:
             return .authorization
         }
 
@@ -59,10 +62,6 @@ class LiveAppStateManager: AppStateManager {
         else {
             return .profileCreation
         }
-    }
-
-    func setAuthComplete() {
-        storage.setValue(true, forKey: "isAuthComplete")
     }
 
     func setProfileCreationComplete() {

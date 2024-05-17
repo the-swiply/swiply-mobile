@@ -74,7 +74,6 @@ public extension Person {
         )
     }
     
-    
     func toProfile(_ old: Profile) -> Profile {
         Profile(
             id: old.id,

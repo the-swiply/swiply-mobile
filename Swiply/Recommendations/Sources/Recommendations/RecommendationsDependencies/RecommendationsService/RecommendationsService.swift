@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Dependencies
 import Networking
 import SYCore
@@ -7,7 +8,7 @@ import SYCore
 
 public protocol RecommendationsService {
 
-    func addHandler(_ handler: @escaping () async -> Void) async
+    var publisher: AnyPublisher<[Profile], Never> { get }
 
     func removeProfile(with id: UUID) async
     func returnToLastProfile() async
@@ -41,8 +42,6 @@ public extension DependencyValues {
 
 actor LiveRecommendationsService: RecommendationsService {
 
-    private var handlers: [() async -> Void] = []
-
     @Dependency(\.recommendationsNetworking) var recommendationsNetworking
     @Dependency(\.profilesService) var profilesService
 
@@ -58,8 +57,10 @@ actor LiveRecommendationsService: RecommendationsService {
 
     private var buffer: [Profile] = []
 
-    func addHandler(_ handler: @escaping () async -> Void) {
-        handlers.append(handler)
+    init() {
+        let subject = CurrentValueSubject<[Profile], Never>(.init())
+        profilesSubject = subject
+        publisher = subject.eraseToAnyPublisher()
     }
 
     func dislikeProfile(id: UUID) async {
@@ -115,11 +116,6 @@ actor LiveRecommendationsService: RecommendationsService {
 
                     case let .success(profile):
                         profiles.append(profile)
-                        handlers.forEach { handler in
-                            Task {
-                                await handler()
-                            }
-                        }
                     }
                 }
             }

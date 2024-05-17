@@ -146,7 +146,6 @@ private struct MainBarView: View {
 
 }
 
-
 //#Preview {
 //    RecommendationsView(
 //        store: Store(initialState: Recommendations.State()) {

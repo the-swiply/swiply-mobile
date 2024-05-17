@@ -3,9 +3,9 @@ import ComposableArchitecture
 // MARK: - DependencyClient
 
 @DependencyClient
-struct UpdateTokenService: HTTPClient {
+public struct UpdateTokenService: HTTPClient {
 
-    var refresh: (_ token: String) async -> (Result<UpdateTokenResponse, RequestError>) = { _ in .success(.init(accessToken: "", refreshToken: "")) }
+    public var refresh: (_ token: String) async -> (Result<UpdateTokenResponse, RequestError>) = { _ in .success(.init(accessToken: "", refreshToken: "")) }
 
 }
 
@@ -13,7 +13,7 @@ struct UpdateTokenService: HTTPClient {
 
 extension UpdateTokenService: DependencyKey {
 
-    static var liveValue: UpdateTokenService {
+    public static var liveValue: UpdateTokenService {
         return UpdateTokenService(
             refresh: { token in
                 await sendRequest(.refresh(token: token))
@@ -27,7 +27,7 @@ extension UpdateTokenService: DependencyKey {
 
 extension DependencyValues {
 
-  var updateTokenService: UpdateTokenService {
+  public var updateTokenService: UpdateTokenService {
     get { self[UpdateTokenService.self] }
     set { self[UpdateTokenService.self] = newValue }
   }
@@ -73,7 +73,7 @@ enum UpdateTokenEndpoint: Endpoint {
 private extension Request {
 
     static func refresh(token: String) -> Self {
-        .init(endpoint: UpdateTokenEndpoint.refresh(token: token))
+        .init(requestTimeout: .infinite, endpoint: UpdateTokenEndpoint.refresh(token: token))
     }
 
 }
