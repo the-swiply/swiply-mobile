@@ -7,28 +7,17 @@ extension ServerUserProfile {
         Profile(
             id:  UUID(uuidString: self.id) ?? UUID(), 
             name: self.name,
-            age: 22,
+            age: DateFormatter.server.date(from: self.birthDay) ?? Date(),
             gender: .init(rawValue: self.gender) ?? .none,
-            interests:  self.interests.map { $0.definition },
-            town: self.city, 
+            interests: self.interests,
+            town: self.city,
             description: self.info,
             email: self.email,
             images: .init(),
             education: self.education,
-            work: self.work
+            work: self.work, 
+            corporateMail: []
         )
-        
-//        Profile(
-//            id: UUID(uuidString: self.id) ?? UUID(),
-//            name: self.name,
-//            age: 22,
-//            gender: .init(rawValue: self.gender) ?? .none,
-//            interests: self.interests.map { $0.id },
-//            town: "Moscow",
-//            description: self.info, 
-//            email: self.email,
-//            images: .init()
-//        )
     }
 
 }

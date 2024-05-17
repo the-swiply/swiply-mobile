@@ -7,11 +7,17 @@ public struct ProfileFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
-        @Shared(.inMemory("Person")) var user = Person.ann
+        @Shared(.inMemory("Person")) var user = Profile()
+        var showError = false
         public init() {}
+        
+//        public init(isError: Bool) {
+//            self.showError = isError
+//        }
     }
     
-    public enum Action: Equatable  {
+    public enum Action: BindableAction, Equatable  {
+        case binding(BindingAction<State>)
         case onSettingsTap
         case onEditTap
         case onSubscriptionTap
@@ -19,6 +25,7 @@ public struct ProfileFeature: Reducer {
     }
     
     public var body: some ReducerOf<Self> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .onSettingsTap:
@@ -26,11 +33,13 @@ public struct ProfileFeature: Reducer {
             case .onEditTap:
                 let user = state.user
                 return .run { send in
-                    await send(.showEdit(user))
+                    await send(.showEdit(.init(user)))
                 }
             case .onSubscriptionTap:
                 return .none
             case .showEdit:
+                return .none
+            case .binding:
                 return .none
             }
         }
@@ -63,7 +72,7 @@ struct ProfileView: View {
 
             Spacer()
             ZStack(alignment: .topTrailing) {
-                Image(uiImage: store.user.images.first!!)
+                Image(uiImage: store.user.images.getFirstImage())
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 155, height: 155)
@@ -91,7 +100,7 @@ struct ProfileView: View {
             }
             .padding(.top, 35)
             
-            Text( "\(store.user.name), \(store.user.age)")
+            Text( "\(store.user.name), \(store.user.age.getAge())")
                 .font(Font.system(size: 28, design: .default))
                 .fontWeight(.semibold)
                 .padding(.top, 20)
@@ -105,7 +114,13 @@ struct ProfileView: View {
             Spacer()
         }
         .padding(.horizontal, 24)
+        .alert("Не удалось обновить данные. Попробуйте позже", isPresented: $store.state.showError) {
+            Button("OK", role: .cancel) { }
+        }
     }
+    
+    
+  
 }
 
 #Preview {

@@ -2,18 +2,20 @@ import SwiftUI
 import SYVisualKit
 import ComposableArchitecture
 import ProfilesService
+import SYCore
 public struct InterestsFeature: Reducer {
     
     @ObservableState
     public struct State: Equatable {
         @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
-        var selectedInterests = Set<String>()
+        var selectedInterests = Set<Interest>()
         var isButtonDisabled = true
+        var interests: [Interest] = []
     }
     
     public enum Action: Equatable {
         case continueButtonTapped
-        case interestButtonTapped(String)
+        case interestButtonTapped(Interest)
         case changeButtonState
     }
     
@@ -44,34 +46,34 @@ struct InterestsView: View {
     
     var store: StoreOf<InterestsFeature>
 
-    private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"  ,"тeaтp"  ,"it" ,"суши" ,"книги"  ,"йога" ,"фотография" ,"стендап" ,"ландшафтный дизайн" , "тату", "иностранные языки" ,"танцы" ,"восточные танцы" ,"спорт","пошив одежды", "медитации", "бег" ,"здоровый образ жизни", "пицца"]
-
     var body: some View {
         VStack(alignment: .leading) {
+            
             SYHeaderView(
                 title: "Интересы",
                 desription: "Добавь в профиль свои интересы, так ты сможешь найти людей с общими интересами"
             )
-//            .padding(.top, 80)
             .padding(.horizontal, 8)
             
             SYFlowView(
-                content: interests.map { interest in
-                    SYChip(text: interest) { text in
-                        store.send(.interestButtonTapped(text))
+                content: store.interests.map { interest in
+                    SYChip(text: interest.definition) { text in
+                        if let interest = store.interests.first(where: { $0.definition == text}) {
+                            store.send(.interestButtonTapped(interest))
+                        }
                     }
                 }
             )
-           .padding(.bottom, 35)
-         
+            .padding(.bottom, 35)
+            
+            Spacer()
+            
             SYButton(title: "Продолжить") {
                 store.send(.continueButtonTapped)
             }
             .disabled(store.isButtonDisabled)
             .padding(.top, 5)
             .padding(.horizontal, 8)
-            Spacer()
-  
         }
         .padding(.horizontal, 16)
     }

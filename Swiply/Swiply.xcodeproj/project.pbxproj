@@ -33,7 +33,6 @@
 		5E09F48F2BB5DC0C0030F785 /* RandomCoffee in Frameworks */ = {isa = PBXBuildFile; productRef = 5E09F48E2BB5DC0C0030F785 /* RandomCoffee */; };
 		5E1FC8442BA3509B0077946F /* FormCreation in Frameworks */ = {isa = PBXBuildFile; productRef = 5E1FC8432BA3509B0077946F /* FormCreation */; };
 		5E4860952BB232F8006F10F5 /* Chat in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4860942BB232F8006F10F5 /* Chat */; };
-		5ECADDE92BF0DDFD00B3FB4E /* RootNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECADDE82BF0DDFD00B3FB4E /* RootNetworking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +63,6 @@
 		5E09F48D2BB5DB760030F785 /* RandomCoffee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RandomCoffee; sourceTree = "<group>"; };
 		5E339C0D2BA34C7800B65E39 /* FormCreation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FormCreation; sourceTree = "<group>"; };
 		5E4860932BB232B0006F10F5 /* Chat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Chat; sourceTree = "<group>"; };
-		5ECADDE82BF0DDFD00B3FB4E /* RootNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNetworking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,7 +217,6 @@
 		5ECADDE72BF0DDDE00B3FB4E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				5ECADDE82BF0DDFD00B3FB4E /* RootNetworking.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -321,7 +318,6 @@
 				3E4714C42BE158C4002FB0CE /* AppState.swift in Sources */,
 				3E171AA82B7EB36200D4E016 /* ContentView.swift in Sources */,
 				3EDBE7722B9E163200DDC677 /* RootView.swift in Sources */,
-				5ECADDE92BF0DDFD00B3FB4E /* RootNetworking.swift in Sources */,
 				3E171AA62B7EB36200D4E016 /* SwiplyApp.swift in Sources */,
 				3E6CDC742B81565E00E4C890 /* SplashScreenView.swift in Sources */,
 			);

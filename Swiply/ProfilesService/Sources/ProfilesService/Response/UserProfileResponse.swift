@@ -1,5 +1,5 @@
 import Foundation
-
+import SYCore
 // MARK: - UserProfileResponse
 
 public struct UserProfileResponse: Codable {
@@ -14,7 +14,7 @@ public struct UserProfileResponse: Codable {
 
 public struct ServerUserProfile: Codable {
     let id, email, name: String
-    let interests: [InterestResponse]
+    let interests: [Interest]
     let birthDay, gender, info, subscriptionType: String
     let location: LocationResponse
     let city, work, education: String
@@ -30,12 +30,6 @@ public struct ServerUserProfile: Codable {
         case isBlocked = "is_blocked"
         case organizations
     }
-}
-
-// MARK: - Interest
-
-public struct InterestResponse: Codable {
-    let id, definition: String
 }
 
 // MARK: - Location

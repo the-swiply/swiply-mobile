@@ -63,7 +63,7 @@ public struct MainRoot {
 
                     switch response {
                     case let .success(user):
-                        profileManager.setProfileInfo(.init(user))
+                        profileManager.setProfileInfo(user)
                     case .failure:
                         break
                     }

@@ -4,9 +4,7 @@ import SYVisualKit
 import ProfilesService
 
 public struct InfoInputFeature: Reducer {
-    
-    @Dependency(\.profilesService) var profilesServiceNetworking
-    
+
     @ObservableState
     public struct State: Equatable {
         @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
@@ -22,8 +20,8 @@ public struct InfoInputFeature: Reducer {
         case delegate(Delegate)
 
         @CasePathable
-        public enum Delegate {
-            case finishProfile
+        public enum Delegate: Equatable {
+            case finishProfile(CreatedProfile)
         }
      }
     
@@ -54,19 +52,7 @@ public struct InfoInputFeature: Reducer {
                 
                 if type == .work {
                     return .run { [state] send in
-                        await withTaskGroup(of: Void.self) { group in
-                            group.addTask {
-                                let response = await self.profilesServiceNetworking.createProfile(profile: state.profile)
-
-                                switch response {
-                                case .success:
-                                    await send(.delegate(.finishProfile))
-
-                                case .failure:
-                                    break
-                                }
-                            }
-                        }
+                        await send(.delegate(.finishProfile(state.profile)))
                     }
                 } else {
                     return .none

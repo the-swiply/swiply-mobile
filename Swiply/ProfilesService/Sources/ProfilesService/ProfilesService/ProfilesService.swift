@@ -4,7 +4,7 @@ import Networking
 import SYCore
 import SwiftUI
 
-// MARK: - ProfilesService
+// MARK: - ProfilesService 
 
 public protocol ProfilesService {
 
@@ -12,6 +12,10 @@ public protocol ProfilesService {
     func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
     func createPhoto(photo: String) async -> Result<String, RequestError>
+    func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError>
+    func deletePhoto(id: String) async -> Result<Bool, RequestError>
+    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -118,7 +122,7 @@ class LiveProfilesService: ProfilesService {
         let createPhotoResult = await profilesServiceNetworking.createPhoto(photo: photo)
         
         switch createPhotoResult {
-        case let .failure(error):
+        case .failure:
             break
 
         case .success:
@@ -132,6 +136,57 @@ class LiveProfilesService: ProfilesService {
         let createPhoto = await profilesServiceNetworking.createPhoto(photo: photo)
         
         switch createPhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func getInterestsLists() async -> Result<ListInterestResponse, Networking.RequestError> {
+        let createPhoto = await profilesServiceNetworking.getInterestsLists()
+        
+        switch createPhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(list):
+            var listNew = [Interest]()
+            for i in 0..<list.interests.count {
+                if i < 25 {
+                    listNew.append(list.interests[i])
+                }
+            }
+            return .success(ListInterestResponse(interests: listNew))
+        }
+    }
+    
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError> {
+        let updateProfile = await profilesServiceNetworking.updateProfile(profile: profile)
+        switch updateProfile {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func deletePhoto(id: String) async -> Result<Bool, Networking.RequestError> {
+        let deletePhoto = await profilesServiceNetworking.deletePhoto(id: id)
+        switch deletePhoto {
+        case let .failure(error):
+            return .failure(error)
+
+        case let .success(userID):
+            return .success(userID)
+        }
+    }
+    
+    func reoderPhotos(ids: [String]) async -> Result<Bool, Networking.RequestError> {
+        let reoderPhotos = await profilesServiceNetworking.reoderPhotos(ids: ids)
+        switch reoderPhotos {
         case let .failure(error):
             return .failure(error)
 

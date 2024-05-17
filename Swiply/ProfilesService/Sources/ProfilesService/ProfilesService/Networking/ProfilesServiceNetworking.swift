@@ -1,16 +1,23 @@
 import Dependencies
 import Networking
+import SYCore
+import Foundation
 
-// MARK: - ProfilesServiceNetworking
+// MARK: - ProfilesServiceNetworking 
 
 public protocol ProfilesServiceNetworking {
 
+   
     func getProfile(id: String) async -> Result<UserProfileResponse, RequestError>
     func getPhotos(id: String) async -> Result<PhotosResponse, RequestError>
     func getLikes() async -> Result<IDListResponse, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
     func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
     func createPhoto(photo: String) async -> Result<String, RequestError>
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError> 
+    func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
+    func deletePhoto(id: String) async -> Result<Bool, RequestError>
+    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -60,6 +67,22 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
     func createPhoto(photo: String) async -> Result<String, Networking.RequestError> {
         await sendRequest(.createPhoto(photoStr: photo))
     }
+    
+    func getInterestsLists() async -> Result<ListInterestResponse, Networking.RequestError> {
+        await sendRequest(.getInterestsLists)
+    }
+    
+    func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError>  {
+        await sendRequest(.updateProfile(profile: profile))
+    }
+    
+    func deletePhoto(id: String) async -> Result<Bool, Networking.RequestError> {
+        await sendRequest(.deletePhoto(id: id))
+    }
+    
+    func reoderPhotos(ids: [String]) async -> Result<Bool, Networking.RequestError> {
+        await sendRequest(.reoderPhotos(ids: ids))
+    }
 }
 
 // MARK: - Endpoint
@@ -72,6 +95,11 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
     case createProfile(CreatedProfile)
     case createPhoto(String)
     case whoAmI
+    case getInterestsLists
+    case updateProfile(Profile)
+    case deletePhoto(String)
+    case reoderPhotos(ids: [String])
+    
 
     var path: String {
         switch self {
@@ -92,6 +120,18 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case .createPhoto:
             "/v1/photo/create"
+            
+        case .getInterestsLists:
+            "/v1/interests"
+            
+        case .updateProfile:
+            "/v1/profile/update"
+            
+        case .deletePhoto:
+            "/v1/photo/delete"
+            
+        case .reoderPhotos:
+            "/v1/photo/reorder"
         }
     }
 
@@ -112,8 +152,15 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         case .whoAmI:
             []
             
-        case .createPhoto:
+        case .createPhoto, .updateProfile:
            []
+            
+        case .getInterestsLists:
+           []
+        case .deletePhoto:
+            []
+        case .reoderPhotos:
+            []
         }
     }
 
@@ -122,27 +169,32 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         case .getProfile,
              .getLikes,
              .getPhotos,
-             .whoAmI:
+             .whoAmI,
+             .getInterestsLists:
             .get
         case .createProfile,
-                .createPhoto:
+                .createPhoto,
+                .updateProfile,
+                .deletePhoto,
+                .reoderPhotos:
                 .post
         }
     }
 
-    var body: [String : String]? {
+    var body: [String : Codable]? {
         switch self {
         case .getLikes,
              .getPhotos,
              .whoAmI,
-             .getProfile:
+             .getProfile,
+             .getInterestsLists:
             return nil
             
         case let .createProfile(profile):
             return [
                 "email": profile.email,
                 "name": profile.name,
-                "birth_day": "2024-05-10T20:12:00.326Z",
+                "birth_day": DateFormatter.server.string(from: profile.age),
                 "gender": profile.gender.rawValue,
                 "info": profile.description,
                 "subscriptionType": "STANDARD",
@@ -150,8 +202,31 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
                 "work": profile.work,
                 "education": profile.education
             ]
+            
         case let .createPhoto(photoStr):
             return ["content": photoStr]
+            
+        case let .updateProfile(profile):
+            return [
+                "name": profile.name,
+                "birth_day": DateFormatter.server.string(from: profile.age),
+                "gender": profile.gender.rawValue,
+                "info": profile.description,
+                "subscriptionType": "STANDARD",
+                "city": profile.town,
+                "work": profile.work,
+                "education": profile.education
+            ]
+            
+        case let .deletePhoto(id):
+            return [
+                "id": id
+            ]
+            
+        case let .reoderPhotos(ids):
+            return [
+                "id": ids
+            ]
         }
     }
 
@@ -168,15 +243,15 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
 // MARK: - Extension Request
 
 private extension Request {
-
+    
     static var getLikes: Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getLikes)
     }
-
+    
     static func getProfile(id: String) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getProfile(id: id))
     }
-
+    
     static func getPhotos(id: String) -> Self {
         .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.getPhotos(id: id))
     }
@@ -192,7 +267,23 @@ private extension Request {
     static func createPhoto(photoStr: String) -> Self {
         .init(endpoint: ProfilesServiceNetworkingEndpoint.createPhoto(photoStr))
     }
-
+    
+    static var getInterestsLists: Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.getInterestsLists)
+    }
+    
+    static func updateProfile(profile: Profile) -> Self {
+        .init(endpoint: ProfilesServiceNetworkingEndpoint.updateProfile(profile))
+    }
+    
+    static func deletePhoto(id: String) -> Self {
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.deletePhoto(id))
+    }
+    
+    static func reoderPhotos(ids: [String]) -> Self {
+        .init(requestTimeout: .infinite, endpoint: ProfilesServiceNetworkingEndpoint.reoderPhotos(ids: ids))
+    }
 }
+
 
 

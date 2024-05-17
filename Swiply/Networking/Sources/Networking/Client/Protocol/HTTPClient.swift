@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 public extension Logger {
-    /// Using your bundle identifier is a great way to ensure a unique identifier.
+
     private static var subsystem = Bundle.main.bundleIdentifier ?? "Swiply"
 
     /// Logs the view cycles like a view that appeared.
@@ -13,9 +13,6 @@ public extension Logger {
     
     /// All logs related to services such as network calls, location, etc.
     static let services = Logger(subsystem: subsystem, category: "services")
-
-    /// All logs related to tracking and analytics.
-    static let statistics = Logger(subsystem: subsystem, category: "statistics")
 }
 
 
@@ -51,12 +48,15 @@ public extension HTTPClient {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = endpoint.method.rawValue
         urlRequest.allHTTPHeaderFields = endpoint.header
-
+       
+        
         if let body = endpoint.body {
-            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
+            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [.withoutEscapingSlashes])
         }
         
-        Logger.services.log("CURL: \n \(urlRequest.cURL())")
+        Logger.services.log("curk: \(urlRequest.cURL())")
+        Logger.services.log("Send request: \(endpoint.path)")
+        
         do {
             let config = URLSessionConfiguration.default
             config.waitsForConnectivity = true
@@ -70,13 +70,14 @@ public extension HTTPClient {
             }
 
             let (data, response) = try await URLSession(configuration: config).data(for: urlRequest, delegate: nil)
-
             guard let response = response as? HTTPURLResponse else {
                 Logger.services.log("EROR: noResponse")
                 return .failure(.noResponse)
             }
+            
 
-            Logger.data.log("Status code: \(response.statusCode)")
+
+            Logger.services.log("Status code: \(response.statusCode)")
             
             switch response.statusCode {
             case 200...299:
@@ -94,19 +95,22 @@ public extension HTTPClient {
                 }
 
                 guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else {
-                    Logger.data.log("EROR: decode")
+                    Logger.data.error("EROR: decode")
                     return .failure(.decode)
                 }
                 
                 return .success(decodedResponse)
 
             case 401:
+                Logger.data.error("EROR: unauthorized")
                 return .failure(.unauthorized)
 
             case 403:
+                Logger.data.error("EROR: forbidden")
                 return .failure(.forbidden)
 
             default:
+                Logger.data.error("EROR: unexpectedStatusCode")
                 return .failure(.unexpectedStatusCode)
             }
         }
@@ -114,6 +118,8 @@ public extension HTTPClient {
             return .failure(.unknown)
         }
     }
+    
+    
 
 }
 

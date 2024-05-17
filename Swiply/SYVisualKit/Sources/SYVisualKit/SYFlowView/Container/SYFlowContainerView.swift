@@ -6,14 +6,17 @@ struct SYFlowContainerView<ContentView: View>: View {
     private let padding: CGFloat
     
     @Binding var size: CGSize
+    let geometry: GeometryProxy?
     
     init(content: [ContentView],
          padding: CGFloat,
-         size: Binding<CGSize>) {
+         size: Binding<CGSize>,
+         geometry: GeometryProxy? = nil) {
         
         self.content = content
         self.padding = padding
         self._size = size
+        self.geometry = geometry
     }
 
     var body: some View {
@@ -26,7 +29,8 @@ struct SYFlowContainerView<ContentView: View>: View {
                     ForEach(content.indices, id: \.self) { index in
                         content[index]
                             .alignmentGuide(.leading) { dimension in
-                                if (abs(width - dimension.width) > geo.size.width) {
+                                let geometryProxy = geometry ?? geo
+                                if (abs(width - dimension.width) > geometryProxy.size.width) {
                                     width = 0
                                     height -= dimension.height + padding
                                 }

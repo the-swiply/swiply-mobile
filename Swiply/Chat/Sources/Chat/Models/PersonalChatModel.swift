@@ -97,32 +97,9 @@ public extension MultiUserChatModel {
                 Message("Да", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received, person: .kate),
                 Message("Я тоже согласна", date: Date(timeIntervalSinceNow: -75000 * 3), type: .sent, person: .maria),
                 Message("Можно потом в парке устроить просмотр сериала по этой книге!", date: Date(timeIntervalSinceNow: -75000 * 3), type: .sent, person: .maria),
-                Message("Отличная идея!", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received, person: .kate)
-//                Message("Договорились", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received, person: .vera),
-//                Message("Куда пойдём?", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received, person: .kate),
-//                Message("Давай в Парк Горького?", date: Date(timeIntervalSinceNow: -73000 * 3), type: .sent, person: .tima),
-//                Message("Куда пойдём?", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received, person: .kate),
-                ],
+                Message("Отличная идея!", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received, person: .kate)],
             unreadMessage: true
             )
-//        ),
-//        MultiUserChatModel(
-//            title: "Меро2",
-//            description: "",
-//            image: UIImage(resource: .ui),
-//            messages:  [
-//                Message("Привет, как дела?)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent, person: .tima),
-//                Message("Привет, хорошо. Как твои?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received, person: .kate),
-//                Message("Тоже, погода хорошая не хочешь прогуляться?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received, person: .maria),
-//                Message("Вау", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent, person: .tima),
-//                Message("Это классно", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received, person: .kate),
-//                Message("Бери его с собой на прогулку)", date: Date(timeIntervalSinceNow: -75000 * 3), type: .sent, person: .tima),
-//                Message("Договорились", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received, person: .vera),
-//                Message("Куда пойдём?", date: Date(timeIntervalSinceNow: -74000 * 3), type: .received, person: .kate),
-//                Message("Давай в Парк Горького?", date: Date(timeIntervalSinceNow: -73000 * 3), type: .sent, person: .tima),
-//                ],
-//            unreadMessage: true
-//        )
     ]
 }
 
@@ -153,13 +130,6 @@ public extension PersonalChatModel {
             messages: [
                 Message("Привет, я тоже хочу в путешествие! Куда отправимся?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received, person: .ann),
                 Message("Привет)", date: Date(timeIntervalSinceNow: -78000 * 3), type: .sent, person: .ann)//,
-//                Message("Тоже, пойдём гулять?", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-//                Message("Завтра", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-//                Message("Беру билеты в Москву))", date: Date(timeIntervalSinceNow: -78000 * 3), type: .received),
-//                Message("или взять тебе в Корею лучше?)", date: Date(timeIntervalSinceNow: -76000 * 3), type: .received),
-//                Message("Вау..", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-//                Message("Лучше ты приезжай", date: Date(timeIntervalSinceNow: -76000 * 3), type: .sent),
-//                Message("Буду ждать тебя", date: Date(timeIntervalSinceNow: -75000 * 3), type: .received),
             ],
             unreadMessage: false
         )

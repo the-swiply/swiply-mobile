@@ -9,11 +9,18 @@ public struct SettingsFeature: Reducer {
         var messagesNotification = true
         var likesNotification = true
         var meetingNotification = true
+
+        public init(match: Bool, messages: Bool, likes: Bool, meeting: Bool) {
+            self.matchNotification = match
+            self.messagesNotification = messages
+            self.likesNotification = likes
+            self.meetingNotification = meeting
+        }
         
-        public init() {}
     }
     
     @Dependency(\.dismiss) var dismiss
+    @Dependency(\.profileManager) var profileManager
     
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
@@ -26,6 +33,10 @@ public struct SettingsFeature: Reducer {
         Reduce { state, action in
             switch action {
             case .saveButtonTapped:
+                profileManager.setLikeNotification(state.likesNotification)
+                profileManager.setMatchNotification(state.matchNotification)
+                profileManager.setMeetingNotification(state.meetingNotification)
+                profileManager.setMessageNotification(state.messagesNotification)
                 return .run { _ in
                     await self.dismiss()
                 }
@@ -58,7 +69,7 @@ struct SettingsView: View {
                     })
                     
                     Toggle(isOn: $store.meetingNotification, label: {
-                        Text("Уведомлять о встречи")
+                        Text("Уведомлять о встречах")
                     })
                 }
                 
@@ -67,13 +78,10 @@ struct SettingsView: View {
                         store.send(.exitButtonTapped)
                     }
             }
-            //
-            
-      
        
         }
   
-        .navigationBarTitle(Text("Settings"))
+        .navigationBarTitle(Text("Настройки"))
         .navigationBarItems(
             trailing:
                 Button(
@@ -85,15 +93,6 @@ struct SettingsView: View {
                     }
                 )
         )
-    }
-}
-
-#Preview {
-    NavigationView {
-        SettingsView(
-            store: Store(initialState: SettingsFeature.State(), reducer: {
-                SettingsFeature()._printChanges()
-            })
-        )
+        .environment(\.locale, Locale.init(identifier: "ru"))
     }
 }

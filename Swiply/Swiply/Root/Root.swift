@@ -51,7 +51,6 @@ struct Root {
                 switch appState {
                 case .authorization:
                     state.destination = .authorization(.init())
-
                 case .main:
                     state.destination = .main(.init())
 
@@ -71,12 +70,20 @@ struct Root {
                     await send(.getUserId)
                 }
 
-            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(.delegate(.finishProfile))))))):
+            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(let .delegate(.finishProfile(user)))))))):
+                return .run { send in
+                        let response = await self.rootServiceNetworking.createProfile(profile: user)
+                    
+                        switch response {
+                        case let .success(user):
+                            appStateManager.setProfileCreationComplete()
+                            profileManager.setUserId(id: user.id)
+                            await send(.findProfile(id: user.id))
+                        case .failure:
+                            break
+                        }
+                }
                 appStateManager.setProfileCreationComplete()
-                state.destination = .main(.init(selectedTab: .profile))
-                
-                return .none
-
             case .appDelegate:
                 return .none
 
@@ -119,8 +126,7 @@ struct Root {
                     let responseProfile = await self.rootServiceNetworking.getProfile(id: id)
                     switch responseProfile {
                     case let .success(profile):
-                        profileManager.setProfileInfo(.init(profile))
-                        
+                        profileManager.setProfileInfo(profile)
                         await send(.showMain)
                     case .failure:
                         await send(.createProfile)
@@ -132,3 +138,4 @@ struct Root {
     }
 
 }
+

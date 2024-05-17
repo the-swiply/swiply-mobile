@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import ProfilesService
+import SYCore
 
 @Reducer
 public struct FormCreationRoot {
@@ -34,9 +35,13 @@ public struct FormCreationRoot {
     public enum Action {
         case path(StackAction<Path.State, Path.Action>)
         case welcome(InfoInputFeature.Action)
+        case showInterests([Interest])
+        case showTown
     }
     
     public init() {}
+    
+    @Dependency(\.profilesService) var profilesServiceNetworking
 
     public var body: some ReducerOf<Self> {
         Scope(state: \.welcome, action: \.welcome) {
@@ -57,10 +62,16 @@ public struct FormCreationRoot {
                 state.path.append(.genderView(GenderFeature.State()))
                 return .none
 
-        
             case .path(.element(_, .genderView(.continueButtonTapped))):
-                state.path.append(.interestsInput(InterestsFeature.State()))
-                return .none
+                return .run { send in
+                    let response = await profilesServiceNetworking.getInterestsLists()
+                    switch response {
+                    case let .success(list):
+                        await send(.showInterests(list.interests))
+                    case .failure:
+                        await send(.showTown)
+                    }
+                }
                 
             case .path(.element(_, .interestsInput(.continueButtonTapped))):
                 state.path.append(.cityInput(InfoInputFeature.State()))
@@ -82,6 +93,12 @@ public struct FormCreationRoot {
                 state.path.append(.work(InfoInputFeature.State()))
                 return .none
                 
+            case let .showInterests(list):
+                state.path.append(.interestsInput(InterestsFeature.State(interests: list)))
+                return .none
+            case .showTown:
+                state.path.append(.cityInput(InfoInputFeature.State()))
+                return .none
             case .path:
                 return .none
             }

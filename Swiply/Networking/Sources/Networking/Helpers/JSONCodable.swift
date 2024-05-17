@@ -59,7 +59,9 @@ extension Data {
 extension JSONEncodable where Self: Encodable {
 
     public func encode() throws -> Data {
-        let result = try JSONEncoder().encode(self)
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.outputFormatting = .withoutEscapingSlashes
+        let result = try jsonEncoder.encode(self)
         return result
     }
 

@@ -1,10 +1,10 @@
 import SwiftUI
 import SYVisualKit
-
+import SYCore
 struct ChangeInterestsView: View {
-    var chosenInterests: [String]
-    var action: (String) -> Void
-    private let interests = ["ios" ,"android" ,"путешествия" ,"велосипед" ,"кулинария" ,"животные" ,"музыка"  ,"тeaтp"  ,"it" ,"суши" ,"книги"  ,"йога" ,"фотография" ,"стендап" ,"ландшафтный дизайн" , "тату", "иностранные языки" ,"танцы" ,"восточные танцы" ,"спорт","пошив одежды", "медитации", "бег" ,"здоровый образ жизни", "пицца"]
+    var chosenInterests: [Interest]
+    var action: (Interest) -> Void
+    var interests = [Interest]()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -14,8 +14,10 @@ struct ChangeInterestsView: View {
                 .padding(.vertical, 12)
             SYFlowView(
                 content: interests.map { interest in
-                    SYChip(text: interest, isSelected: chosenInterests.contains(interest)) { text in
-                        action(text)
+                    SYChip(text: interest.definition, isSelected: chosenInterests.contains(interest)) { text in
+                        if let interest = interests.first(where: { $0.definition == text}) {
+                            action(interest)
+                        }
                     }
                 }
             )
