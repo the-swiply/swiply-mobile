@@ -12,6 +12,7 @@ public struct EditFeature: Reducer {
         var isPresented: Bool = false
         var imageIndex: Int = 0
         var isInterest = false
+        var interests: [Interest] = []
     }
     
     public enum Action: BindableAction, Equatable  {
@@ -37,6 +38,7 @@ public struct EditFeature: Reducer {
             case let .show(index):
                 state.isPresented = true
                 state.imageIndex = index
+                state.info.images[index].uuid = ""
                 return .none
             case .onSaveTap:
                 let info = state.info
@@ -109,9 +111,11 @@ struct EditView: View {
                         )
                         .sheet(isPresented: $store.isInterest) {
                             ChangeInterestsView(
-                                chosenInterests: store.info.interests) { str in
-                                    store.send(.addInterest(str))
-                                }
+                                chosenInterests: store.info.interests,
+                                interests: store.interests
+                            ) { str in
+                                store.send(.addInterest(str))
+                            }
                         }
                     }
                     
@@ -262,7 +266,5 @@ public struct ImagePickerView: View {
                     action(index)
                 }
         }
-        
-        
     }
 }

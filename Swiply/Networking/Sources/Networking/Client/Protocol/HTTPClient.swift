@@ -54,6 +54,8 @@ public extension HTTPClient {
         
         if let body = endpoint.body {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [.withoutEscapingSlashes])
+        } else if let jsonStr = endpoint.jsonStr {
+            urlRequest.httpBody = Data(jsonStr.utf8)
         }
         
         Logger.services.log("curl: \(urlRequest.cURL())")

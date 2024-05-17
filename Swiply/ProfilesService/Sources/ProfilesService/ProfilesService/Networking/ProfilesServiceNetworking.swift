@@ -217,6 +217,21 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
         }
     }
 
+    var jsonStr: String? {
+        switch self {
+        case let .createProfile(profile):
+            let request = CreateProfileRequest(profile)
+            return request.toJSONStr()
+            
+        case let .updateProfile(profile):
+            let request = UpdateProfileRequest(profile)
+            return request.toJSONStr()
+            
+        default:
+            return nil
+        }
+    }
+    
     var body: [String : Codable]? {
         switch self {
         case let .interactWithProfile(id, interactionType):
@@ -234,32 +249,13 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             return nil
             
         case let .createProfile(profile):
-            return [
-                "email": profile.email,
-                "name": profile.name,
-                "birth_day": DateFormatter.server.string(from: profile.age),
-                "gender": profile.gender.rawValue,
-                "info": profile.description,
-                "subscriptionType": "STANDARD",
-                "city": profile.town,
-                "work": profile.work,
-                "education": profile.education
-            ]
+            return nil
             
         case let .createPhoto(photoStr):
             return ["content": photoStr]
             
         case let .updateProfile(profile):
-            return [
-                "name": profile.name,
-                "birth_day": DateFormatter.server.string(from: profile.age),
-                "gender": profile.gender.rawValue,
-                "info": profile.description,
-                "subscriptionType": "STANDARD",
-                "city": profile.town,
-                "work": profile.work,
-                "education": profile.education
-            ]
+            return nil
             
         case let .deletePhoto(id):
             return [

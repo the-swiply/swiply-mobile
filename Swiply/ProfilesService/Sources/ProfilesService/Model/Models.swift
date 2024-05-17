@@ -225,7 +225,7 @@ public extension Person {
 
 public struct ImageOptional: Equatable {
     public var image: UIImage?
-    public let uuid: String
+    public var uuid: String
     
     public init(image: UIImage?, uuid: String) {
         self.image = image

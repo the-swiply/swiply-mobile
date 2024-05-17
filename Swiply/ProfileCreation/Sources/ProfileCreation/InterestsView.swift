@@ -64,6 +64,7 @@ struct InterestsView: View {
                     }
                 }
             )
+            .frame(maxHeight: 110)
             .padding(.bottom, 35)
             
             Spacer()
