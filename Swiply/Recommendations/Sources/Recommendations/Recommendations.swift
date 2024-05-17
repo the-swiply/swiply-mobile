@@ -25,6 +25,7 @@ public struct Recommendations {
         case updateProfiles([Profile])
         case loadProfiles
         case filter(age: ClosedRange<Int>, gender: ProfileGender)
+        case handleMatch
     }
 
     @Dependency(\.recommendationsService) var recommendationsService
@@ -37,11 +38,21 @@ public struct Recommendations {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .publisher {
+                return .merge(
+                .publisher {
                     return recommendationsService
                         .publisher
                         .map { .updateProfiles($0) }
+                },
+                .publisher {
+                    return matchesService
+                        .matchesPublisher
+                        .map { _ in .handleMatch }
+                },
+                .run { send in
+                    await matchesService.getMatches()
                 }
+                )
 
             case let .updateProfiles(profiles):
                 state.profiles = profiles
@@ -81,6 +92,10 @@ public struct Recommendations {
                 return .none
 
             case let .filter(age, gender):
+                return .none
+
+            case .handleMatch:
+                print("New Match")
                 return .none
             }
         }
