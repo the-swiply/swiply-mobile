@@ -1,6 +1,8 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
+import SYCore
+import ProfilesService
 
 @Reducer
 public struct ProfileRoot {
@@ -27,6 +29,7 @@ public struct ProfileRoot {
         case path(StackAction<Path.State, Path.Action>)
         case profile(ProfileFeature.Action)
         case showError
+        case showEdit(user: Person, interest: [Interest])
     }
     
     public init() {}
@@ -44,7 +47,16 @@ public struct ProfileRoot {
             case let .profile(action):
                 switch action {
                 case let .showEdit(user):
-                    state.path.append(.edit(EditFeature.State(info: user)))
+                    return .run { send in
+                        let response = await profileNetworking.getInterestsLists()
+                        switch response {
+                        case let .success(list):
+                            await send(.showEdit(user: user, interest: list.interests))
+                        case .failure:
+                            await send(.showError)
+                        }
+                    }
+              
                 case .onSettingsTap:
                     state.path.append(.settings(SettingsFeature.State(
                         match: profileManager.isMatchOn(),
@@ -77,7 +89,9 @@ public struct ProfileRoot {
             case .showError:
                 state.profile.showError = true
                 return .none
-                
+            case let .showEdit(user, interest):
+                state.path.append(.edit(EditFeature.State(info: user, interests: interest)))
+                return .none
             }
         }
         .forEach(\.path, action: \.path)

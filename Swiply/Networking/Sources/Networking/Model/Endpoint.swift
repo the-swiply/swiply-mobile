@@ -11,6 +11,7 @@ public protocol Endpoint {
     var method: HTTPMethod { get }
     var header: [String: String]? { get }
     var body: [String: Codable]? { get }
+    var jsonStr: String? { get }
 
 }
 
@@ -40,6 +41,10 @@ public extension Endpoint {
 
     var pathComponents: [String] {
         []
+    }
+    
+    var jsonStr: String? {
+        nil
     }
 
 }

@@ -18,7 +18,7 @@ public struct SYChip: View {
             action(text)
         }, label: {
             Text(text)
-                .font(.headline)
+                .font(.callout)
                 .fontWeight(.semibold)
                 .padding(.vertical, 8.0)
                 .padding(.horizontal, 16.0)

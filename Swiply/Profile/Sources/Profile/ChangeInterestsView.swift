@@ -3,8 +3,8 @@ import SYVisualKit
 import SYCore
 struct ChangeInterestsView: View {
     var chosenInterests: [Interest]
+    var interests: [Interest]
     var action: (Interest) -> Void
-    var interests = [Interest]()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -25,12 +25,5 @@ struct ChangeInterestsView: View {
             Spacer()
         }
         .padding(24)
-    }
-}
-
-
-#Preview {
-    ChangeInterestsView(chosenInterests: []) { _ in
-        print("lol")
     }
 }
