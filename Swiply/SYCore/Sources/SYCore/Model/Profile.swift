@@ -102,8 +102,8 @@ public class LoadableImageCollection: Equatable {
             switch image {
             case .loading:
                 break
-            case let .image(uIImage):
-                firstImage = uIImage
+            case let .image(info):
+                firstImage = info.image
             }
         }
         

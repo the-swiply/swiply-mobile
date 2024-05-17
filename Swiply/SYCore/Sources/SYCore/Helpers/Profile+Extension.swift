@@ -23,8 +23,8 @@ extension ImageState {
         case .loading:
             return .loading
 
-        case .image(let uIImage):
-            return .image(Image(uiImage: uIImage))
+        case .image(let info):
+            return .image(Image(uiImage: info.image))
         }
     }
 

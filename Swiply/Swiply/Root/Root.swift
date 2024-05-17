@@ -56,7 +56,7 @@ struct Root {
                         await send(.requestAuthorization)
 
                     case .main:
-                        await send(.showMain)
+                        await send(.getUserId)
 
                     case .profileCreation:
                         await send(.createProfile)
@@ -114,6 +114,7 @@ struct Root {
                 return .none
 
             case .destination(.presented(.main(.profile(.path(.element(_, .settings(.exitButtonTapped))))))):
+                appStateManager.clearAll()
                 state.destination = .authorization(AuthorizationRoot.State())
                 return .none
 

@@ -64,7 +64,6 @@ public struct OTP {
                             case let .success(tokens):
                                 keychain.setToken(token: tokens.accessToken, type: .access)
                                 keychain.setToken(token: tokens.refreshToken, type: .refresh)
-                                state.profile.email = dataManager.getEmail()
                                 await send(.delegate(.finishAuthorization))
 
                             case .failure:

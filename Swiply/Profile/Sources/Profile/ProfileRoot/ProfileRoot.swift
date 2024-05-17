@@ -60,10 +60,11 @@ public struct ProfileRoot {
                 let profile = person.toProfile(state.profile.user)
                 return .run { [state] send in
                     let response = await profileNetworking.updateProfile(profile: profile)
-                    switch response {
-                    case .success:
+                    let responsePhotos = await profileNetworking.updatePhoto(old: state.profile.user, new: profile)
+                    switch (response, responsePhotos) {
+                    case (.success, .success):
                         state.profile.user = person.toProfile(state.profile.user)
-                    case .failure:
+                    default:
                         await send(.showError)
                     }
                 }

@@ -15,9 +15,10 @@ public protocol ProfilesService {
     func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
     func updateProfile(profile: Profile) async -> Result<UserID, RequestError>
     func deletePhoto(id: String) async -> Result<Bool, RequestError>
-    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
+    func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, RequestError>
     func likeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
     func dislikeProfile(id: UUID) async -> Result<EmptyResponse, BaseError>
+    func updatePhoto(old: Profile, new: Profile) async -> Result<EmptyResponse, BaseError>
 
 }
 
@@ -80,7 +81,7 @@ class LiveProfilesService: ProfilesService {
             case let .success(images):
                 let profileImages = images.photos.compactMap { imageString in
                     if let data = Data(base64Encoded: imageString.content, options: .ignoreUnknownCharacters) {
-                        return UIImage(data: data)
+                        return ImageInfo(image: UIImage(data: data) ?? UIImage(resource: .noPhoto), uuid: imageString.id)
                     }
 
                     return nil
@@ -118,18 +119,16 @@ class LiveProfilesService: ProfilesService {
             userId = userID
         }
         
-        guard let photo = profile.images.first??.toJpegString(compressionQuality: 0.0) else {
-            return .success(userId)
-        }
-        
-        let createPhotoResult = await profilesServiceNetworking.createPhoto(photo: photo)
-        
-        switch createPhotoResult {
-        case .failure:
-            break
-
-        case .success:
-            break
+       await withTaskGroup(
+            of: Result<PhotoID, RequestError>.self
+        ) { taskGroup in
+            for photo in profile.images {
+                if let photo = photo?.toJpegString(compressionQuality: 0.0) {
+                    taskGroup.addTask {
+                        await self.profilesServiceNetworking.createPhoto(photo: photo)
+                    }
+                }
+            }
         }
         return .success(userId)
     
@@ -143,7 +142,7 @@ class LiveProfilesService: ProfilesService {
             return .failure(error)
 
         case let .success(userID):
-            return .success(userID)
+            return .success(userID.id)
         }
     }
     
@@ -187,7 +186,7 @@ class LiveProfilesService: ProfilesService {
         }
     }
     
-    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError> {
+    func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, RequestError> {
         let reoderPhotos = await profilesServiceNetworking.reoderPhotos(ids: ids)
         switch reoderPhotos {
         case let .failure(error):
@@ -221,5 +220,64 @@ class LiveProfilesService: ProfilesService {
             return .failure(.error)
         }
     }
+    
+    func updatePhoto(old: Profile, new: Profile) async -> Result<EmptyResponse, BaseError> {
+        var newImages = [ImageInfo]()
+        
+        new.images.images.forEach { img in
+            switch img {
+            case .loading:
+                break
+            case let .image(imageInfo):
+                newImages.append(imageInfo)
+            }
+        }
+        
+        var oldImages = [ImageInfo]()
+        
+        old.images.images.forEach { img in
+            switch img {
+            case .loading:
+                break
+            case let .image(imageInfo):
+                oldImages.append(imageInfo)
+            }
+        }
+        
+        let deletePhotos = oldImages.filter { old in !newImages.contains(where: { $0.uuid == old.uuid }) }
+        
+        await withTaskGroup(
+             of: Void.self
+        ) { taskGroup in
+            for photo in deletePhotos {
+                taskGroup.addTask {
+                    await self.profilesServiceNetworking.deletePhoto(id: photo.uuid)
+                }
+            }
+        }
+        
+        for i in 0..<newImages.count {
+            if newImages[i].uuid.isEmpty, let photo = newImages[i].image.toJpegString(compressionQuality: 0.0)  {
+                let response = await profilesServiceNetworking.createPhoto(photo: photo)
+                switch response {
+                case let .success(photo):
+                    newImages[i].uuid = photo.id
+                case .failure:
+                    break
+                }
+            }
+        }
+      
+        let resp = await profilesServiceNetworking.reoderPhotos(ids: newImages.compactMap {$0.uuid})
+        
+        switch resp {
+        case .success:
+            return .success(.init())
+
+        case .failure:
+            return .failure(.error)
+        }
+    }
+    
 }
 

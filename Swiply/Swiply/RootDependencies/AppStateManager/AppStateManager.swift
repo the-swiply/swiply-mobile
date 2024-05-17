@@ -10,6 +10,7 @@ protocol AppStateManager {
     func getState() async -> AppState
     func setProfileCreationComplete()
     func setUserId(id: String)
+    func clearAll()
 
 }
 
@@ -71,8 +72,10 @@ class LiveAppStateManager: AppStateManager {
     func setUserId(id: String) {
         storage.setValue(id, forKey: "userId")
     }
-
+    
+    func clearAll() {
+        keychain.deleteToken(type: .access)
+        keychain.deleteToken(type: .refresh)
+        storage.removeObject(forKey: "userId")
+    }
 }
-
- 
-

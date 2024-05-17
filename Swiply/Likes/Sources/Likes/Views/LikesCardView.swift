@@ -13,7 +13,7 @@ public struct LikesCardView: View {
         NavigationLink(
             destination: CardInformationView(person: person),
             label: {
-                Image(uiImage: person.images.first!!)
+                Image(uiImage: person.getFirstImage())
                     .centerCropped()
                     .overlay(.ultraThinMaterial)
                     .opacity(isBlured ? 1 : 0)

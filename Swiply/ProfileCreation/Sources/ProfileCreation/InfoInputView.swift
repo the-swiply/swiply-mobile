@@ -8,6 +8,7 @@ public struct InfoInputFeature: Reducer {
     @ObservableState
     public struct State: Equatable {
         @Shared(.inMemory("CreatedProfile")) var profile = CreatedProfile()
+        @Shared(.appStorage("Email")) var email = ""
         var userInfo = ""
         var isButtonDisabled = true
         public init() { }
@@ -51,6 +52,7 @@ public struct InfoInputFeature: Reducer {
                 }
                 
                 if type == .work {
+                    state.profile.email = state.email
                     return .run { [state] send in
                         await send(.delegate(.finishProfile(state.profile)))
                     }

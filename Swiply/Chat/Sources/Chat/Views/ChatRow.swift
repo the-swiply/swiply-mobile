@@ -14,12 +14,11 @@ struct ChatRow: View {
         VStack(spacing: 0) {
             HStack {
                 HStack(spacing: 20) {
-                    Image(uiImage: chat.person.images.first!!)
+                    Image(uiImage: chat.person.getFirstImage())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 70, height: 70)
                         .clipShape(Circle())
-                    //                .overlay(Circle().stroke(.pink, lineWidth: 1))
                         .shadow(radius: 1)
                     
                     ZStack {
