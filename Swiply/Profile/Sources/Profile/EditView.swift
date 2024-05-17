@@ -49,7 +49,7 @@ public struct EditFeature: Reducer {
                 }
             case .binding:
                 if let image = state.image {
-                    state.info.images.append(image)
+                    state.info.images.append(.init(image: image, uuid: ""))
                     state.image = nil
                 }
                 return .none
@@ -121,13 +121,13 @@ struct EditView: View {
                             ForEach((0..<6), id: \.self) { index in
                                 ImagePickerView(
                                     image: index < $store.info.images.count ?
-                                    $store.info.images[index] : $store.image,
+                                    $store.info.images[index].image : $store.image,
                                     index: index) { index in
                                         store.send(.show(index))
                                     }.sheet(isPresented: $store.isPresented) {
                                         ImagePicker(
                                             image: store.imageIndex < $store.info.images.count ?
-                                            $store.info.images[store.imageIndex] : $store.image,
+                                            $store.info.images[store.imageIndex].image : $store.image,
                                             isPresented: $store.isPresented
                                         )
                                     }

@@ -10,11 +10,11 @@ public struct Person: Identifiable, Equatable {
     public var interests: [Interest]
     public var town: String
     public var description: String
-    public var images: [UIImage?]
+    public var images: [ImageOptional]
     public var education: String = ""
     public var work: String = ""
     
-    init(email: String, name: String, age: Date, gender: Gender, interests: [Interest], town: String, description: String, images: [UIImage?], education: String, work: String) {
+    init(email: String, name: String, age: Date, gender: Gender, interests: [Interest], town: String, description: String, images: [ImageOptional], education: String, work: String) {
         self.email = email
         self.name = name
         self.age = age
@@ -27,7 +27,7 @@ public struct Person: Identifiable, Equatable {
         self.work = work
     }
     
-    init(email: String, name: String, age: Date, gender: Gender, interests: [Interest], town: String, description: String, images: [UIImage?]) {
+    init(email: String, name: String, age: Date, gender: Gender, interests: [Interest], town: String, description: String, images: [ImageOptional]) {
         self.email = email
         self.name = name
         self.age = age
@@ -44,20 +44,24 @@ public struct UserID: Decodable {
     public let id: String
 }
 
+public struct PhotoID: Decodable {
+    public let id: String
+}
+
 public extension Person {
     init(_ model: Profile) {
         
         var images = model.images.images.map {
             switch $0 {
             case let .image(image):
-                return image
+                return ImageOptional(image: image.image, uuid: image.uuid)
             case .loading:
-                return UIImage(resource: .noPhoto)
+                return ImageOptional(image: nil, uuid: "")
             }
         }
         
         if images.isEmpty {
-            images.append(UIImage(resource: .noPhoto))
+            images.append(.init(image: UIImage(resource: .noPhoto), uuid: ""))
         }
         
         self.init(
@@ -85,8 +89,8 @@ public extension Person {
             description: self.description,
             email: old.email,
             images: LoadableImageCollection(images: self.images.map({
-                if let img = $0 {
-                    return .image(img)
+                if let img = $0.image {
+                    return .image(ImageInfo(image: img, uuid: $0.uuid))
                 } else {
                     return .loading
                 }
@@ -95,6 +99,16 @@ public extension Person {
             work: self.work, 
             corporateMail: []
         )
+    }
+    
+    func getFirstImage() -> UIImage {
+        for img in self.images {
+            if let image = img.image {
+                return image
+            }
+        }
+        
+        return UIImage(resource: .noPhoto)
     }
 }
 
@@ -146,7 +160,7 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "Очень люблю путешествовать и мечтаю объездить все страны мира. Учусь онлайн на ландшафтного дизайнера в Итальянском институте.  \n\nПоследнее время очень полюбился театр, ищу человека, который готов составить мне компанию) ",
-        images: [UIImage(resource: .ann1), UIImage(resource: .ann2)]
+        images: [.init(image: UIImage(resource: .ann1), uuid: "") , .init(image: UIImage(resource: .ann2), uuid: "")]
     )
 
     static let kate = Person(
@@ -157,7 +171,7 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "В любой сложной жизненной ситуации остаюсь оптимисткой. \n\nВерю в людей и в то, что встречу здесь достойного человека, которому нужна любовь и поддержка. \n\nМужчине, которого полюблю, отдам всю свою заботу и нежность. Давай знакомиться!",
-        images: [UIImage(resource: .kate)]
+        images: [.init(image: UIImage(resource: .kate), uuid: "")]
     )
 
     static let maria = Person(
@@ -168,7 +182,7 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "Я мобильный разработчик! Обычно всех удивляет этот факт, а если этого мало, то я разрабатываю приложения как под iOS, так и под Android. Под Android только начинаю учиться, но мне нравится. \n\nСтараюсь вести здоровый образ жизни и часто езжу на велосипеде, это успокаивает. Если ты не готов кататься со мной на велосипеде или провести весь день на IT конференции, то даже не пиши)",
-        images: [UIImage(resource: .maria), UIImage(resource: .night)]
+        images: [.init(image: UIImage(resource: .maria), uuid: ""), .init(image: UIImage(resource: .night), uuid: "")]
     )
 
 
@@ -180,7 +194,7 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "Знаю 5 языков и знаю кухню 5 стран) Люблю животных и музыку, мечтаю открыть своё кафе с домашними животными.",
-        images: [UIImage(resource: .daria)]
+        images: [.init(image: UIImage(resource: .daria), uuid: "")]
     )
 
 
@@ -192,7 +206,7 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "Люблю готовить, особенно десерты, поэтому торт на день рождения обеспечен. Недавно уволилась с работы и ищу себя. \n\nУ меня есть две собаки, так что всё свободное время провожу с ними",
-        images: [UIImage(resource: .vera)]
+        images: [.init(image: UIImage(resource: .vera), uuid: "")]
     )
 
 
@@ -204,6 +218,17 @@ public extension Person {
         interests: [],
         town: "Москва",
         description: "Учусь в лучшем вузе страны ВШЭ ФКН. Хочу найти друзей по интересам и отправиться в путешествие на несколько месяцев",
-        images: [UIImage(resource: .tima)]
+        images: [.init(image: UIImage(resource: .tima), uuid: "")]
     )
+}
+
+
+public struct ImageOptional: Equatable {
+    public var image: UIImage?
+    public let uuid: String
+    
+    public init(image: UIImage?, uuid: String) {
+        self.image = image
+        self.uuid = uuid
+    }
 }

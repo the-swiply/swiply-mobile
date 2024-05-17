@@ -142,7 +142,7 @@ struct MultiUserChat: View {
                 let isReceived = message.type == .received
                 HStack(spacing: 0) {
                     if isReceived {
-                        Image(uiImage: message.person.images.first!!)
+                        Image(uiImage: message.person.getFirstImage())
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 30, height: 30)

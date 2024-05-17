@@ -7,6 +7,7 @@ public struct SYKeychain {
 
     public var setToken: (_ token: String, _ type: TokenType) -> Void
     public var getToken: (_ type: TokenType) -> String?
+    public var deleteToken: (_ type: TokenType) -> Void
 
 }
 
@@ -21,6 +22,9 @@ extension SYKeychain: DependencyKey {
             },
             getToken: { type in
                 SecureStorage.getToken(for: type.rawValue)
+            },
+            deleteToken: { type in
+                SecureStorage.deleteToken(for: type.rawValue)
             }
         )
     }

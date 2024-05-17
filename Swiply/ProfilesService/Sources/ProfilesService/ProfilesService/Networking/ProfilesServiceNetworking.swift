@@ -15,11 +15,11 @@ public protocol ProfilesServiceNetworking {
     func interactWithProfile(_ id: UUID, interactionType: ProfileInteraction) async -> Result<EmptyResponse, RequestError>
     func whoAmI() async -> Result<UserID, RequestError>
     func createProfile(profile: CreatedProfile) async -> Result<UserID, RequestError>
-    func createPhoto(photo: String) async -> Result<String, RequestError>
+    func createPhoto(photo: String) async -> Result<PhotoID, RequestError>
     func updateProfile(profile: Profile) async -> Result<UserID, Networking.RequestError> 
     func getInterestsLists() async -> Result<ListInterestResponse, RequestError>
     func deletePhoto(id: String) async -> Result<Bool, RequestError>
-    func reoderPhotos(ids: [String]) async -> Result<Bool, RequestError>
+    func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, RequestError>
 }
 
 // MARK: - DependencyKey
@@ -70,7 +70,7 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
         await sendRequest(.whoAmI)
     }
 
-    func createPhoto(photo: String) async -> Result<String, Networking.RequestError> {
+    func createPhoto(photo: String) async -> Result<PhotoID, Networking.RequestError> {
         await sendRequest(.createPhoto(photoStr: photo))
     }
     
@@ -86,7 +86,7 @@ class LiveProfilesServiceNetworking: LiveTokenUpdatableClient, ProfilesServiceNe
         await sendRequest(.deletePhoto(id: id))
     }
     
-    func reoderPhotos(ids: [String]) async -> Result<Bool, Networking.RequestError> {
+    func reoderPhotos(ids: [String]) async -> Result<EmptyResponse, Networking.RequestError> {
         await sendRequest(.reoderPhotos(ids: ids))
     }
 }
@@ -252,7 +252,7 @@ enum ProfilesServiceNetworkingEndpoint: TokenizedEndpoint {
             
         case let .reoderPhotos(ids):
             return [
-                "id": ids
+                "ids": ids
             ]
         }
     }
