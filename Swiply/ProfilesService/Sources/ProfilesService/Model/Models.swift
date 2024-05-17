@@ -235,5 +235,5 @@ public struct ImageOptional: Equatable {
 
 
 public struct MatchesResponse: Codable {
-    let userIDs: [String]
+    let ids: [String]
 }

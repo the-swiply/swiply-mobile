@@ -102,7 +102,7 @@ class LiveProfilesService: ProfilesService {
 
         switch response {
         case let .success(profiles):
-            return .success(profiles.userIDs)
+            return .success(profiles.ids)
 
         case let .failure(error):
             return .failure(error)
