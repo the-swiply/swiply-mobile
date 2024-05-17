@@ -7,14 +7,14 @@ import SYCore
 
 protocol EventsNetworking {
 
-    func create(event: Event) async -> Result<EmptyResponse, RequestError>
+    func create(event: Event) async -> Result<CreateEventResponse, RequestError>
     func joinEvent(id: UUID) async -> Result<EmptyResponse, RequestError>
-    func eventMembers(id: UUID) async -> Result<EmptyResponse, RequestError>
+    func eventMembers(id: UUID) async -> Result<GetEventMembersResponse, RequestError>
     func updateEvent(info: Event) async -> Result<EmptyResponse, RequestError>
-    func getEvents() async -> Result<EmptyResponse, RequestError>
+    func getEvents() async -> Result<GetEventsResponse, RequestError>
     func acceptUser(eventId: UUID, userId: UUID) async -> Result<EmptyResponse, RequestError>
-    func myEvents() async -> Result<EmptyResponse, RequestError>
-    func membership(number: Int) async -> Result<EmptyResponse, RequestError>
+    func myEvents() async -> Result<GetUserOwnEventsResponse, RequestError>
+    func membership(number: Int) async -> Result<GetUserMembershipEventsResponse, RequestError>
 
 }
 
@@ -42,7 +42,7 @@ extension DependencyValues {
 
 class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
 
-    func create(event: Event) async -> Result<EmptyResponse, RequestError> {
+    func create(event: Event) async -> Result<CreateEventResponse, RequestError> {
         await sendRequest(.create(event: event))
     }
 
@@ -50,7 +50,7 @@ class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
         await sendRequest(.joinEvent(id: id))
     }
 
-    func eventMembers(id: UUID) async -> Result<EmptyResponse, RequestError> {
+    func eventMembers(id: UUID) async -> Result<GetEventMembersResponse, RequestError> {
         await sendRequest(.eventMembers(id: id))
     }
 
@@ -58,7 +58,7 @@ class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
         await sendRequest(.updateEvent(info: info))
     }
 
-    func getEvents() async -> Result<EmptyResponse, RequestError> {
+    func getEvents() async -> Result<GetEventsResponse, RequestError> {
         await sendRequest(.getEvents())
     }
 
@@ -66,11 +66,11 @@ class LiveEventsNetworking: LiveTokenUpdatableClient, EventsNetworking {
         await sendRequest(.acceptUser(eventId: eventId, userId: userId))
     }
 
-    func myEvents() async -> Result<EmptyResponse, RequestError> {
+    func myEvents() async -> Result<GetUserOwnEventsResponse, RequestError> {
         await sendRequest(.myEvents())
     }
 
-    func membership(number: Int) async -> Result<EmptyResponse, RequestError> {
+    func membership(number: Int) async -> Result<GetUserMembershipEventsResponse, RequestError> {
         await sendRequest(.membership(number: number))
     }
 

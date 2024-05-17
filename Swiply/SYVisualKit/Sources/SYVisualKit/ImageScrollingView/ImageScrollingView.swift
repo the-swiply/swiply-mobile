@@ -14,27 +14,34 @@ public struct ImageScrollingView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            ImageView(image: images[currentIndex])
-                .id(currentIndex)
-                .transition(.opacity.animation(.default))
-                .overlay {
-                    ImageScrollingOverlay(
-                        maxIndex: images.count - 1,
-                        onTapCenter: onTapCenter,
-                        currentImageIndex: $currentIndex
-                    )
-                }
-                .contentSize(in: $viewSize)
+        if !images.isEmpty, images[0] != .loading {
+            ZStack(alignment: .top) {
+                ImageView(image: images[currentIndex])
+                    .id(currentIndex)
+                    .transition(.opacity.animation(.default))
+                    .overlay {
+                        ImageScrollingOverlay(
+                            maxIndex: images.count - 1,
+                            onTapCenter: onTapCenter,
+                            currentImageIndex: $currentIndex
+                        )
+                    }
+                    .contentSize(in: $viewSize)
 
-            if images.count > 1 {
-                CurrentImageIndicatorView(
-                    currentImageIndex: currentIndex,
-                    imageCount: images.count,
-                    parentSize: viewSize
-                )
-                .padding(.top, 10)
+                if images.count > 1 {
+                    CurrentImageIndicatorView(
+                        currentImageIndex: currentIndex,
+                        imageCount: images.count,
+                        parentSize: viewSize
+                    )
+                    .padding(.top, 10)
+                }
             }
+        }
+        else {
+            Rectangle()
+                .foregroundStyle(.gray)
+                .overlay(.ultraThinMaterial)
         }
     }
 

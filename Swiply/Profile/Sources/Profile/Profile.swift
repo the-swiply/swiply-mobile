@@ -15,6 +15,7 @@ public struct ProfileFeature {
     public struct State: Equatable {
         @Presents var destination: Destination.State?
         @Shared(.inMemory("Person")) var user = Profile()
+        @Shared(.inMemory("hasSubscription")) var hasSubscription = false
         var showError = false
         public init() {}
         
@@ -125,14 +126,16 @@ struct ProfileView: View {
                     .padding(.top, 20)
                 
                 
-                Image(.subscription)
-                    .resizable()
-                    .frame(width: 340, height: 340)
-                    .padding(.top, 5)
-                    .onTapGesture {
-                        store.send(.onSubscriptionTap)
-                    }
-                
+                if !store.hasSubscription {
+                    Image(.subscription)
+                        .resizable()
+                        .frame(width: 340, height: 340)
+                        .padding(.top, 5)
+                        .onTapGesture {
+                            store.send(.onSubscriptionTap)
+                        }
+                }
+
                 
                 Spacer()
             }

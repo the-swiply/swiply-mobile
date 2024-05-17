@@ -10,12 +10,19 @@ public struct EventsFeature {
         public init() {}
     }
     public enum Action: Equatable {
-
+        case onAppear
     }
+
+    @Dependency(\.eventsNetworking) var eventsNetworking
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .onAppear:
+                return .run { send in
+                    await eventsNetworking.getEvents()
+                }
+            }
         }
     }
 

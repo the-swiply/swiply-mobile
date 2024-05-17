@@ -151,7 +151,9 @@ public struct EventsView: View {
                     }
                     .presentationDetents([.height(600)])
                 })
-
+        .onAppear() {
+            
+        }
     }
 
     

@@ -97,7 +97,7 @@ actor LiveRecommendationsService: RecommendationsService {
         let idsResponse = await recommendationsNetworking.getProfiles(number: number)
         print(idsResponse)
 
-        await withTaskGroup(of: Result<Profile, RequestError>.self) { [profilesService, idsResponse] taskGroup in
+        await withTaskGroup(of: Result<Profile, RequestError>.self) { taskGroup in
             switch idsResponse {
             case .failure:
                 break
@@ -105,21 +105,27 @@ actor LiveRecommendationsService: RecommendationsService {
             case let .success(ids):
                 ids.userIDs.forEach { id in
                     taskGroup.addTask {
-                        await profilesService.getProfile(id: id)
+                        await self.profilesService.getProfile(id: id)
                     }
                 }
 
-                for await profileResponse in taskGroup {
+                for await profileResponse in taskGroup { 
                     switch profileResponse {
                     case .failure:
                         break
 
                     case let .success(profile):
-                        profiles.append(profile)
+                        Task {
+                            await updateProfiles(newProfile: profile)
+                        }
                     }
                 }
             }
         }
+    }
+
+    func updateProfiles(newProfile: Profile) async {
+        profiles.append(newProfile)
     }
 
     func filterProfiles(age: ClosedRange<Int>, gender: ProfileGender) async {
