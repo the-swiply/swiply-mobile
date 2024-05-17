@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SYCore
 import SYVisualKit
+import Foundation
 
 @Reducer
 public struct Recommendations {
@@ -17,8 +18,8 @@ public struct Recommendations {
     public enum Action: Equatable {
         case onAppear
         case backButtonTapped
-        case likeButtonTapped
-        case dislikeButtonTapped
+        case likeButtonTapped(UUID)
+        case dislikeButtonTapped(UUID)
         case nextPhotoButtonTapped
         case onTapCenter
         case updateProfiles([Profile])
@@ -59,21 +60,19 @@ public struct Recommendations {
             case .backButtonTapped:
                 return .none
 
-            case .likeButtonTapped:
-                guard let profile = state.profiles.first else {
-                    return .none
+            case let .likeButtonTapped(id):
+                state.swipeAction = .right(id: id.uuidString)
+                
+                return .run { send in
+                    await recommendationsService.likeProfile(id: id)
                 }
 
-                state.swipeAction = .right(id: profile.id.uuidString)
-                return .none
+            case let .dislikeButtonTapped(id):
+                state.swipeAction = .left(id: id.uuidString)
 
-            case .dislikeButtonTapped:
-                guard let profile = state.profiles.first else {
-                    return .none
+                return .run { send in
+                    await recommendationsService.dislikeProfile(id: id)
                 }
-
-                state.swipeAction = .left(id: profile.id.uuidString)
-                return .none
 
             case .nextPhotoButtonTapped:
                 return .none

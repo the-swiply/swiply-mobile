@@ -32,8 +32,8 @@ public struct RecommendationsView: View {
                                 SwipableView(swipeAction: store.state.swipeAction, id: profile.id.uuidString) {
                                     CardView(
                                         person: profile.cardPerson,
-                                        likeHandler: { store.send(.likeButtonTapped) },
-                                        dislikeHandler: { store.send(.dislikeButtonTapped) },
+                                        likeHandler: { store.send(.likeButtonTapped(profile.id)) },
+                                        dislikeHandler: { store.send(.dislikeButtonTapped(profile.id)) },
                                         onTapCenter: { store.send(.onTapCenter) }
                                     )
                                 }

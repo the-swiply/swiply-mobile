@@ -42,7 +42,7 @@ private extension SwipableView {
         degrees = 0
     }
 
-    func swipeRight() {
+    func swipeLeft() {
         withAnimation {
             xOffset = 500
             degrees = 12
@@ -51,7 +51,7 @@ private extension SwipableView {
         }
     }
 
-    func swipeLeft() {
+    func swipeRight() {
         withAnimation {
             xOffset = -500
             degrees = -12
