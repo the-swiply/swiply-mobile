@@ -1,0 +1,154 @@
+{
+  "identifier" : "B648042E",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6503192536",
+    "_developerTeamID" : "G2449KS8L9",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 738624198.69307303,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21493723",
+      "localizations" : [
+
+      ],
+      "name" : "Swiply Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6503322931",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Премиум подписка на 3 месяца",
+              "displayName" : "Swiply Premium 3 Months",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "Swiply.3monthly",
+          "recurringSubscriptionPeriod" : "P3M",
+          "referenceName" : "3 Months",
+          "subscriptionGroupID" : "21493723",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "5.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6503307503",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Премиум подписка на месяц",
+              "displayName" : "Swiply Premium Monthly",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "Swiply.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly",
+          "subscriptionGroupID" : "21493723",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "49.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6503307774",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Премиум подписка на год",
+              "displayName" : "Swiply Premium Yearly",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "Swiply.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly",
+          "subscriptionGroupID" : "21493723",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

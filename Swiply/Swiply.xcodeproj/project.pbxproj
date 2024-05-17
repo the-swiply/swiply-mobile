@@ -58,6 +58,7 @@
 		3EDBE7712B9E163200DDC677 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		3EE80C5A2BAA0FC40018ED2F /* MainScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainScreen; sourceTree = "<group>"; };
 		3EE80EAC2BAF6CF60018ED2F /* Recommendations */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Recommendations; sourceTree = "<group>"; };
+		3EE926632C067FDC00FFEFD0 /* TestConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestConfiguration.storekit; sourceTree = "<group>"; };
 		3EEB60B12C0227BD00EB6C94 /* Swiply.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swiply.entitlements; sourceTree = "<group>"; };
 		3EEB60B22C0227FA00EB6C94 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3EF79C122BA7561E00D4D3BE /* SYKeychain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SYKeychain; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 		3E171A992B7EB36200D4E016 = {
 			isa = PBXGroup;
 			children = (
+				3EE926632C067FDC00FFEFD0 /* TestConfiguration.storekit */,
 				3E1D0D1F2BF7F1B300684703 /* CorporateEmailConfirmation */,
 				3EA72FAE2BE950A7003919EA /* SYCore */,
 				3E79FB642BD86CF900749E6B /* Events */,
