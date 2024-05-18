@@ -4,7 +4,7 @@ import ProfilesService
 import SYCore
 
 @Reducer
-public struct FormCreationRoot {
+public struct ProfileCreationRoot {
     
     @Reducer(state: .equatable)
     public enum Path {

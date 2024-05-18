@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import Authorization
-import FormCreation
+import ProfileCreation
 import Networking
 import MainScreen
 import Chat
@@ -14,7 +14,7 @@ struct Root {
     @Reducer(state: .equatable)
     enum Destination {
         case authorization(AuthorizationRoot)
-        case formCreation(FormCreationRoot)
+        case profileCreation(ProfileCreationRoot)
         case main(MainRoot)
         case chat(ChatRoot)
         case profile(ProfileRoot)
@@ -71,7 +71,7 @@ struct Root {
                     await send(.getUserId)
                 }
 
-            case .destination(.presented(.formCreation(.path(.element(id: _, action: .work(let .delegate(.finishProfile(user)))))))):
+            case .destination(.presented(.profileCreation(.path(.element(id: _, action: .work(let .delegate(.finishProfile(user)))))))):
                 return .run { send in
                         let response = await self.rootServiceNetworking.createProfile(profile: user)
                     
@@ -98,7 +98,7 @@ struct Root {
             case .destination:
                 return .none
             case .createProfile:
-                state.destination = .formCreation(.init())
+                state.destination = .profileCreation(.init())
                 return .none
             case .showMain:
                 state.destination = .main(.init(selectedTab: .profile))

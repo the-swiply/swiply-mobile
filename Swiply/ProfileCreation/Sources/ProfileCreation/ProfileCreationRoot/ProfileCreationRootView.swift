@@ -1,11 +1,11 @@
 import SwiftUI
 import ComposableArchitecture
 
-public struct FormCreationRootView: View {
+public struct ProfileCreationRootView: View {
 
-    @Bindable var store: StoreOf<FormCreationRoot>
+    @Bindable var store: StoreOf<ProfileCreationRoot>
 
-    public init(store: StoreOf<FormCreationRoot>) {
+    public init(store: StoreOf<ProfileCreationRoot>) {
         self.store = store
     }
 

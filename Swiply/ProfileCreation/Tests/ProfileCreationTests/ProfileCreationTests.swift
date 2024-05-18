@@ -1,5 +1,5 @@
 import XCTest
-@testable import FormCreation
+@testable import ProfileCreation
 import ComposableArchitecture
 
 final class ProfileCreationTests: XCTestCase {
